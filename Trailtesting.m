@@ -1,9 +1,5 @@
 %% 3D Model Demo
-% This is short demo that loads and renders a 3D model of a human femur. It
-% showcases some of MATLAB's advanced graphics features, including lighting and
-% specular reflectance.
 
-% Copyright 2011 The MathWorks, Inc.
 
 
 %% Load STL mesh
@@ -26,8 +22,8 @@ patch(fv,'FaceColor',       [0.8 0.8 1.0], ...
          'AmbientStrength', 0.15);
 
 % Add a camera light, and tone down the specular highlighting
-camlight('headlight');
-material('dull');
+camlight('right');
+material('metal');
 
 % Fix the axes scaling, and set a nice view angle
 axis('image');
