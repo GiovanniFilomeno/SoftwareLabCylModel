@@ -1,3 +1,3 @@
-n = 10;
-A = delsq(numgrid('L',n+2));
-G = graph(A,'omitselfloops');
+figure
+gm = importGeometry('/Users/ahmadbelbeisi/Desktop/SL2021/SoftwareLabCylModel/STL_Example/Example CylindricModel.stl');
+pdegplot(gm)
