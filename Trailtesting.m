@@ -1,3 +1,3 @@
 figure
-gm = importGeometry('');
+gm = importGeometry('Example CylindricModel.stl');
 pdegplot(gm,'FaceLabels','on')
