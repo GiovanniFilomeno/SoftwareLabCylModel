@@ -5,3 +5,5 @@ https://www.youtube.com/watch?v=9Blj08-Cdmw&t=187s
 Above you can find a video tutorial for Using GitHub with MATLAB
 
 Please try it with small file to make sure it works 
+
+Download the github desktop app to fetch and push changes this is easier than entering your github credentials every time in matlab
