@@ -28,3 +28,4 @@
 * Depending on our modeling, objective function might be nonsmooth
 * Then, classical optimization algorithms will fail
 * Might contain helpful algorithms
+* PDF: Attached in literature review
