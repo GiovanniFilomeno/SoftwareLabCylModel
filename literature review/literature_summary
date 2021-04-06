@@ -7,3 +7,24 @@
 
 +Paper: 3D meshes into CAD models
 +PDF: Attached in literature review
+
+* If we model our problem mathematically as an optimization problem, the following books might be helpful
+* (e.g. Maximise Area, constraints: walls and no gaps, variables: radii and positions and number)
+*
+* Book: Introduction to Applied Optimization
+* Important information:
+* Chapter 1: General overview
+* Chapter 1.5: Classification of optimization problems
+* Chapter 3.6: Algorithms for (constrained) nonlinear problems
+* (Chapter 4.3: Methods for discrete optimization)
+* Chapter 6.2: Methods for multiobjective optimization
+* PDF: Attached in literature review
+*
+* Book: Solving Optimization Problems with MATLAB
+* Similar structure to above book, gives implementation details in matlab
+* PDF: Attached in literature review
+*
+* Book: Numerical Nonsmooth Optimization
+* Depending on our modeling, objective function might be nonsmooth
+* Then, classical optimization algorithms will fail
+* Might contain helpful algorithms
