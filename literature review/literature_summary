@@ -2,20 +2,21 @@
  
 
 
-+ Paper: A circle packing algorithm
++ PAPER: A circle packing algorithm
 + Link: https://www.sciencedirect.com/science/article/pii/S0925772102000998
 + This is a 2D version. It may be useful to analogously solve our problem in 3D (Cylinders)
 + Dirichlet-type problem: The authors discuss implementation, rates of convergence, stability and speed.
---> Triangulation of the topology. Vertices associated with circles. 
+--> Triangulation of the topology. Vertices (interior and boundary) associated with circles. 
+--> It addresses "overlap packing" which we can relate to the union of the cylinders.
 
 
-+Paper: 3D meshes into CAD models
++PAPER: 3D meshes into CAD models
 +PDF: Attached in literature review
 
 * If we model our problem mathematically as an optimization problem, the following books might be helpful
 * (e.g. Maximise Area, constraints: walls and no gaps, variables: radii and positions and number)
 *
-* Book: Introduction to Applied Optimization
+* BOOK: Introduction to Applied Optimization
 * Important information:
 * Chapter 1: General overview
 * Chapter 1.5: Classification of optimization problems
@@ -24,11 +25,11 @@
 * Chapter 6.2: Methods for multiobjective optimization
 * PDF: Attached in literature review
 *
-* Book: Solving Optimization Problems with MATLAB
+* BOOK: Solving Optimization Problems with MATLAB
 * Similar structure to above book, gives implementation details in matlab
 * PDF: Attached in literature review
 *
-* Book: Numerical Nonsmooth Optimization
+* BOOK: Numerical Nonsmooth Optimization
 * Depending on our modeling, objective function might be nonsmooth
 * Then, classical optimization algorithms will fail
 * Might contain helpful algorithms
@@ -37,16 +38,13 @@
 
 
 
-
-*Thesis :Methods for Polygonalization of a Constructive Solid Geometry Description in Web-based Rendering Environments
+*THESIS :Methods for Polygonalization of a Constructive Solid Geometry Description in Web-based Rendering Environments
 * Important information:
 1- The author look into taking STL CAD files and making web web browser edit and exchange of physical objects.
 2- The author also examine reevaluate existing methods for CSG polygonalization and to adapt them to this new environment
 
 
-
-* Github : SCalaCAD 
+* GITHUB : SCalaCAD 
 * Important information:
 1- Constructive Solid Geometry library/DSL for Scala with support for creating, visualizing, and exporting 3D models. Models created with ScalaCad can be exported to the STL file format for 3D printing.
-
 2- can be used to look into how we can implement so things in Matlab. 
