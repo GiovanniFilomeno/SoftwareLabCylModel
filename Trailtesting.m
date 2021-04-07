@@ -22,8 +22,8 @@ patch(fv,'FaceColor',       [0.8 0.8 1.0], ...
          'AmbientStrength', 0.15);
 
 % Add a camera light, and tone down the specular highlighting
-camlight('right');
-material('metal');
+camlight('headlight');
+material('shiny');
 
 % Fix the axes scaling, and set a nice view angle
 axis('image');

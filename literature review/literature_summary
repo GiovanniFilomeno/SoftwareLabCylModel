@@ -29,3 +29,20 @@
 * Then, classical optimization algorithms will fail
 * Might contain helpful algorithms
 * PDF: Attached in literature review
+*
+
+
+
+
+*Thesis :Methods for Polygonalization of a Constructive Solid Geometry Description in Web-based Rendering Environments
+* Important information:
+1- The author look into taking STL CAD files and making web web browser edit and exchange of physical objects.
+2- The author also examine reevaluate existing methods for CSG polygonalization and to adapt them to this new environment
+
+
+
+* Github : SCalaCAD 
+* Important information:
+1- Constructive Solid Geometry library/DSL for Scala with support for creating, visualizing, and exporting 3D models. Models created with ScalaCad can be exported to the STL file format for 3D printing.
+
+2- can be used to look into how we can implement so things in Matlab. 
