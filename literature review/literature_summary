@@ -4,6 +4,10 @@
 
 + Paper: A circle packing algorithm
 + Link: https://www.sciencedirect.com/science/article/pii/S0925772102000998
++ This is a 2D version. It may be useful to analogously solve our problem in 3D (Cylinders)
++ Dirichlet-type problem: The authors discuss implementation, rates of convergence, stability and speed.
+--> Triangulation of the topology. Vertices associated with circles. 
+
 
 +Paper: 3D meshes into CAD models
 +PDF: Attached in literature review
