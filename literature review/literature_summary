@@ -9,6 +9,10 @@
 --> Triangulation of the topology. Vertices (interior and boundary) associated with circles. 
 --> It addresses "overlap packing" which we can relate to the union of the cylinders.
 
++FREE SOFTWARE: CIRCLE PACKING BY Ken Stephenson
+Contains: Java, Scriopts and Packing examples 
+http://www.math.utk.edu/~kens/CirclePack/
+
 
 +PAPER: 3D meshes into CAD models
 +PDF: Attached in literature review
