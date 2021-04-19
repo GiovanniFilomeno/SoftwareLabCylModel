@@ -128,8 +128,16 @@ n_red = 4;
 % test of boundary_check and area
 % boundary_check(variable, n_green, n_red)
 % compute_area(variable, n_green, n_red)
-variable = [0,0,1.5, -2.7,0,2, 2.7,0,2, 0,-2.7,2, 0,2.7,2];
+% variable = [0,0,1.5, -2.7,0,2, 2.7,0,2, 0,-2.7,2, 0,2.7,2];
+% plot_image(variable,n_green,n_red)
+variable = [0,0,1.5, -sqrt(440),0,20, sqrt(440),0,20, 0,-sqrt(440),20, 0,sqrt(440),20];
 plot_image(variable,n_green,n_red)
+compute_area(variable, n_green, n_red)
+compute_area(variable, n_green, n_red)
+compute_area(variable, n_green, n_red)
+% variable = [0,0,1.5, -sqrt(1680),0,40, sqrt(1680),0,40, 0,-sqrt(1680),40, 0,sqrt(1680),40];
+% plot_image(variable,n_green,n_red)
+% compute_area(variable, n_green, n_red)
 % boundary_check(variable, n_green, n_red)
 % compute_area(variable, n_green, n_red)
 % variable = [0,0,3, -8.5,0,8, 8.5,0,8, 0,-8.5,8, 0,8.5,8];
