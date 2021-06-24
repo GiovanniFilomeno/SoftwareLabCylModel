@@ -130,11 +130,13 @@ n_red = 4;
 % compute_area(variable, n_green, n_red)
 % variable = [0,0,1.5, -2.7,0,2, 2.7,0,2, 0,-2.7,2, 0,2.7,2];
 % plot_image(variable,n_green,n_red)
-variable = [0,0,1.5, -sqrt(440),0,20, sqrt(440),0,20, 0,-sqrt(440),20, 0,sqrt(440),20];
-plot_image(variable,n_green,n_red)
-compute_area(variable, n_green, n_red)
-compute_area(variable, n_green, n_red)
-compute_area(variable, n_green, n_red)
+
+
+%variable = [0,0,1.5, -sqrt(440),0,20, sqrt(440),0,20, 0,-sqrt(440),20, 0,sqrt(440),20];
+%plot_image(variable,n_green,n_red)
+%compute_area(variable, n_green, n_red)
+%compute_area(variable, n_green, n_red)
+%compute_area(variable, n_green, n_red)
 % variable = [0,0,1.5, -sqrt(1680),0,40, sqrt(1680),0,40, 0,-sqrt(1680),40, 0,sqrt(1680),40];
 % plot_image(variable,n_green,n_red)
 % compute_area(variable, n_green, n_red)
@@ -156,14 +158,14 @@ compute_area(variable, n_green, n_red)
 
 % Test of optimization function
 % sample_multiplier = 4;
-% n_green = 5;
-% n_red = 0;
-% variable = [0,0,0.7, 0,0,0.7, 0,0,0.7, 0,0,0.7, 0,0,0.7];
+ n_green = 5;
+ n_red = 0;
+ variable = [0,0,0.7, 0,0,0.7, 0,0,0.7, 0,0,0.7, 0,0,0.7];
 % compute_area(variable, n_green, n_red)
 % plot_image(variable,n_green,n_red)
 % test_variable = zeros(50,(n_green+n_red)*3);
 % variable_largest5 = zeros(5,(n_green+n_red)*3);
-% areas = zeros(1,50);
+ areas = zeros(1,50);
 % for j=1:200
 %     for i = 0:n_green+n_red-1
 %         test_variable(j,3*i+1) = normrnd(0,0.4);

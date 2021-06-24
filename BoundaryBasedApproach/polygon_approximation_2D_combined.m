@@ -1,19 +1,22 @@
 clc; clear; close all;
 
 % Any points P (first point == last point):
-P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
-%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+%%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
 %P = [0 0; 0 1; 1 4; 1.5 2; 2 2.5; 2.2 5; 2.7 3; 3 5; 5 2; 5 0; 3 -2; 2 -1; 1 -2; 0 0];
-
+P = [0 0; 0 1; 1 1; 1 0; 0 0];
 % % problematic shape:
-% star_length = 3;
+% star_length = 6;
 % P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
 
 % % Points k defining a convex polygon:
-% k = convhull(P);
+
 points = P; % (k,:);
 number_points = length(P);
 inner_point = mean(points,1); % always inside the convex polygone
+
+%k = convhull(P);
+%points_outer = zeros(number_points);
+%points_outer(k) = 1
 
 max_points = max(points);
 min_points = min(points);

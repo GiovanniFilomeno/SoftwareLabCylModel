@@ -1,8 +1,8 @@
 clc; clear; close all;
 
 % Any points P (first point == last point):
-P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
-%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+%P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
+P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
 % Points k defining a convex polygon:
 k = convhull(P);
 points = P(k,:);
@@ -58,10 +58,14 @@ end
 xlim([inner_point(1)-radius,inner_point(1)+radius])
 ylim([inner_point(2)-radius,inner_point(2)+radius])
 axis square
-viscircles([X, Y],radii,'Color','r')
-viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
-scatter(inner_point(1),inner_point(2))
-plot(points(:,1),points(:,2),'linewidth',4,'color','blue')
+% viscircles([X, Y],radii,'Color','r')
+% viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
+% scatter(inner_point(1),inner_point(2))
+% plot(points(:,1),points(:,2),'linewidth',1,'color','blue')
+rectangle('Position',[inner_point(1)-radius,inner_point(2)-radius,2*radius,2*radius],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
+for i = 1:number_points-1
+    rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','r'); % 'EdgeColor','g'
+end
 hold off
 
 %Note: inaccuracy in plot probably only visual problem (or round-off error)
