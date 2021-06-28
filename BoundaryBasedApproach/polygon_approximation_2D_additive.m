@@ -9,8 +9,8 @@ clc; clear; close all;
 P = [0 0; 0 1; 1 1; 1 0; 0 0];
 
 % % problematic shape:
-% star_length = 3;
-% P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
+%star_length = 3;
+%P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
 
 % % Points k defining a convex polygon:
 % k = convhull(P);
@@ -88,27 +88,7 @@ for line_loop = 1:number_points-1 % as last point=first point
 end
 
 number_circles = number_circles-1;
-radii = radii(1:number_circles);
-X = X(1:number_circles);
-Y = Y(1:number_circles);
-[radii,sorted_indices] = sort(radii,'ascend');
-X = X(sorted_indices);
-Y = Y(sorted_indices);
-total_area = compute_area(X,Y,radii,number_circles-1,0,...
-    [min_points(1),max_points(1)],[min_points(2),max_points(2)]);
-previous_area = total_area;
-new_number_circles = 0;
-for i = 1:number_circles
-    save_radius = radii(i);
-    radii(i) = 0;
-    new_area = compute_area(X,Y,radii,number_circles-1,0,...
-        [min_points(1),max_points(1)],[min_points(2),max_points(2)]);
-    if (new_area < 0.98*total_area) && ((new_area-previous_area) < 0.005*total_area)% Keep circle
-        radii(i) = save_radius;
-        new_number_circles = new_number_circles + 1;
-    end
-    previous_area = new_area;
-end
+[radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
 
 % % Define red circles to approximate convex polygone
 % for i = 1:number_points-1 % as last point=first point
@@ -144,7 +124,6 @@ end
 
 
 compute_area(X,Y,radii,number_circles-1,0,[min_points(1),max_points(1)],[min_points(2),max_points(2)])
-
 compute_area(X,Y,radii,number_circles-1,0,[min_points(1),max_points(1)],[min_points(2),max_points(2)])
 
 radius = sum(max_points)-sum(min_points);
@@ -166,84 +145,8 @@ hold off
 %Note: inaccuracy in plot probably only visual problem (or round-off error)
 %For small red circles, it works perfectly
 
-function intersect = check_intersection(end1,end2,center,radius)
-x1 = end1(1);
-y1 = end1(2);
-x2 = end2(1);
-y2 = end2(2);
-x = center(1);
-y = center(2);
-tx = x2-x1; % Line vector
-ty = y2-y1;
-abs_t = sqrt(tx^2+ty^2);
-tx = tx/abs_t; % Normalized Line Vector
-ty = ty/abs_t;
-nx = -ty; % Normal vector
-ny = tx;
-distance = nx*(x-x1)+ny*(y-y1); % distance line center
-if radius <= abs(distance)
-    intersect = 0;
-else
-    x_closest = x-distance*nx; % point on line closest to center
-    y_closest = y-distance*ny;
-    s = sqrt(radius^2-distance^2); % distance from closest point to intersection point
-    intersect1x = x_closest+tx*s; % intersection points
-    intersect1y = y_closest+ty*s;
-    intersect2x = x_closest-tx*s;
-    intersect2y = y_closest-ty*s;
-    intersect = 0;
-    if (check_between([x1,y1],[x2,y2],[intersect1x,intersect1y])) || (check_between([x1,y1],[x2,y2],[intersect2x,intersect2y]))
-        intersect = 1;
-    end
-    if (x1-x)^2+(y1-y)^2<radius^2 || (x2-x)^2+(y2-y)^2<radius^2
-        intersect = 1;
-    end
-end
-end
 
-% Assume point on line, check, if point is between points 1 and 2
-function is_between = check_between(point1,point2,point)
-t1x = point(1)-point1(1); % normal from point to points 1 and 2
-t1y = point(2)-point1(2);
-t2x = point(1)-point2(1);
-t2y = point(2)-point2(2);
-is_between = 1;
-if t1x*t2x+t1y*t2y > 0 % if normals have same sign, point not between
-    is_between = 0;
-end
-end
 
-% Computes the area by computing the fraction of the area inside the
-% bounding box
-function area = compute_area(X, Y, radii, n_green, n_red, bounds_x, bounds_y)
-number = 100000;
-length_x = bounds_x(2)-bounds_x(1);
-length_y = bounds_y(2)-bounds_y(1);
-x_tests = bounds_x(1)+length_x*rand(1,number);
-y_tests = bounds_y(1)+length_y*rand(1,number);
-results = zeros(1,number);
-for i = 1:number
-    results(i) = test_inside(X,Y,radii,x_tests(i),y_tests(i),n_green,n_red);
-end
-area = length_x*length_y*mean(results);
-end
 
-% Tests, if a given point lies inside a cylinder-structure
-function is_inside = test_inside(X,Y,radii,x,y,n_green,n_red)
-is_inside = false;
-x_dist = X(1:n_green)-x;
-y_dist = Y(1:n_green)-y;
-radius = radii(1:n_green);
-condition = x_dist.^2+y_dist.^2<radius.^2;
-if sum(condition) > 0
-    is_inside = true;
-end
-%This second part not yet tested
-x_dist = X(n_green+1:end)-x;
-y_dist = Y(n_green+1:end)-y;
-radius = radii(n_green+1:end);
-condition = x_dist.^2+y_dist.^2<radius.^2;
-if sum(condition) > 0
-    is_inside = false;
-end
-end
+
+
