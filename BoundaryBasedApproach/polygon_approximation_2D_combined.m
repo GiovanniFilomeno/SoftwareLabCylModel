@@ -2,9 +2,9 @@ clc; clear; close all;
 
 % Any points P (first point == last point):
 %P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
-P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
+%P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
 %P = [0 0; 0 1; 1 4; 1.5 2; 2 2.5; 2.2 5; 2.7 3; 3 5; 5 2; 5 0; 3 -2; 2 -1; 1 -2; 0 0];
-%P = [0 0; 0 1; 1 1; 1 0; 0 0];
+P = [0 0; 0 1; 1 1; 1 0; 0 0];
 % % problematic shape:
 % star_length = 6;
 % P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
@@ -25,8 +25,6 @@ if points_on_hull(1)||points_on_hull(end)
     points_on_hull(end) = 1;
 end
 lines_on_hull = points_on_hull(1:end-1)&points_on_hull(2:end);
-%points_outer = zeros(number_points);
-%points_outer(k) = 1
 
 max_points = max(points);
 min_points = min(points);
@@ -55,7 +53,7 @@ for line_loop = 1:number_points-1 % as last point=first point
     % Normal vectors need to point inside, they do, if points are clockwise
     nx = ty_normal; % Normal vector
     ny = -tx_normal;
-    for pos_loop = linspace(0.05,0.95,7)
+    for pos_loop = [linspace(0.05,0.2,2),linspace(0.3,0.7,3),linspace(0.8,0.95,2)]
         new_circle = 0;
         x_touch = x1+pos_loop*tx;
         y_touch = y1+pos_loop*ty;
@@ -97,8 +95,9 @@ for line_loop = 1:number_points-1 % as last point=first point
     end
 end
 
-% number_circles = number_circles-1;
-% [radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
+number_circles = number_circles-1;
+[radii,X,Y,new_number_circles] = remove_circles_proximity(number_circles,radii,X,Y,min_points,max_points);
+%[radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
 
 number_red_circles = sum(lines_on_hull);
 X_red = zeros(number_red_circles,1);
@@ -145,7 +144,7 @@ radius = sum(max_points)-sum(min_points);
 xlim([inner_point(1)-radius,inner_point(1)+radius])
 ylim([inner_point(2)-radius,inner_point(2)+radius])
 axis square
-for i = 1:number_circles-1
+for i = 1:new_number_circles
     rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
 end
 for i = 1:number_red_circles
