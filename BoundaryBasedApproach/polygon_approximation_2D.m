@@ -2,7 +2,8 @@ clc; clear; close all;
 
 % Any points P (first point == last point):
 %P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
-P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+P = [0 0; 0 1; 1 1; 1 0; 0 0];
 % Points k defining a convex polygon:
 k = convhull(P);
 points = P(k,:);
@@ -12,7 +13,7 @@ inner_point = mean(points,1); % always inside the polygone
 max_points = max(points);
 min_points = min(points);
 radius = sum(max_points)-sum(min_points);
-large_radius = 10*radius;
+large_radius = 20*radius;
 
 X = zeros(number_points-1,1);
 Y = zeros(number_points-1,1);

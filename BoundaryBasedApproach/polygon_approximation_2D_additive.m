@@ -21,7 +21,6 @@ inner_point = mean(points,1); % always inside the convex polygone
 max_points = max(points);
 min_points = min(points);
 radius = sum(max_points)-sum(min_points);
-large_radius = 10*radius;
 
 X = zeros(number_points*5,1);
 Y = zeros(number_points*5,1);

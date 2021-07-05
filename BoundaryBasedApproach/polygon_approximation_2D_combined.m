@@ -1,9 +1,10 @@
 clc; clear; close all;
 
 % Any points P (first point == last point):
-%%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
+P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
 %P = [0 0; 0 1; 1 4; 1.5 2; 2 2.5; 2.2 5; 2.7 3; 3 5; 5 2; 5 0; 3 -2; 2 -1; 1 -2; 0 0];
-P = [0 0; 0 1; 1 1; 1 0; 0 0];
+%P = [0 0; 0 1; 1 1; 1 0; 0 0];
 % % problematic shape:
 % star_length = 6;
 % P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
@@ -12,9 +13,18 @@ P = [0 0; 0 1; 1 1; 1 0; 0 0];
 
 points = P; % (k,:);
 number_points = length(P);
-inner_point = mean(points,1); % always inside the convex polygone
 
-%k = convhull(P);
+k = convhull(P);
+inner_point = mean(points(k,:),1); % always inside the convex polygone
+point_numbers = 1:number_points;
+points_on_hull = ismember(point_numbers,k);
+% first and last points are the same, therefore, if one of them is equal to
+% 1, both of them need to be 1
+if points_on_hull(1)||points_on_hull(end) 
+    points_on_hull(1) = 1;
+    points_on_hull(end) = 1;
+end
+lines_on_hull = points_on_hull(1:end-1)&points_on_hull(2:end);
 %points_outer = zeros(number_points);
 %points_outer(k) = 1
 
@@ -57,7 +67,7 @@ for line_loop = 1:number_points-1 % as last point=first point
                 y_center = y_touch+ny*radius;
                 radius_ok = 1;
                 for i = 1:number_points-1
-                    if i ~= line_loop
+                    if (i ~= line_loop)&&(lines_on_hull(i)==0)
                         x_test1 = P(i,1);
                         y_test1 = P(i,2);
                         x_test2 = P(i+1,1);
@@ -87,37 +97,48 @@ for line_loop = 1:number_points-1 % as last point=first point
     end
 end
 
-% % Define red circles to approximate convex polygone
-% for i = 1:number_points-1 % as last point=first point
-%     x1 = points(i,1);
-%     y1 = points(i,2);
-%     x2 = points(i+1,1);
-%     y2 = points(i+1,2);
-%     tx = x2-x1;
-%     ty = y2-y1;
-%     midx = x1+tx/2;
-%     midy = y1+ty/2;
-%     c_square = (tx/2)^2+(ty/2)^2;
-%     abs_t = sqrt(tx^2+ty^2);
-%     tx = tx/abs_t;
-%     ty = ty/abs_t;
-%     nx1 = -ty;
-%     ny1 = tx;
-%     nx2 = ty;
-%     ny2 = -tx;
-%     distance_center = sqrt(large_radius^2-c_square);
-%     cx1 = midx+distance_center*nx1;
-%     cy1 = midy+distance_center*ny1;
-%     cx2 = midx+distance_center*nx2;
-%     cy2 = midy+distance_center*ny2;
-%     if (inner_point(1)-cx1)^2+(inner_point(2)-cy1)^2 > (inner_point(1)-cx2)^2+(inner_point(2)-cy2)^2
-%         X(i) = cx1;
-%         Y(i) = cy1;
-%     else
-%         X(i) = cx2;
-%         Y(i) = cy2;
-%     end
-% end
+% number_circles = number_circles-1;
+% [radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
+
+number_red_circles = sum(lines_on_hull);
+X_red = zeros(number_red_circles,1);
+Y_red = zeros(number_red_circles,1);
+radii_red = ones(number_red_circles,1)*large_radius;
+i_red = 1;
+%Define red circles to approximate convex polygone
+for i = 1:number_points-1 % as last point=first point
+    if lines_on_hull(i)
+        x1 = points(i,1);
+        y1 = points(i,2);
+        x2 = points(i+1,1);
+        y2 = points(i+1,2);
+        tx = x2-x1;
+        ty = y2-y1;
+        midx = x1+tx/2;
+        midy = y1+ty/2;
+        c_square = (tx/2)^2+(ty/2)^2;
+        abs_t = sqrt(tx^2+ty^2);
+        tx = tx/abs_t;
+        ty = ty/abs_t;
+        nx1 = -ty;
+        ny1 = tx;
+        nx2 = ty;
+        ny2 = -tx;
+        distance_center = sqrt(large_radius^2-c_square);
+        cx1 = midx+distance_center*nx1;
+        cy1 = midy+distance_center*ny1;
+        cx2 = midx+distance_center*nx2;
+        cy2 = midy+distance_center*ny2;
+        if (inner_point(1)-cx1)^2+(inner_point(2)-cy1)^2 > (inner_point(1)-cx2)^2+(inner_point(2)-cy2)^2
+            X_red(i_red) = cx1;
+            Y_red(i_red) = cy1;
+        else
+            X_red(i_red) = cx2;
+            Y_red(i_red) = cy2;
+        end
+        i_red = i_red + 1;
+    end
+end
 
 
 radius = sum(max_points)-sum(min_points);
@@ -126,6 +147,9 @@ ylim([inner_point(2)-radius,inner_point(2)+radius])
 axis square
 for i = 1:number_circles-1
     rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
+end
+for i = 1:number_red_circles
+    rectangle('Position',[X_red(i)-radii_red(i),Y_red(i)-radii_red(i),2*radii_red(i),2*radii_red(i)],'Curvature',[1,1], 'FaceColor','r'); % 'EdgeColor','g'
 end
 % viscircles([X, Y],radii,'Color','r');
 % viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
