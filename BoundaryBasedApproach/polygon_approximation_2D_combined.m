@@ -12,8 +12,11 @@ clc; clear; close all;
 % % Points k defining a convex polygon:
 
 % New definition:
-P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 3 0; 3 1; 4 1; 4 0];
-P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 3 1; 4 1; 4 0; 3 0];
+%P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 3 0; 3 1; 4 1; 4 0];
+%P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 3 1; 4 1; 4 0; 3 0];
+% 
+% P = [-1 -1; -1 2; 2 2; 2 -1; 0 0; 0 1; 1 1.5; 1.5 1.8];
+% P_end = [-1 2; 2 2; 2 -1; -1 -1; 1.5 1.8; 0 0; 0 1; 1 1.5];
 
 points = P; % (k,:);
 number_points = length(P);
@@ -24,15 +27,21 @@ inner_point = mean(points(k,:),1); % always inside the convex polygone
 point_numbers = 1:number_points;
 points_on_hull = ismember(point_numbers,k);
 points_on_hull_end = ismember(point_numbers,k_end);
-% % first and last points are the same, therefore, if one of them is equal to
-% % 1, both of them need to be 1
-% if points_on_hull(1)||points_on_hull(end) 
-%     points_on_hull(1) = 1;
-%     points_on_hull(end) = 1;
-% end
 
 % Does not work yet, properly => no red circles can be defined!!!!
-lines_on_hull = zeros(number_points,1);%points_on_hull&points_on_hull_end;
+lines_on_hull = points_on_hull&points_on_hull_end;%zeros(number_points,1);%
+
+mid_points = (P+P_end)/2;
+check_points = [points;mid_points];
+check_mids = convhull(check_points);
+mid_numbers = 1:length(check_points);
+mids_on_hull_index = ismember(mid_numbers,check_mids);
+
+for i = 1:number_points
+    if mids_on_hull_index(i+number_points) == 0
+        lines_on_hull(i) = 0;
+    end
+end
 
 max_points = max(points);
 min_points = min(points);
