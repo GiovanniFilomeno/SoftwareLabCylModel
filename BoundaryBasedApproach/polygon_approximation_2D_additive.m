@@ -6,7 +6,7 @@ clc; clear; close all;
 %P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
 %P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
 %P = [0 0; 0 1; 1 4; 1.5 2; 2 2.5; 2.2 5; 2.7 3; 3 5; 5 2; 5 0; 3 -2; 2 -1; 1 -2; 0 0];
-%P = [0 0; 0 1; 1 1; 1 0; 0 0];
+P = [0 0; 0 1; 1 1; 1 0; 0 0];
 
 % regular polygone
 % P = nsidedpoly(8,'Center',[5 0],'SideLength',3);
@@ -50,7 +50,7 @@ for line_loop = 1:number_points-1 % as last point=first point
     % Normal vectors need to point inside, they do, if points are clockwise
     nx = ty_normal; % Normal vector
     ny = -tx_normal;
-    for pos_loop = [linspace(0.05,0.2,2),linspace(0.3,0.7,3),linspace(0.8,0.95,2)]
+    for pos_loop = [linspace(0.05,0.15,2),linspace(0.3,0.7,3),linspace(0.85,0.95,2)]
         new_circle = 0;
         x_touch = x1+pos_loop*tx;
         y_touch = y1+pos_loop*ty;
