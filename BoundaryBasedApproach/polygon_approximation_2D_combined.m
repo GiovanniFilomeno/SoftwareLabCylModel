@@ -11,10 +11,15 @@ clc; clear; close all;
 
 % % Points k defining a convex polygon:
 
-% New definition:
-%P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 3 0; 3 1; 4 1; 4 0];
-%P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 3 1; 4 1; 4 0; 3 0];
-% 
+% % New definition:
+% P = [0 0; 0 1; 1 1; 1 0];
+% P_end = [0 1; 1 1; 1 0; 0 0];
+% P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 1.5 0; 1.5 1; 2.5 1; 2.5 0];
+% P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 1.5 1; 2.5 1; 2.5 0; 1.5 0];
+
+P = [0 0; -0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0; 2 0; 1.5 1; 2.5 1; 2.5 0];
+P_end = [-0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0; 0 0; 1.5 1; 2.5 1; 2.5 0; 2 0];
+% % 
 % P = [-1 -1; -1 2; 2 2; 2 -1; 0 0; 0 1; 1 1.5; 1.5 1.8];
 % P_end = [-1 2; 2 2; 2 -1; -1 -1; 1.5 1.8; 0 0; 0 1; 1 1.5];
 
@@ -114,7 +119,7 @@ end
 
 number_circles = number_circles-1;
 [radii,X,Y,new_number_circles] = remove_circles_proximity(number_circles,radii,X,Y,min_points,max_points);
-%[radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
+[radii,X,Y,new_number_circles] = remove_circles(new_number_circles,radii,X,Y,min_points,max_points);
 
 number_red_circles = sum(lines_on_hull);
 X_red = zeros(number_red_circles,1);
@@ -161,16 +166,35 @@ radius = sum(max_points)-sum(min_points);
 xlim([inner_point(1)-radius,inner_point(1)+radius])
 ylim([inner_point(2)-radius,inner_point(2)+radius])
 axis square
-for i = 1:new_number_circles
+%%
+for i = 1:length(radii)%new_number_circles
     rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
 end
+%%
 for i = 1:number_red_circles
     rectangle('Position',[X_red(i)-radii_red(i),Y_red(i)-radii_red(i),2*radii_red(i),2*radii_red(i)],'Curvature',[1,1], 'FaceColor','r'); % 'EdgeColor','g'
 end
-% viscircles([X, Y],radii,'Color','r');
-% viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
-% scatter(inner_point(1),inner_point(2))
-%plot(points(:,1),points(:,2),'linewidth',1,'color','blue')%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+for i = 1:length(P)
+    plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',1,'color','blue')
+end
+
+hold off
+figure();
+radius = sum(max_points)-sum(min_points);
+xlim([inner_point(1)-radius,inner_point(1)+radius])
+ylim([inner_point(2)-radius,inner_point(2)+radius])
+axis square
+hold on
+for i = 1:length(P)
+    plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',4,'color','blue')
+end
+% for i = 1:length(P)
+%     if lines_on_hull(i)
+%         plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'--','linewidth',4,'color','red')
+%     end
+% end
+plot(points(k,1),points(k,2),'--','linewidth',1,'color','red');
 hold off
 
 %Note: inaccuracy in plot probably only visual problem (or round-off error)

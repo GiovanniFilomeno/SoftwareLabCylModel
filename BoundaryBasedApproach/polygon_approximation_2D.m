@@ -62,11 +62,11 @@ axis square
 % viscircles([X, Y],radii,'Color','r')
 % viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
 % scatter(inner_point(1),inner_point(2))
-% plot(points(:,1),points(:,2),'linewidth',1,'color','blue')
 rectangle('Position',[inner_point(1)-radius,inner_point(2)-radius,2*radius,2*radius],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
 for i = 1:number_points-1
     rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','r'); % 'EdgeColor','g'
 end
+% plot(points(:,1),points(:,2),'linewidth',2,'color','blue')
 hold off
 
 %Note: inaccuracy in plot probably only visual problem (or round-off error)
