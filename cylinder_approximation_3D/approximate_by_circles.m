@@ -1,22 +1,4 @@
-clc; clear; close all;
-
-% Any points P (first point == last point):
-%P = [0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0];
-%P = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0];
-%P = [0 0; 0 1; 1 4; 1.5 2; 2 2.5; 2.2 5; 2.7 3; 3 5; 5 2; 5 0; 3 -2; 2 -1; 1 -2; 0 0];
-%P = [0 0; 0 1; 1 1; 1 0; 0 0];
-% % problematic shape:
-% star_length = 6;
-% P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
-
-% % Points k defining a convex polygon:
-
-% New definition:
-P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 3 0; 3 1; 4 1; 4 0];
-P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 3 1; 4 1; 4 0; 3 0];
-% 
-% P = [-1 -1; -1 2; 2 2; 2 -1; 0 0; 0 1; 1 1.5; 1.5 1.8];
-% P_end = [-1 2; 2 2; 2 -1; -1 -1; 1.5 1.8; 0 0; 0 1; 1 1.5];
+function [radii,X,Y,X_red,Y_red,radii_red,max_points,min_points,inner_point,k,points] = approximate_by_circles(P,P_end)
 
 points = P; % (k,:);
 number_points = length(P);
@@ -30,11 +12,18 @@ points_on_hull_end = ismember(point_numbers,k_end);
 
 % Does not work yet, properly => no red circles can be defined!!!!
 lines_on_hull = points_on_hull&points_on_hull_end;%zeros(number_points,1);%
-starts_on_hull = P(lines_on_hull,:);
-ends_on_hull = P_end(lines_on_hull,:);
-mids_on_hull = (starts_on_hull+ends_on_hull)/2;
-check_points = [starts_on_hull;mids_on_hull];
-%check_mids = convhull(
+
+mid_points = (P+P_end)/2;
+check_points = [points;mid_points];
+check_mids = convhull(check_points);
+mid_numbers = 1:length(check_points);
+mids_on_hull_index = ismember(mid_numbers,check_mids);
+
+for i = 1:number_points
+    if mids_on_hull_index(i+number_points) == 0
+        lines_on_hull(i) = 0;
+    end
+end
 
 max_points = max(points);
 min_points = min(points);
@@ -44,9 +33,6 @@ large_radius = 10*radius;
 X = zeros(number_points*5,1);
 Y = zeros(number_points*5,1);
 radii = zeros(number_points*5,1);
-
-figure()
-hold on
 
 number_circles = 1;
 % Define green circles to approximate polygone
@@ -107,7 +93,7 @@ end
 
 number_circles = number_circles-1;
 [radii,X,Y,new_number_circles] = remove_circles_proximity(number_circles,radii,X,Y,min_points,max_points);
-%[radii,X,Y,new_number_circles] = remove_circles(number_circles,radii,X,Y,min_points,max_points);
+[radii,X,Y,new_number_circles] = remove_circles(new_number_circles,radii,X,Y,min_points,max_points);
 
 number_red_circles = sum(lines_on_hull);
 X_red = zeros(number_red_circles,1);
@@ -149,22 +135,5 @@ for i = 1:number_points % as last point=first point
     end
 end
 
-
-radius = sum(max_points)-sum(min_points);
-xlim([inner_point(1)-radius,inner_point(1)+radius])
-ylim([inner_point(2)-radius,inner_point(2)+radius])
-axis square
-for i = 1:new_number_circles
-    rectangle('Position',[X(i)-radii(i),Y(i)-radii(i),2*radii(i),2*radii(i)],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
 end
-for i = 1:number_red_circles
-    rectangle('Position',[X_red(i)-radii_red(i),Y_red(i)-radii_red(i),2*radii_red(i),2*radii_red(i)],'Curvature',[1,1], 'FaceColor','r'); % 'EdgeColor','g'
-end
-% viscircles([X, Y],radii,'Color','r');
-% viscircles([inner_point(1), inner_point(2)],radius,'Color','g')
-% scatter(inner_point(1),inner_point(2))
-%plot(points(:,1),points(:,2),'linewidth',1,'color','blue')%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-hold off
 
-%Note: inaccuracy in plot probably only visual problem (or round-off error)
-%For small red circles, it works perfectly
