@@ -1,11 +1,10 @@
-function [radii,X,Y,X_red,Y_red,radii_red,max_points,min_points,inner_point,k,points] = approximate_by_circles(P,P_end)
+function [radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(P,P_end)
 
-points = P; % (k,:);
 number_points = length(P);
 
 k = convhull(P);
 k_end = convhull(P_end);
-inner_point = mean(points(k,:),1); % always inside the convex polygone
+inner_point = mean(P(k,:),1); % always inside the convex polygone
 point_numbers = 1:number_points;
 points_on_hull = ismember(point_numbers,k);
 points_on_hull_end = ismember(point_numbers,k_end);
@@ -14,7 +13,7 @@ points_on_hull_end = ismember(point_numbers,k_end);
 lines_on_hull = points_on_hull&points_on_hull_end;%zeros(number_points,1);%
 
 mid_points = (P+P_end)/2;
-check_points = [points;mid_points];
+check_points = [P;mid_points];
 check_mids = convhull(check_points);
 mid_numbers = 1:length(check_points);
 mids_on_hull_index = ismember(mid_numbers,check_mids);
@@ -25,8 +24,8 @@ for i = 1:number_points
     end
 end
 
-max_points = max(points);
-min_points = min(points);
+max_points = max(P);
+min_points = min(P);
 radius = sum(max_points)-sum(min_points);
 large_radius = 10*radius;
 
@@ -92,8 +91,9 @@ for line_loop = 1:number_points % as last point=first point
 end
 
 number_circles = number_circles-1;
-[radii,X,Y,new_number_circles] = remove_circles_proximity(number_circles,radii,X,Y,min_points,max_points);
-[radii,X,Y,new_number_circles] = remove_circles(new_number_circles,radii,X,Y,min_points,max_points);
+radii = radii(1:number_circles);
+X = X(1:number_circles);
+Y = Y(1:number_circles);
 
 number_red_circles = sum(lines_on_hull);
 X_red = zeros(number_red_circles,1);

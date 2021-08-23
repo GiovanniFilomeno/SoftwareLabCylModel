@@ -1,9 +1,6 @@
 % Remove circles, which have centers very close to each other.
-function [radii,X,Y,new_number_circles] = remove_circles_proximity(number_circles,radii,X,Y,min_points,max_points)
+function [radii,X,Y] = remove_circles_proximity(radii,X,Y)
 
-radii = radii(1:number_circles);
-X = X(1:number_circles);
-Y = Y(1:number_circles);
 [X,sorted_indices] = sort(X,'ascend');
 Y = Y(sorted_indices);
 radii = radii(sorted_indices);
@@ -15,6 +12,7 @@ accuracy_factor = 0.01;
 accuracy = accuracy_factor*radius_check;
 index_check = 1;
 
+number_circles = length(radii);
 for i = 2:number_circles
     for j = i:number_circles
         if (X(j)-X_check)^2+(Y(j)-Y_check)^2 < accuracy
@@ -38,7 +36,6 @@ for i = 2:number_circles
 end
 
 remaining_indices = find(radii);
-new_number_circles = length(remaining_indices);
 X = X(remaining_indices);
 Y = Y(remaining_indices);
 radii = radii(remaining_indices);

@@ -1,4 +1,7 @@
-function plot_circles(radii,X,Y,X_red,Y_red,radii_red,max_points,min_points,inner_point,k,points,P,P_end)
+function plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points)
+
+k = convhull(P);
+inner_point = mean(P(k,:),1);
 
 figure()
 hold on
@@ -20,26 +23,28 @@ for i = 1:length(P)
     plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',1,'color','blue')
 end
 
-hold off
-figure();
-radius = sum(max_points)-sum(min_points);
-xlim([inner_point(1)-radius,inner_point(1)+radius])
-ylim([inner_point(2)-radius,inner_point(2)+radius])
-axis square
-hold on
-for i = 1:length(P)
-    plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',4,'color','blue')
-end
-% for i = 1:length(P)
-%     if lines_on_hull(i)
-%         plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'--','linewidth',4,'color','red')
-%     end
-% end
-plot(points(k,1),points(k,2),'--','linewidth',1,'color','red');
-hold off
-
 %Note: inaccuracy in plot probably only visual problem (or round-off error)
 %For small red circles, it works perfectly
+
+hold off
+
+% % Plot polygone
+% figure();
+% radius = sum(max_points)-sum(min_points);
+% xlim([inner_point(1)-radius,inner_point(1)+radius])
+% ylim([inner_point(2)-radius,inner_point(2)+radius])
+% axis square
+% hold on
+% for i = 1:length(P)
+%     plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',4,'color','blue')
+% end
+% % for i = 1:length(P)
+% %     if lines_on_hull(i)
+% %         plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'--','linewidth',4,'color','red')
+% %     end
+% % end
+% plot(P(k,1),P(k,2),'--','linewidth',1,'color','red');
+% hold off
 
 end
 

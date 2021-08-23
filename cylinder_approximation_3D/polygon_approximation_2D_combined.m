@@ -9,24 +9,29 @@ clc; clear; close all;
 % star_length = 6;
 % P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
 
-% % Points k defining a convex polygon:
-
 % % % New definition:
+%Simple square
 P = [0 0; 0 1; 1 1; 1 0];
 P_end = [0 1; 1 1; 1 0; 0 0];
+%2 squares, one with square hole
 % P = [0 0; 0 1; 1 1; 1 0; 0.25 0.25; 0.75 0.25; 0.75 0.75; 0.25 0.75; 1.5 0; 1.5 1; 2.5 1; 2.5 0];
 % P_end = [0 1; 1 1; 1 0; 0 0; 0.75 0.25; 0.75 0.75; 0.25 0.75; 0.25 0.25; 1.5 1; 2.5 1; 2.5 0; 1.5 0];
-
+%2 seperate shapes
 % P = [0 0; -0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0; 2 0; 1.5 1; 2.5 1; 2.5 0];
 % P_end = [-0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0; 0 0; 1.5 1; 2.5 1; 2.5 0; 2 0];
-% % 
+%square with complicated hole
 % P = [-1 -1; -1 2; 2 2; 2 -1; 0 0; 0 1; 1 1.5; 1.5 1.8];
 % P_end = [-1 2; 2 2; 2 -1; -1 -1; 1.5 1.8; 0 0; 0 1; 1 1.5];
 
 
-[radii,X,Y,X_red,Y_red,radii_red,max_points,min_points,inner_point,k,points] = approximate_by_circles(P,P_end);
+[radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(P,P_end);
+
+max_points = max(P);
+min_points = min(P);
+[radii,X,Y] = remove_circles_proximity(radii,X,Y);
+[radii,X,Y] = remove_circles(radii,X,Y,X_red,Y_red,radii_red,min_points,max_points);
 
 % plot_circles takes as input the output of approximate_by_circles + P +
 % P_end
-plot_circles(radii,X,Y,X_red,Y_red,radii_red,max_points,min_points,inner_point,k,points,P,P_end)
+plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points)
 
