@@ -1,4 +1,0 @@
-clc; clear; close all;
-
-[F,V,N] = stlread('simple_cube.stl');
-mesh.faces
