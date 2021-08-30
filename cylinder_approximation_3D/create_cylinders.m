@@ -1,9 +1,16 @@
-function [cylinders] = create_cylinders(polygone_list, y_values)
+% This function uses the 2D-algorithm (approximation of 2D-polygones with
+% circles) in order to approximate each section of the geometry with
+% cylinders. If possible, it reuses cylinders from previous sections (from
+% left to right)
+function [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values)
 
 % Cylinders has to be formatted, as needed by other group
 centers_left = [];
 centers_right = [];
 cylinder_radii = [];
+centers_left_red = [];
+centers_right_red = [];
+cylinder_radii_red = [];
 
 y_values = [1,3,4,10];
 P1 = [0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1];
@@ -16,14 +23,14 @@ P_end3 = [P3(2:end,:);P3(1,:)];
 polygone_list = {{P1,P_end1},{P2,P_end2},{P3,P_end3}};
 %polygone_list = {{P1,P_end1},{P1,P_end1},{P1,P_end1}};
 
-radii_stay = [];
+radii_stay = []; % Circles, which are used in the next level
 X_stay = [];
 Z_stay = [];
-indices_stay = [];
-radii = [];
+indices_stay = []; % Indices of the corresponding cylinders
+radii = []; % Circles in the last section
 X = [];
 Z = [];
-indices_last = [];
+indices_last = []; % Indices of the corresponding cylinders
 for i=1:length(polygone_list)
     polygone = polygone_list{i};
     P = polygone{1};
@@ -31,7 +38,13 @@ for i=1:length(polygone_list)
     [lines_on_hull,~] = find_lines_on_hull(P,P_end);
     
     % Check, which cylinders from last layer can be used in the next one
-    % for free
+    % for free. For these circles, which are marked with _stay, the
+    % index of the corresponding cylinder has to be saved. Then, the length
+    % of the cylinder can be increased.
+    % For that, all circles of the previous section (and indices) are
+    % collected (including ones from pre-pre-sections, etc.). Then, it is
+    % checked, if these circles fit into the current polygone. If yes, the
+    % corresponding cylinder is elongated.
     radii_stay_new = [];
     X_stay_new = [];
     Z_stay_new = [];
@@ -80,10 +93,14 @@ for i=1:length(polygone_list)
     cylinder_radii = [cylinder_radii;radii];
     centers_left = [centers_left;[X,ones(length(radii),1)*y_values(i),Z]];
     centers_right = [centers_right;[X,ones(length(radii),1)*y_values(i+1),Z]];
+    centers_left_red = [centers_left_red;[X_red,ones(length(radii_red),1)*y_values(i),Z_red]];
+    centers_right_red = [centers_right_red;[X_red,ones(length(radii_red),1)*y_values(i+1),Z_red]];
+    cylinder_radii_red = [cylinder_radii_red;radii_red];
     disp(length(radii))
 end
 
 cylinders = {centers_left,centers_right,cylinder_radii};
+cylinders_red = {centers_left_red,centers_right_red,cylinder_radii_red};
 
 end
 

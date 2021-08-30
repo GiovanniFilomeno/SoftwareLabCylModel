@@ -5,6 +5,6 @@ clc; clear; close all;
 % [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
 
 % Task 3: (I use dummy input in the function itself
-[cylinders] = create_cylinders([],[]); % polygone_list, y_values);
+[cylinders,cylinders_red] = create_cylinders([],[]); % polygone_list, y_values);
 
 % plot_cylinders(cylinders);
