@@ -36,7 +36,7 @@ P_end = [0 1; 1 1; 1 0; 0 0];
 max_points = max(P);
 min_points = min(P);
 [radii,X,Y] = remove_circles_proximity(radii,X,Y);
-[radii,X,Y] = remove_circles(radii,X,Y,X_red,Y_red,radii_red,min_points,max_points);
+[radii,X,Y] = remove_circles(radii,X,Y,radii_red,X_red,Y_red,min_points,max_points);
 
 % plot_circles takes as input the output of approximate_by_circles + P +
 % P_end
