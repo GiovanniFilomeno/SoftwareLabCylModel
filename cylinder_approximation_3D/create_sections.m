@@ -4,13 +4,16 @@ function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections)
 % y_values has length number_of_sections + 1 (each section bottom and top)
 
 % Read the original geometry
-[F,V,N] = stlread("Example.stl");
+%[F,V,N] = stlread("Example.stl");
+[F,V,N] = stlread("Pyramid Shape.stl");
 
 XminGEO=min(V(:,1));
 XmaxGEO=max(V(:,1));
 %XcutGEO=linspace(XminGEO,XmaxGEO,number_of_sections);
 
-XcutGEO=[0 50 150 190 300 400 550 600];
+%XcutGEO=[0 50 150 190 300 400 550 600];
+XcutGEO=[-20 -15 -5 5 15 20];
+
 y_values=XcutGEO;
 mesh_list = cell((length(XcutGEO)-1),3);
 
