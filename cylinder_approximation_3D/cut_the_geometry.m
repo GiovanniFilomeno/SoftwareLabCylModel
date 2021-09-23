@@ -16,7 +16,7 @@ STL FILE STRUCTURE
 [N...]= Normal vector matrix 
 %}
 
-function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometryV2(Finput,Vinput,Ninput,cutvalue)
+function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(Finput,Vinput,Ninput,cutvalue)
 
 % INITIALIZING VARIABLES
 
