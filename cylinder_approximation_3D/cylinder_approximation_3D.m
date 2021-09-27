@@ -9,10 +9,10 @@ clc; clear; close all;
  % mesh_list = [];
  %y_values = [0, 50, 150, 190, 300, 400, 550, 600];
  
- figure();
-[polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
+%[polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
+sketch_2D_polygones(mesh_list, y_values);
 
 % Task 3: (I use dummy input in the function itself
 %[cylinders,cylinders_red] = create_cylinders([],[]); % polygone_list, y_values);
 
-% plot_cylinders(cylinders);
+% plot_cylinders(cylinders,cylinders_red);
