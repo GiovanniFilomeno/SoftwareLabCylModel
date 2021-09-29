@@ -42,6 +42,41 @@ for j=1:(length(YcutGEO))
     
 end
 
+
+% Generate the polygones for each slice
+
+% Vertices 
+for i=1:(length(YcutGEO))
+    
+    v=mesh_list{i,2};
+    leng=length(v(:,2));
+
+    % Interception
+    I=zeros(1,3);
+    counterI=0;
+    %looping in the vertices 
+    for j=1:leng
+        
+        if (i==(length(YcutGEO)))
+            diff=abs(v(j,2)-YmaxGEO);
+        else 
+            diff=abs(v(j,2)-YcutGEO(i+1));
+        end 
+        if (diff<10^-6)
+            counterI=counterI+1;
+            I(counterI,:)=[v(j,1) v(j,2) v(j,3)];
+        end
+    end
+    
+    %print the points
+
+    lengthI=length(I);
+    for k=1:lengthI
+        plot3(I(k,1),I(k,2),I(k,3),'*')
+        hold on 
+    end
+    
+end
 end
 
  
