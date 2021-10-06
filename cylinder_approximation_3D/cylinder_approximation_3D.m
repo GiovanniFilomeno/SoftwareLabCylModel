@@ -11,7 +11,7 @@ if size(F,1) <= 280
     number_of_sections=7;
     [mesh_list, y_values] = create_sections(F,V,N,number_of_sections);
 
-    [polygone_list, y_values] = define_2D_polygones3(mesh_list, y_values);
+    [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
     %sketch_2D_polygones(mesh_list, y_values);
 
     [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values);
