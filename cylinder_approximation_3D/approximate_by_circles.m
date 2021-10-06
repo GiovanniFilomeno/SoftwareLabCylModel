@@ -5,8 +5,8 @@ number_points = length(P);
 
 max_points = max(P);
 min_points = min(P);
-radius = sum(max_points)-sum(min_points);
-large_radius = 10*radius;
+radius_max = sum(max_points)-sum(min_points);
+large_radius = 10*radius_max;
 
 X = zeros(number_points*5,1);
 Y = zeros(number_points*5,1);
@@ -54,6 +54,9 @@ for line_loop = 1:number_points % as last point=first point
                     Y(number_circles) = y_center;
                     radii(number_circles) = radius;
                     radius = radius+size_step;
+                    if radius > radius_max
+                        radius = radius_max;
+                    end
                     new_circle = 1;
                 else
                     radius = radius-size_step;

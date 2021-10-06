@@ -11,16 +11,16 @@ end
 [radii,sorted_indices] = sort(radii,'ascend');
 X = X(sorted_indices);
 Y = Y(sorted_indices);
-total_area = compute_area([X;X_stay],[Y;Y_stay],[radii;radii_stay],X_red,Y_red,radii_red,...
-    [min_points(1),max_points(1)],[min_points(2),max_points(2)]);
+total_area = compute_area3([X;X_stay],[Y;Y_stay],[radii;radii_stay],X_red,Y_red,radii_red);%,...
+    %[min_points(1),max_points(1)],[min_points(2),max_points(2)]);
 previous_area = total_area;
 
 number_circles = length(radii);
 for i = 1:number_circles
     save_radius = radii(i);
     radii(i) = 0;
-    new_area = compute_area([X;X_stay],[Y;Y_stay],[radii;radii_stay],X_red,Y_red,radii_red,...
-        [min_points(1),max_points(1)],[min_points(2),max_points(2)]);
+    new_area = compute_area3([X;X_stay],[Y;Y_stay],[radii;radii_stay],X_red,Y_red,radii_red);%,...
+        %[min_points(1),max_points(1)],[min_points(2),max_points(2)]);
     if (new_area < 0.98*total_area) && ((new_area-previous_area) < 0.005*total_area)% Keep circle
         radii(i) = save_radius;
     end
