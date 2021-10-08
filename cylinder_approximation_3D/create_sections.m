@@ -2,7 +2,6 @@ function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections)
 
 YminGEO=min(V(:,2));
 YmaxGEO=max(V(:,2));
-number_of_sections=21;
 delta=(YmaxGEO-YminGEO)/number_of_sections;
 
 YcutGEO=zeros(number_of_sections);
