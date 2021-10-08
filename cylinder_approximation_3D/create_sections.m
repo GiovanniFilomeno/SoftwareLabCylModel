@@ -14,7 +14,7 @@ mesh_list = cell((length(YcutGEO)),3);
 
 for i=1:(length(YcutGEO)-1)
     
-    [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometryV2(F,V,N,YcutGEO(i+1));
+    [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(F,V,N,YcutGEO(i+1));
 
     mesh_list{i,1}=FGR;
     mesh_list{i,2}=VGR;
