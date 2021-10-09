@@ -10,8 +10,6 @@
 1. Install Parallel Computing Toolbox from mathworks
 1. Run cylinder_approximation_3D.m
 
-## Referances:
-- [A comprehensive process of reverse engineering from 3D meshes to CAD models](https://github.com/GiovanniFilomeno/SoftwareLabCylModel/blob/main/literature%20review/3d%20meshes%20to%20cad%20models.pdf) - 
 
 
 
@@ -57,5 +55,9 @@ Thanks goes to these wonderful people:
 </table>
 </body>
 
+
+
+## References:
+- [A comprehensive process of reverse engineering from 3D meshes to CAD models](https://github.com/GiovanniFilomeno/SoftwareLabCylModel/blob/main/literature%20review/3d%20meshes%20to%20cad%20models.pdf) - 
 
 
