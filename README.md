@@ -94,7 +94,7 @@ Citing Cylinder-based approximation of 3D objects
 
 There is a `poster about Cylinder-based approximation of 3D objects `_!
 
-If you are using out work in your scientific research, please help our scientific
+If you are using our work  in your scientific research, please help our scientific
 visibility by citing our work!
 
 
