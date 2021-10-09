@@ -58,6 +58,29 @@ Thanks goes to these wonderful people:
 
 
 
+References:
+--------------------
+- [A comprehensive process of reverse engineering from 3D meshes to CAD models](https://github.com/GiovanniFilomeno/SoftwareLabCylModel/blob/main/literature%20review/3d%20meshes%20to%20cad%20models.pdf) - 
+
+
+
+
+Citing Cylinder-based approximation of 3D objects
+--------------------
+
+
+There is a `poster about Cylinder-based approximation of 3D objects `_!
+
+If you are using our work  in your scientific research, please help our scientific
+visibility by citing our work!
+
+
+ 
+ 
+ 
+ 
+
+
 
 Research in collaboration with
 ----------------------------------------
@@ -77,24 +100,4 @@ Research in collaboration with
 </table>
 </body>
 
-
-
-References:
---------------------
-- [A comprehensive process of reverse engineering from 3D meshes to CAD models](https://github.com/GiovanniFilomeno/SoftwareLabCylModel/blob/main/literature%20review/3d%20meshes%20to%20cad%20models.pdf) - 
-
-
-
-
-Citing Cylinder-based approximation of 3D objects
---------------------
-
-
-There is a `poster about Cylinder-based approximation of 3D objects `_!
-
-If you are using our work  in your scientific research, please help our scientific
-visibility by citing our work!
-
-
- 
 
