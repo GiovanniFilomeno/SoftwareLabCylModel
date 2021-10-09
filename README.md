@@ -1,5 +1,6 @@
 
-# Cylinder-based approximation of 3D objects
+Cylinder-based approximation of 3D objects
+--------------------
 
  
 The automotive industry faces increasingly strict regulations concerning fleet CO<sub>2</sub>  and pollutant emissions, which require innovative drive systems. To meet
@@ -27,7 +28,7 @@ Tasks Overview
 
 
 Installation
-============
+--------------------
 
 1. Clone the repository and made updates as detailed above
 1. Make sure you have MATLAB_R2018b
@@ -36,9 +37,8 @@ Installation
 
 
 
-
-## Contributors ✨
-
+Contributors ✨
+--------------------
 Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -81,15 +81,15 @@ Thanks goes to these wonderful people:
 
 
 
-
-## References:
+References:
+--------------------
 - [A comprehensive process of reverse engineering from 3D meshes to CAD models](https://github.com/GiovanniFilomeno/SoftwareLabCylModel/blob/main/literature%20review/3d%20meshes%20to%20cad%20models.pdf) - 
 
 
 
 
 Citing Cylinder-based approximation of 3D objects
-==============
+--------------------
 
 
 There is a `poster about Cylinder-based approximation of 3D objects `_!
