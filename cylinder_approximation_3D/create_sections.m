@@ -5,7 +5,7 @@ YmaxGEO=max(V(:,2));
 delta=(YmaxGEO-YminGEO)/number_of_sections;
 
 YcutGEO=zeros(number_of_sections);
-for r=1:number_of_sections
+parfor r=1:number_of_sections
     YcutGEO(r)=YminGEO+delta*(r-1);
 end
 y_values=YcutGEO;

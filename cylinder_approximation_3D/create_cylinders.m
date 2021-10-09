@@ -19,12 +19,16 @@ function [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 centers_left = [];
+
 centers_right = [];
 cylinder_radii = [];
 centers_left_red = [];
 centers_right_red = [];
 cylinder_radii_red = [];
-
+radii_stay_new = [];
+X_stay_new = [];
+Z_stay_new = [];
+indices_stay_new = [];
 radii_stay = []; % Circles, which are used in the next level
 X_stay = [];
 Z_stay = [];
@@ -50,10 +54,7 @@ for i=1:length(polygone_list)
     % collected (including ones from pre-pre-sections, etc.). Then, it is
     % checked, if these circles fit into the current polygone. If yes, the
     % corresponding cylinder is elongated.
-    radii_stay_new = [];
-    X_stay_new = [];
-    Z_stay_new = [];
-    indices_stay_new = [];
+   
     radii = [radii;radii_stay];
     X = [X;X_stay];
     Z = [Z;Z_stay];
@@ -96,10 +97,10 @@ for i=1:length(polygone_list)
     % Define cylinders:
     indices_last = [length(cylinder_radii)+1:length(cylinder_radii)+length(radii)]';
     cylinder_radii = [cylinder_radii;radii];
-    centers_left = [centers_left;[X,ones(length(radii),1)*y_values(i),Z]];
-    centers_right = [centers_right;[X,ones(length(radii),1)*y_values(i+1),Z]];
-    centers_left_red = [centers_left_red;[X_red,ones(length(radii_red),1)*y_values(i),Z_red]];
-    centers_right_red = [centers_right_red;[X_red,ones(length(radii_red),1)*y_values(i+1),Z_red]];
+    centers_left = [centers_left;[X,ones(length(radii),1).*y_values(i),Z]];
+    centers_right = [centers_right;[X,ones(length(radii),1).*y_values(i+1),Z]];
+    centers_left_red = [centers_left_red;[X_red,ones(length(radii_red),1).*y_values(i),Z_red]];
+    centers_right_red = [centers_right_red;[X_red,ones(length(radii_red),1).*y_values(i+1),Z_red]];
     cylinder_radii_red = [cylinder_radii_red;radii_red];
     disp("Number of new green circles in section: "+string(length(radii)))
 end
