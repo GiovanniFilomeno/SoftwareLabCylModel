@@ -1,14 +1,29 @@
 
-#######
-Cylinder-based approximation of 3D objects
-#######  
+# Cylinder-based approximation of 3D objects
+
+ 
+The automotive industry faces increasingly strict regulations concerning fleet CO<sub>2</sub>  and pollutant emissions, which require innovative drive systems. To meet
+these requirements, a fleet containing a mix of conventional, hybrid and purely electric vehicles seems to be one likely answer. To handle the space challenges that the adding of electrical components produce, transmission synthesis tools have been developed. The industry successfully applies them to synthesize transmissions for purely electric, conventional and hybrid powertrains. A full evaluation of the transmission concept, however, requires design drafts. Therefore,
+automatizing the transmission design process is the content of current research, focusing on a fast generation of design drafts for multiple transmission topologies found by the transmission synthesis.
 
 
-## To run locally 
+For the computer-aided optimization of engineering designs, 3D-objects may be
+approximated for later computational efficiency reasons. For instance, it may be
+beneficial to inner-approximate objects by coaxial cylinders. This task's goal is a
+model that uses few cylinders while approximating the main features of the object
+(e.g., edges/surfaces) well.
 
 
-Overview of Features
+
+
+Overview of Task
 --------------------
+* Develop an efficient algorithm for defining the sampled cylinders that approximate an object defined by an STL file. Therefore, you will:
+* Create an STL file reader
+* Define and implement an algorithm to identify the significant edges in the cross-section area (orthogonal to a specified axis-direction)
+* Define and implement an algorithm for sampling the cross-section area using circles - Criteria may include respecting the identified edges, high area coverage, the number of circles used
+* Use a computational-geometry library to calculate the intersection between the defined cylinders and the object and compare its volume to the object's original volume.
+* Test the implementation using exemplary STL files
 
 
 Installation
