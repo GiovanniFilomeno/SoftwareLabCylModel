@@ -16,7 +16,7 @@ model that uses few cylinders while approximating the main features of the objec
 
 
 
-Overview of Task
+Tasks Overview 
 --------------------
 * Develop an efficient algorithm for defining the sampled cylinders that approximate an object defined by an STL file. Therefore, you will:
 * Create an STL file reader
