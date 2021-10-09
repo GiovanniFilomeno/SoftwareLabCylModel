@@ -59,10 +59,8 @@ Thanks goes to these wonderful people:
 
 
 
-<hr>
-<body class="sponsored">
-
-<h2 class="centered"> Research in collaboration with</h2>
+Research in collaboration with
+----------------------------------------
 
 
 <table >
