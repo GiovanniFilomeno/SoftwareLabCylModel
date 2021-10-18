@@ -6,7 +6,11 @@ profile off;
 % warning('off','MATLAB:polyshape:repairedBySimplify');
 % warning('off','MATLAB:polyshape:boundary3Points');
 profile on;
-stl_file = "Quader mit Loch.stl";
+
+
+[v, f, n, name] = stlReadFirst("Baumraum example complex.stl")
+stlWrite('neubauraum.stl',f,v);
+stl_file = "neubauraum.stl";
 [F,V,N] = stlread(stl_file);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 280
