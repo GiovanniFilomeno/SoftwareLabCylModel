@@ -73,6 +73,9 @@ for i=1:length(polygone_list)
                     circle_fits = 0;
                 end
             end
+            if ~isinterior(polygon,X(j),Z(j))
+                circle_fits = 0;
+            end
         end
         if circle_fits % Reuse circle and change length of cylinder
             radii_stay_new = [radii_stay_new;radii(j)];
