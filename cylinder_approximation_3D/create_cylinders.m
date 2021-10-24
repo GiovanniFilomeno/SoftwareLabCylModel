@@ -25,10 +25,6 @@ cylinder_radii = [];
 centers_left_red = [];
 centers_right_red = [];
 cylinder_radii_red = [];
-radii_stay_new = [];
-X_stay_new = [];
-Z_stay_new = [];
-indices_stay_new = [];
 radii_stay = []; % Circles, which are used in the next level
 X_stay = [];
 Z_stay = [];
@@ -38,14 +34,15 @@ X = [];
 Z = [];
 indices_last = []; % Indices of the corresponding cylinders
 for i=1:length(polygone_list)
-    polygone = polygone_list{i};
-    P = polygone{1};
-    P_end = polygone{2};
+    polygon = polygone_list{i};
+%     P = polygone{1};
+%     P_end = polygone{2};
+    [P, P_end] = convert_polyshape(polygon);
     if isempty(P)
         continue
     end
     [lines_on_hull,~] = find_lines_on_hull(P,P_end);
-    
+    %%
     % Check, which cylinders from last layer can be used in the next one
     % for free. For these circles, which are marked with _stay, the
     % index of the corresponding cylinder has to be saved. Then, the length
@@ -54,13 +51,17 @@ for i=1:length(polygone_list)
     % collected (including ones from pre-pre-sections, etc.). Then, it is
     % checked, if these circles fit into the current polygone. If yes, the
     % corresponding cylinder is elongated.
+    radii_stay_new = [];
+    X_stay_new = [];
+    Z_stay_new = [];
+    indices_stay_new = [];
    
-    radii = [radii;radii_stay];
+    radii = [radii;radii_stay]; % final set of cylinders of previous section
     X = [X;X_stay];
     Z = [Z;Z_stay];
     indices_stay = [indices_last;indices_stay];
     n = length(radii);
-    for j = 1:n
+    for j = 1:n % Loop over previous cylinders
         circle_fits = 1;
         for k = 1:length(P)
             if lines_on_hull(k)==0
@@ -81,18 +82,19 @@ for i=1:length(polygone_list)
             centers_right(indices_stay(j),2) = y_values(i+1); % Updated length
         end
     end
-    radii_stay = radii_stay_new;
+    radii_stay = radii_stay_new; % reused cylinders of previous section
     X_stay = X_stay_new;
     Z_stay = Z_stay_new;
     indices_stay = indices_stay_new;
-    
+    %%
     % Use 2D-code
-    [radii,X,Z,radii_red,X_red,Z_red] = approximate_by_circles(P,P_end);
+    [radii,X,Z,radii_red,X_red,Z_red] = approximate_by_circles(polygon);
     max_points = max(P);
     min_points = min(P);
     [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay);
     [radii,X,Z] = remove_circles(radii,X,Z,radii_red,X_red,Z_red,min_points,max_points,radii_stay,X_stay,Z_stay);
-% % % % % % % %     plot_circles(radii,X,Z,radii_red,X_red,Z_red,P,P_end,min_points,max_points,y_values(i))
+    %plot_circles([radii;radii_stay],[X;X_stay],[Z;Z_stay],radii_red,X_red,Z_red,y_values(i))
+%     plot_circles(radii_stay,X_stay,Z_stay,radii_red,X_red,Z_red,y_values(i))
     
     % Define cylinders:
     indices_last = [length(cylinder_radii)+1:length(cylinder_radii)+length(radii)]';

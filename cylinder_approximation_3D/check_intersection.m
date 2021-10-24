@@ -14,7 +14,7 @@ tx = tx/abs_t; % Normalized Line Vector
 ty = ty/abs_t;
 nx = -ty; % Normal vector
 ny = tx;
-distance = nx*(x-x1)+ny*(y-y1); % distance line center
+distance = nx*(x-x1)+ny*(y-y1); % distance between line and center
 if radius <= abs(distance)
     intersect = 0;
 else

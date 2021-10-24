@@ -1,4 +1,4 @@
-function plot_cylinders(cylinders,cylinders_red,stlfile)
+function plot_cylinders(cylinders,cylinders_red,y_values)
 
 figure();
 axis equal
@@ -15,7 +15,9 @@ number_red_cylinders = length(cylinder_radii_red);
 y_min = min(centers_left(:,2));
 y_max = max(centers_right(:,2));
 
-for y = linspace(y_min,y_max,100)
+number_per_section = fix(100/(length(y_values)-1));
+for y_index = 1:length(y_values)-1
+    y = (y_values(y_index)+y_values(y_index+1))/2;
     X = zeros(1,number_green_cylinders);
     Z = zeros(1,number_green_cylinders);
     radii = zeros(1,number_green_cylinders);
@@ -38,64 +40,11 @@ for y = linspace(y_min,y_max,100)
     end
     [~,index_red] = find(radii_red);
     [~,index_green] = find(radii);
-    plot_circles(radii(index_green),X(index_green),Z(index_green),radii_red(index_red),X_red(index_red),Z_red(index_red),y);
-    
+    y_positions = linspace(y_values(y_index),y_values(y_index+1),number_per_section);
+    plot_circles(radii(index_green),X(index_green),Z(index_green),radii_red(index_red),X_red(index_red),Z_red(index_red),y_positions);
 end
 
 view([1,1,1])
-
-% stlfile='simple_cube.stl'
-% as=load('data.mat')
-% cylinders= as.data
-% 
-% x = cylinders.x;
-% y = cylinders.y;
-% r=cylinders.r;
-% hgt = y;
-% th=0:pi/100:2*pi;
-% figure
-% hold on
-% for M = 1:length(x)
-%    
-%         a=r(M)*cos(th);
-%         b=r(M)*sin(th);
-%         X1 =[a; a]+x(M);
-%         Y1 =[b; b]+y(M);
-%         Z1=[ones(1,size(th,2)); zeros(1,size(th,2))]*hgt(M);'FaceAlpha';
-%         
-%     
-%     surf(X1,Z1,Y1);
-% 
-%     axis('equal')
-%     
-%       
-% end
-%  hold off
-% 
-% view(45,30)
-% 
-% %% Reading STL File from Input
-% fv = stlread(stlfile);
-% figure
-% 
-% 
-% %% Render
-% patch(fv,'FaceColor',       [0.8 0.8 1.0], ...
-%          'EdgeColor',       'none',        ...
-%          'FaceLighting',    'gouraud',     ...
-%          'AmbientStrength', 0.15);
-% 
-% % Add a camera light, and tone down the specular highlighting
-% camlight('headlight');
-% material('shiny');
-% 
-% % Fix the axes scaling, and set a nice view angle
-% axis('image');
-% view([-135 35]);
-% 
-% 
-% 
-% %% Plotting cyliner from Benjamine output
 
 end
 

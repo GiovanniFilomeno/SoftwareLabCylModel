@@ -1,4 +1,4 @@
-function [polygone_list, y_values] = define_2D_polygones2(mesh_list, y_values)
+function [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values)
 
 % polygone_list = [[P,P_end],[P,P_end],...] for each section (as input for
 % the function "approximate_by_circles"
@@ -97,6 +97,8 @@ for section_index = 1:length(y_values)
     polygone_list_save(section_index) = polygon;
 end
 
+
+%%
 for section_index = 1:length(y_values)-1
     F = mesh_list{section_index,1};
     V = mesh_list{section_index,2};
@@ -126,30 +128,12 @@ for section_index = 1:length(y_values)-1
     polygon = subtract(polygon,triangle_region);
 
     % Plot polygon at the end
-% %     figure();
-% %     plot(polygon);
-% %     hold on
+%     figure();
+%     plot(polygon);
+%     hold on
 
     %%
-    % For the following: I think, boundaries of interior are always
-    % clockwise and boundaries of holes always counterclockwise
-    % If not, this will not work!!!!!!!!!!!!!!!!!!!!!!!
-    P = [];
-    P_end = [];
-    hole_boundaries = ishole(polygon);
-    number_boundaries = length(hole_boundaries);
-    for i = 1:number_boundaries
-        [points_x,points_y] = boundary(polygon,i);
-        P_new = zeros(length(points_x)-1,2);
-        P_new(:,1) = points_x(1:end-1);
-        P_new(:,2) = points_y(1:end-1);
-        P_end_new = zeros(length(points_x)-1,2);
-        P_end_new(:,1) = points_x(2:end);
-        P_end_new(:,2) = points_y(2:end);
-        P = [P;P_new];
-        P_end = [P_end;P_end_new];
-    end
-    polygone_list{section_index} = {P,P_end};
+    polygone_list{section_index} = polygon;
 end
     
 end

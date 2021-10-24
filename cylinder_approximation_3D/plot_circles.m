@@ -1,17 +1,18 @@
-function plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_value)
+function plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
 %function plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points,y_value)
 % k = convhull(P);
 % inner_point = mean(P(k,:),1);
 % 
 hold on
-
 polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red);
-M=[ 1         0         0         0
-    0         0	       -1         y_value
-    0         1         0         0
-    0         0         0         1];
-t=hgtransform('Matrix',M);     
-plot(polygon,'Parent',t,'FaceColor','g');
+for y_value = y_values
+    M=[ 1         0         0         0
+        0         0	       -1         y_value
+        0         1         0         0
+        0         0         0         1];
+    t=hgtransform('Matrix',M);     
+    plot(polygon,'Parent',t,'FaceColor','g');
+end
 
 %%
 % radius = sum(max_points)-sum(min_points);

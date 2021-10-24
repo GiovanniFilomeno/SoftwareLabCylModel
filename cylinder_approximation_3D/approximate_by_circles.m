@@ -1,4 +1,6 @@
-function [radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(P,P_end)
+function [radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(polygon)
+
+[P, P_end] = convert_polyshape(polygon);
 
 number_points = length(P);
 [lines_on_hull,inner_point] = find_lines_on_hull(P,P_end);
@@ -83,7 +85,7 @@ Y_red = zeros(number_red_circles,1);
 radii_red = ones(number_red_circles,1)*large_radius;
 i_red = 1;
 %Define red circles to approximate convex polygone
-for i = 1:number_points % as last point=first point
+for i = 1:number_points
     if lines_on_hull(i)
         x1 = P(i,1);
         y1 = P(i,2);
@@ -116,6 +118,19 @@ for i = 1:number_points % as last point=first point
         i_red = i_red + 1;
     end
 end
+
+% Test, if test_inside or isinterior is faster => test_inside is much
+% faster
+% % tic;
+% % for i = 1:1000
+% %     test_inside(X, Y, radii, X_red, Y_red, radii_red,0,0);
+% % end
+% % time_a = toc
+% % tic;
+% % for i = 1:1000
+% %     isinterior(polygon,0,0);
+% % end
+% % time_b = toc
 
 end
 

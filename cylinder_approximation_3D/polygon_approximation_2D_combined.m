@@ -40,7 +40,7 @@ min_points = min(P);
 
 % plot_circles takes as input the output of approximate_by_circles + P +
 % P_end
-plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points)
+% plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points)
 
 tic;
 for i = 1:40
@@ -49,7 +49,7 @@ end
 time_a = toc
 tic;
 for i = 1:40
-    compute_area(X, Y, radii, X_red, Y_red, radii_red,[min_points(1),max_points(1)],[min_points(2),max_points(2)]);
+    compute_area_MC(X, Y, radii, X_red, Y_red, radii_red,[min_points(1),max_points(1)],[min_points(2),max_points(2)]);
 end
 time_b = toc
 % compute_area3(X, Y, radii, X_red, Y_red, radii_red)
