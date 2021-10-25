@@ -107,7 +107,8 @@ for i=1:length(polygone_list)
     centers_left_red = [centers_left_red;[X_red,ones(length(radii_red),1).*y_values(i),Z_red]];
     centers_right_red = [centers_right_red;[X_red,ones(length(radii_red),1).*y_values(i+1),Z_red]];
     cylinder_radii_red = [cylinder_radii_red;radii_red];
-    disp("Number of new green circles in section: "+string(length(radii)))
+    disp("Number of new green circles in section    : "+string(length(radii)))
+    disp("Number of green circles reused from before: "+string(length(radii_stay)))
 end
 
 cylinders = {centers_left,centers_right,cylinder_radii};
