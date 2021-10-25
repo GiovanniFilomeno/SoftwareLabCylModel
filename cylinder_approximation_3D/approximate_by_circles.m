@@ -10,69 +10,43 @@ min_points = min(P);
 radius_max = sum(max_points)-sum(min_points);
 large_radius = 10*radius_max;
 
-X = zeros(number_points*5,1);
-Y = zeros(number_points*5,1);
-radii = zeros(number_points*5,1);
+max_number_circles = 40;
+X = zeros(max_number_circles,1);
+Y = zeros(max_number_circles,1);
+radii = zeros(max_number_circles,1);
 
-number_circles = 1;
 % Define green circles to approximate polygone
-for line_loop = 1:number_points % as last point=first point
-    x1 = P(line_loop,1);
-    y1 = P(line_loop,2);
-    x2 = P_end(line_loop,1);
-    y2 = P_end(line_loop,2);
-    tx = x2-x1; % Line vector
-    ty = y2-y1;
-    abs_t = sqrt(tx^2+ty^2);
-    tx_normal = tx/abs_t; % Normalized Line Vector
-    ty_normal = ty/abs_t;
-    % Normal vectors need to point inside, they do, if points are clockwise
-    nx = ty_normal; % Normal vector
-    ny = -tx_normal;
-    for pos_loop = [linspace(0.05,0.2,2),linspace(0.3,0.7,3),linspace(0.8,0.95,2)]
-        new_circle = 0;
-        x_touch = x1+pos_loop*tx;
-        y_touch = y1+pos_loop*ty;
-        radius = abs_t*8;
-        size_step = radius/2;
-        for size_loop = 1:20
-            if radius > abs_t/32
-                x_center = x_touch+nx*radius;
-                y_center = y_touch+ny*radius;
-                radius_ok = 1;
-                for i = 1:number_points
-                    if (i ~= line_loop)&&(lines_on_hull(i)==0)
-                        x_test1 = P(i,1);
-                        y_test1 = P(i,2);
-                        x_test2 = P_end(i,1);
-                        y_test2 = P_end(i,2);
-                        if check_intersection([x_test1,y_test1],[x_test2,y_test2],[x_center,y_center],radius)
-                            radius_ok = 0;
-                        end
-                    end
-                end
-                if radius_ok
-                    X(number_circles) = x_center;
-                    Y(number_circles) = y_center;
-                    radii(number_circles) = radius;
-                    radius = radius+size_step;
-                    if radius > radius_max
-                        radius = radius_max;
-                    end
-                    new_circle = 1;
-                else
-                    radius = radius-size_step;
-                end
-            else
-                break;
-            end
-            size_step = size_step/2;
-        end
-        if new_circle
-            number_circles = number_circles+1;
-        end
+number_circles = 1;
+segment_lengths = sqrt((P_end(:,1)-P(:,1)).^2+(P_end(:,2)-P(:,2)).^2);
+cumulative_lengths = cumsum(segment_lengths);
+perimeter = cumulative_lengths(end); % equal to perimeter(polygon)
+distance = perimeter/max_number_circles;
+for i = 1:max_number_circles
+    position_on_perimeter = (i-0.5)*distance;
+    line_index = find(cumulative_lengths>position_on_perimeter,1);
+    length_on_line = cumulative_lengths(line_index)-position_on_perimeter;
+    position = length_on_line/segment_lengths(line_index);
+    
+    [x_return,y_return,radius_return] = max_circle_touching_line(lines_on_hull,line_index,position,P,P_end,number_points,radius_max);
+    if radius_return
+        number_circles = number_circles+1;
+        X(number_circles) = x_return;
+        Y(number_circles) = y_return;
+        radii(number_circles) = radius_return;
     end
 end
+% create 5 circles per line
+% for line_loop = 1:number_points
+%     for pos_loop = [linspace(0.05,0.2,2),linspace(0.3,0.7,3),linspace(0.8,0.95,2)]
+%         [x_return,y_return,radius_return] = max_circle_touching_line(lines_on_hull,line_loop,pos_loop,P,P_end,number_points,radius_max);
+%         if radius_return
+%             number_circles = number_circles+1;
+%             X(number_circles) = x_return;
+%             Y(number_circles) = y_return;
+%             radii(number_circles) = radius_return;
+%         end
+%     end
+% end
 
 number_circles = number_circles-1;
 radii = radii(1:number_circles);
@@ -134,3 +108,60 @@ end
 
 end
 
+function [x_return,y_return,radius_return] = max_circle_touching_line(lines_on_hull,line_index,position,P,P_end,number_points,radius_max)
+
+x_return = 0;
+y_return = 0;
+radius_return = 0;
+
+x1 = P(line_index,1);
+y1 = P(line_index,2);
+x2 = P_end(line_index,1);
+y2 = P_end(line_index,2);
+tx = x2-x1; % Line vector
+ty = y2-y1;
+abs_t = sqrt(tx^2+ty^2);
+tx_normal = tx/abs_t; % Normalized Line Vector
+ty_normal = ty/abs_t;
+% Normal vectors need to point inside, they do, if points are clockwise for
+% outer boundaries and counterclockwise for boundaries of holes.
+nx = ty_normal; % Normal vector
+ny = -tx_normal;
+x_touch = x1+position*tx;
+y_touch = y1+position*ty;
+radius = abs_t*8;
+size_step = radius/2;
+for size_loop = 1:20
+    if radius > abs_t/32
+        x_center = x_touch+nx*radius;
+        y_center = y_touch+ny*radius;
+        radius_ok = 1;
+        for i = 1:number_points
+            if (i ~= line_index)&&(lines_on_hull(i)==0)
+                x_test1 = P(i,1);
+                y_test1 = P(i,2);
+                x_test2 = P_end(i,1);
+                y_test2 = P_end(i,2);
+                if check_intersection([x_test1,y_test1],[x_test2,y_test2],[x_center,y_center],radius)
+                    radius_ok = 0;
+                end
+            end
+        end
+        if radius_ok
+            x_return = x_center;
+            y_return = y_center;
+            radius_return = radius;
+            radius = radius+size_step;
+            if radius > radius_max
+                radius = radius_max;
+            end
+        else
+            radius = radius-size_step;
+        end
+    else
+        break;
+    end
+    size_step = size_step/2;
+end
+
+end
