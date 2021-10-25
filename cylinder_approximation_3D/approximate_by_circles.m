@@ -21,18 +21,23 @@ segment_lengths = sqrt((P_end(:,1)-P(:,1)).^2+(P_end(:,2)-P(:,2)).^2);
 cumulative_lengths = cumsum(segment_lengths);
 perimeter = cumulative_lengths(end); % equal to perimeter(polygon)
 distance = perimeter/max_number_circles;
+x_return = zeros(1,5);
+y_return = zeros(1,5);
+radius_return = zeros(1,5);
 for i = 1:max_number_circles
-    position_on_perimeter = (i-0.5)*distance;
-    line_index = find(cumulative_lengths>position_on_perimeter,1);
-    length_on_line = cumulative_lengths(line_index)-position_on_perimeter;
-    position = length_on_line/segment_lengths(line_index);
-    
-    [x_return,y_return,radius_return] = max_circle_touching_line(lines_on_hull,line_index,position,P,P_end,number_points,radius_max);
-    if radius_return
+    for j = 1:5
+        position_on_perimeter = (i-0.5)*distance+(j-3)*distance/8;
+        line_index = find(cumulative_lengths>position_on_perimeter,1);
+        length_on_line = cumulative_lengths(line_index)-position_on_perimeter;
+        position = length_on_line/segment_lengths(line_index);
+        [x_return(j),y_return(j),radius_return(j)] = max_circle_touching_line(lines_on_hull,line_index,position,P,P_end,number_points,radius_max);
+    end
+    [max_radius_return,max_index] = max(radius_return);
+    if max_radius_return
         number_circles = number_circles+1;
-        X(number_circles) = x_return;
-        Y(number_circles) = y_return;
-        radii(number_circles) = radius_return;
+        X(number_circles) = x_return(max_index);
+        Y(number_circles) = y_return(max_index);
+        radii(number_circles) = radius_return(max_index);
     end
 end
 % create 5 circles per line
