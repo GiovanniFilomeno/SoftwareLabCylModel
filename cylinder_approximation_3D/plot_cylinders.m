@@ -15,7 +15,7 @@ number_red_cylinders = length(cylinder_radii_red);
 y_min = min(centers_left(:,2));
 y_max = max(centers_right(:,2));
 
-number_per_section = fix(100/(length(y_values)-1));
+number_per_section = fix(200/(length(y_values)-1));
 for y_index = 1:length(y_values)-1
     y = (y_values(y_index)+y_values(y_index+1))/2;
     X = zeros(1,number_green_cylinders);

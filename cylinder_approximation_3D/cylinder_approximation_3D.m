@@ -11,28 +11,28 @@ warning('off','MATLAB:polyshape:boundary3Points');
 [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
 stlWrite('neubauraum.stl',f,v);
 stl_file = "neubauraum.stl";
-% stl_file = "Pyramid Shape.stl";
+% stl_file = "simple_cube.stl";
 [F,V,N] = stlread(stl_file);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 6088%280
-    number_of_sections = 15;
+    number_of_sections = 5;
     [mesh_list, y_values] = create_sections(F,V,N,number_of_sections);
 
     [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
-    
-    [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values);
-
-    plot_cylinders(cylinders,cylinders_red,y_values);
-    print_STL(V,F);
-    axis equal;
-    view([1 1 1]);
+   
+%     [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values);
+% 
+%     plot_cylinders(cylinders,cylinders_red,y_values);
+%     print_STL(V,F);
+%     axis equal;
+%     view([1 1 1]);
 else
-    "Too large 3D object, too many triangles"
+    disp("Too large 3D object, too many triangles");
 end
 
 
-disp("Total number of green cylinders: "+string(length(cylinders{1,3})));
-disp("Total number of red   cylinders: "+string(length(cylinders_red{1,3})));
+% disp("Total number of green cylinders: "+string(length(cylinders{1,3})));
+% disp("Total number of red   cylinders: "+string(length(cylinders_red{1,3})));
 
 % profile off;
 % profile viewer;
