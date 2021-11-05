@@ -71,9 +71,9 @@ for i=1:AofT
     % GREEN triangle = before the cutvalue
     condition1= Ycut(1)<=ymint && ymint<=Ycut(icut)&& Ycut(1)<=ymaxt && ymaxt<=Ycut(icut);
     % BlUE triangle = cutted triangle
-    condition2=Ycut(1)<=ymint && ymint<=Ycut(icut) && ymaxt>Ycut(icut);
+    condition2=Ycut(1)<=ymint && ymint<Ycut(icut) && ymaxt>Ycut(icut);
     % RED triangle = after the cutvalue
-    condition3=ymint>Ycut(icut) && ymaxt>Ycut(icut);
+    condition3=ymint>=Ycut(icut) && ymaxt>Ycut(icut);
 
 
     % IF: it clasifies the triangle into GREEN, BLUE or RED 
