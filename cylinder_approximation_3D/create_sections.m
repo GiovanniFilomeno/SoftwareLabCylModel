@@ -1,18 +1,19 @@
-function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections)
+function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections_or_vector)
 
-YminGEO=min(V(:,2));
-YmaxGEO=max(V(:,2));
-delta=(YmaxGEO-YminGEO)/(number_of_sections);
 
-YcutGEO=zeros(number_of_sections+1,1);
-for r=1:number_of_sections+1%parfor r=1:number_of_sections+1
-    YcutGEO(r)=YminGEO+delta*(r-1);
+if(length(number_of_sections_or_vector)==1)
+    YminGEO=min(V(:,2));
+    YmaxGEO=max(V(:,2));
+    delta=(YmaxGEO-YminGEO)/(number_of_sections_or_vector);
+
+    YcutGEO=zeros(number_of_sections_or_vector+1,1);
+    for r=1:number_of_sections_or_vector+1%parfor r=1:number_of_sections+1
+        YcutGEO(r)=YminGEO+delta*(r-1);
+    end
+else
+    YcutGEO=number_of_sections_or_vector;
 end
 
-% The following y_values lead to an error in the creation of the sections
-% (some triangles are missing). If you add 0.5 to these values, everything
-% works fine.
-YcutGEO = [-365,-270,-211,-165,-125,-110,30,211,365];%+0.5;
 y_values=YcutGEO;
 mesh_list = cell((length(YcutGEO)),3);
 
@@ -37,9 +38,9 @@ for i=1:(length(YcutGEO)-1)
 
 end
 
-for i=1:(length(y_values)-1)
-    print_STL(mesh_list{i,2},mesh_list{i,1});
-end
+% for i=1:(length(y_values)-1)
+%     print_STL(mesh_list{i,2},mesh_list{i,1});
+% end
 
 
 end
