@@ -3,7 +3,7 @@ function [mesh_list, y_values] = create_sections_test(F,V,N,number_of_sections)
 % Define some tolerances (attention, also defined in define_2D_polygones!!)
 tol_uniquetol = 1e-6;
 tol = 1e-6;
-tol_on_plane = 1e-2;
+tol_on_plane = 1e-6;
 
 YminGEO=min(V(:,2));
 YmaxGEO=max(V(:,2));
@@ -57,21 +57,24 @@ if ~isempty(y_values_parallel)
     y_value = y_values_parallel(1);
     triangles = F_parallel(1,:);
     for i = 2:length(y_values_parallel)
+        % Still at the same plane
         if ismembertol(y_values_parallel(i),y_value,tol_on_plane/2)
             triangles = [triangles;F_parallel(i,:)];
-        else
+        else % At the new plane
+            % First handle triangles of previous plane
             [triangle_region] = define_triangle_region(triangles,V);
             area_y = area(triangle_region);
             if area_y >= 0.05*total_crossectional_area
                 y_values = [y_values,y_value];
             end
+            % Start new plane
             y_value = y_values_parallel(i);
             triangles = F_parallel(i,:);
         end
     end
     [triangle_region] = define_triangle_region(triangles,V);
     area_y = area(triangle_region);
-    if area_y >= 0.1*total_crossectional_area
+    if area_y >= 0.05*total_crossectional_area
         y_values = [y_values,y_value];
     end
 end
@@ -110,7 +113,9 @@ for i=1:(length(y_values)-1)
 end
 
 for i=1:(length(y_values)-1)
+    figure();
     print_STL(mesh_list{i,2},mesh_list{i,1});
+    axis equal;
 end
 
 end
