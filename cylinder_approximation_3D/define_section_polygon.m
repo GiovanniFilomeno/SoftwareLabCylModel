@@ -25,7 +25,9 @@ polygon = intersect(polygon_left,polygon_right);
 if ~isempty(F)
     [triangle_region] = define_triangle_region(F,V);
 %     plot(triangle_region);
-    polygon = subtract(polygon,triangle_region);
+    if ~isempty(triangle_region)
+        polygon = subtract(polygon,triangle_region);
+    end
 end
 
 % % % figure();

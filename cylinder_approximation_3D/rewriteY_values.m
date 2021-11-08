@@ -69,7 +69,7 @@ if (matrix_range~=0)
     k=2;        % Loops in the y_values vector
     new_y_values(1,1)=y_values(1);
 
-    while(k<=(length(y_values)))
+    while(k<=(length(y_values)) && counter4<=1000)
         %If the polygones are considered equal
         if(counter3<=length(matrix_range(:,1)))
             if(k>=(matrix_range(counter3,1)+1)&&k<=(matrix_range(counter3,2)+1))

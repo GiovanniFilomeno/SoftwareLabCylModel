@@ -7,6 +7,10 @@ for i=1:number_triangles
 end
 areas_triangles = area(polyvec_triangles);
 polyvec_triangles = polyvec_triangles(areas_triangles > 0);
-triangle_region = union(polyvec_triangles);
+if ~isempty(polyvec_triangles)
+    triangle_region = union(polyvec_triangles);
+else
+    triangle_region = polyshape.empty(1,0);
+end
 end
 

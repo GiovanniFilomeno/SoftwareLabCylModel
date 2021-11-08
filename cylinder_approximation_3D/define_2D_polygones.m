@@ -10,7 +10,7 @@ function [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values)
 % Tolerances for polygone determination in section
 tol_uniquetol = 1e-6;
 tol = 1e-6;
-tol_on_plane = 1e-2;
+tol_on_plane = 1e-6;
 
 polygone_list = cell(1,length(y_values)-1);
 polygone_list_save = polyshape.empty(length(y_values),0);
