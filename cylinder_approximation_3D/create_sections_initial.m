@@ -1,4 +1,4 @@
-function [mesh_list, y_values] = create_sections_initial(F,V,N,number_of_sections)
+function [mesh_list, y_values, F_return, V_return, N_return] = create_sections_initial(F,V,N,number_of_sections)
 
 % Define some tolerances (attention, also defined in define_2D_polygones!!)
 tol_uniquetol = 1e-6;
@@ -11,6 +11,10 @@ delta=(YmaxGEO-YminGEO)/(number_of_sections);
 
 y_values = [];
 
+F_return = F;
+V_return = V;
+N_return = N;
+
 %%
 % Check, if left and right end of geometry should be included.
 % For that, check, wether a polygone with nonzero area can be defined at
@@ -18,15 +22,15 @@ y_values = [];
 % If not, cut the left or right end of the geometry.
 % At the end, the ends will be included, as they will always have an area
 % after this procedure.
-[polygon_left] = define_cut_polygon(F,V,N,YminGEO,tol_on_plane,tol_uniquetol,tol);
+[polygon_left] = define_cut_polygon(F_return,V_return,N_return,YminGEO,tol_on_plane,tol_uniquetol,tol);
 if ~area(polygon_left)
     YminGEO = YminGEO + delta/5;
-    [~,~,~,F,V,N]=cut_the_geometry(F,V,N,YminGEO);
+    [~,~,~,F_return,V_return,N_return]=cut_the_geometry(F_return,V_return,N_return,YminGEO);
 end
-[polygon_right] = define_cut_polygon(F,V,N,YmaxGEO,tol_on_plane,tol_uniquetol,tol);
+[polygon_right] = define_cut_polygon(F_return,V_return,N_return,YmaxGEO,tol_on_plane,tol_uniquetol,tol);
 if ~area(polygon_right)
     YmaxGEO = YmaxGEO - delta/5;
-    [F,V,N,~,~,~]=cut_the_geometry(F,V,N,YmaxGEO);
+    [F_return,V_return,N_return,~,~,~]=cut_the_geometry(F_return,V_return,N_return,YmaxGEO);
 end
 delta=(YmaxGEO-YminGEO)/(number_of_sections);
 
@@ -107,6 +111,9 @@ mesh_list = cell(length(y_values),3);
 
 %%
 % Do the actual cuttings
+F = F_return;
+V = V_return;
+N = N_return;
 for i=1:(length(y_values)-1)
     
     [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(F,V,N,y_values(i+1));

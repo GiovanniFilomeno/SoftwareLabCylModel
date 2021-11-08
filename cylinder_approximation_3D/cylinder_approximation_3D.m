@@ -8,17 +8,18 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % profile on;
 
 
-[v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
-stlWrite('neubauraum.stl',f,v);
-stl_file = "neubauraum.stl";
-% stl_file = "Pyramid Shape.stl";
+% [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
+% stlWrite('neubauraum.stl',f,v);
+% stl_file = "neubauraum.stl";
+stl_file = "Pyramid Shape.stl";
 [F,V,N] = stlread(stl_file);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 6088%280
     number_of_sections = 10;
     
     % Initial slicing 
-    [mesh_list, y_values] = create_sections_initial(F,V,N,number_of_sections);
+    % Also returns STL, because it might cut it at the ends
+    [mesh_list, y_values, F, V, N] = create_sections_initial(F,V,N,number_of_sections);
 
     [polygone_list, y_values] = define_2D_polygones(mesh_list, y_values);
     
