@@ -40,18 +40,6 @@ for i = 1:max_number_circles
         radii(number_circles) = radius_return(max_index);
     end
 end
-% create 5 circles per line
-% for line_loop = 1:number_points
-%     for pos_loop = [linspace(0.05,0.2,2),linspace(0.3,0.7,3),linspace(0.8,0.95,2)]
-%         [x_return,y_return,radius_return] = max_circle_touching_line(lines_on_hull,line_loop,pos_loop,P,P_end,number_points,radius_max);
-%         if radius_return
-%             number_circles = number_circles+1;
-%             X(number_circles) = x_return;
-%             Y(number_circles) = y_return;
-%             radii(number_circles) = radius_return;
-%         end
-%     end
-% end
 
 number_circles = number_circles-1;
 radii = radii(1:number_circles);

@@ -13,7 +13,7 @@ if(length(number_of_sections_or_vector)==1)
 else
     YcutGEO=number_of_sections_or_vector;
 end
-
+% YcutGEO = [-365,-270,-211,-165,-125,-110,30,211,365];%%%%%%%%%%%
 y_values=YcutGEO;
 mesh_list = cell((length(YcutGEO)),3);
 
@@ -39,7 +39,9 @@ for i=1:(length(YcutGEO)-1)
 end
 
 % for i=1:(length(y_values)-1)
+%     figure();
 %     print_STL(mesh_list{i,2},mesh_list{i,1});
+%     axis equal;
 % end
 
 

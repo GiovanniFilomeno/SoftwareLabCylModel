@@ -16,21 +16,46 @@ polygone_list = cell(1,length(y_values)-1);
 polygone_list_save = polyshape.empty(length(y_values),0);
 
 % Create all polygones at the cutting planes between the sections
-for section_index = 1:length(y_values)
+% Define polygone directly in the cutting plane
+for section_index = 1:length(y_values) % Note: length(y_values) is always length(mesh_list)+1
+    
+    y_section = y_values(section_index);
+    
     if section_index == length(y_values)
         F = mesh_list{section_index-1,1};
         V = mesh_list{section_index-1,2};
         N = mesh_list{section_index-1,3};
-    else
+        [polygon] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);
+    elseif section_index == 1
         F = mesh_list{section_index,1};
         V = mesh_list{section_index,2};
         N = mesh_list{section_index,3};
+        [polygon] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);
+    else
+        F = mesh_list{section_index-1,1};
+        V = mesh_list{section_index-1,2};
+        N = mesh_list{section_index-1,3};
+        [polygon1] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);
+        F = mesh_list{section_index,1};
+        V = mesh_list{section_index,2};
+        N = mesh_list{section_index,3};
+        [polygon2] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);
+        polygon = union(polygon1,polygon2);
     end
+%     y_section = y_values(section_index);
+%     % Define polygone directly in the cutting plane
+%     [polygon] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);%Plot polygon
+%     if section_index == length(y_values)
+%         F = mesh_list{section_index-1,1};
+%         V = mesh_list{section_index-1,2};
+%         N = mesh_list{section_index-1,3};
+%     else
+%         F = mesh_list{section_index,1};
+%         V = mesh_list{section_index,2};
+%         N = mesh_list{section_index,3};
+%     end
 
     %%
-    y_section = y_values(section_index);
-    % Define polygone directly in the cutting plane
-    [polygon] = define_cut_polygon(F,V,N,y_section,tol_on_plane,tol_uniquetol,tol);%Plot polygon
     polygone_list_save(section_index) = polygon;
 end
 

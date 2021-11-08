@@ -8,7 +8,7 @@ end_nodes = zeros(2,number_faces);
 % % %     figure();
 % % %     hold on
 
-% Create line segments, if at least 2 vertices of a triangle lie on the
+% Create line segments, if exactly 2 vertices of a triangle lie on the
 % min-plane
 for i = 1:number_faces
     vertex_y_values = [V(F(i,1),2),V(F(i,2),2),V(F(i,3),2)];
@@ -19,11 +19,12 @@ for i = 1:number_faces
         vertex_z_values = [V(F(i,1),3),V(F(i,2),3),V(F(i,3),3)];
         vertex_x_values = vertex_x_values(vertices_on_plane);
         vertex_z_values = vertex_z_values(vertices_on_plane);
-% % %             plot(vertex_x_values,vertex_z_values,'Color','k');
+% % %         plot(vertex_x_values,vertex_z_values,'Color','k');
         start_nodes(:,number_lines) = [vertex_x_values(1);vertex_z_values(1)];
         end_nodes(:,number_lines) = [vertex_x_values(2);vertex_z_values(2)];
     end
 end
+% disp(number_lines)
 
 
 
