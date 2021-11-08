@@ -1,4 +1,4 @@
-function [mesh_list, y_values] = create_sections_test(F,V,N,number_of_sections)
+function [mesh_list, y_values] = create_sections_initial(F,V,N,number_of_sections)
 
 % Define some tolerances (attention, also defined in define_2D_polygones!!)
 tol_uniquetol = 1e-6;
@@ -88,7 +88,22 @@ if ~sum(ismembertol(YmaxGEO,y_values,tol_uniquetol))
     y_values = [y_values,YmaxGEO];
 end
 y_values = sort(y_values);
-mesh_list = cell((length(y_values)),3);
+
+%%
+% Add sections, if there aren't enough. (Better criterion would be: 
+% triangle area in between is too large)
+for i = 1:length(y_values)-1
+    distance = y_values(i+1)-y_values(i);
+    if distance > delta
+        number_new_sections = ceil(distance/delta);
+        new_y_values = linspace(y_values(i),y_values(i+1),number_new_sections+1);
+        new_y_values = new_y_values(2:end-1); % Endpoints excluded
+        y_values = [y_values,new_y_values];
+    end
+end
+
+y_values = sort(y_values);
+mesh_list = cell(length(y_values),3);
 
 %%
 % Do the actual cuttings
@@ -112,10 +127,10 @@ for i=1:(length(y_values)-1)
 
 end
 
-for i=1:(length(y_values)-1)
-    figure();
-    print_STL(mesh_list{i,2},mesh_list{i,1});
-    axis equal;
-end
+% for i=1:(length(y_values)-1)
+%     figure();
+%     print_STL(mesh_list{i,2},mesh_list{i,1});
+%     axis equal;
+% end
 
 end
