@@ -1,8 +1,9 @@
-% This function uses the 2D-algorithm (approximation of 2D-polygones with
+% Approximate given sections of 2D-polygons with cylinders
+% This function uses the 2D-algorithm (approximation of 2D-polygons with
 % circles) in order to approximate each section of the geometry with
 % cylinders. If possible, it reuses cylinders from previous sections (from
 % left to right)
-function [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values)
+function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section)
 
 % Test input %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % Cylinders has to be formatted, as needed by other group
@@ -14,8 +15,8 @@ function [cylinders,cylinders_red] = create_cylinders(polygone_list, y_values)
 % P_end2 = [P2(2:end,:);P2(1,:)];
 % P3 = [-0.1 0; -0.1 1; 0.4 0.7; 0.9 1; 0.9 0];
 % P_end3 = [P3(2:end,:);P3(1,:)];
-% polygone_list = {{P1,P_end1},{P2,P_end2},{P3,P_end3}};
-% %polygone_list = {{P1,P_end1},{P1,P_end1},{P1,P_end1}};
+% polygon_list = {{P1,P_end1},{P2,P_end2},{P3,P_end3}};
+% %polygon_list = {{P1,P_end1},{P1,P_end1},{P1,P_end1}};
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 centers_left = [];
@@ -33,10 +34,10 @@ radii = []; % Circles in the last section
 X = [];
 Z = [];
 indices_last = []; % Indices of the corresponding cylinders
-for i=1:length(polygone_list)
-    polygon = polygone_list{i};
-%     P = polygone{1};
-%     P_end = polygone{2};
+for i=1:length(polygon_list)
+    polygon = polygon_list{i};
+%     P = polygon{1};
+%     P_end = polygon{2};
     [P, P_end] = convert_polyshape(polygon);
     if isempty(P)
         continue
@@ -49,7 +50,7 @@ for i=1:length(polygone_list)
     % of the cylinder can be increased.
     % For that, all circles of the previous section (and indices) are
     % collected (including ones from pre-pre-sections, etc.). Then, it is
-    % checked, if these circles fit into the current polygone. If yes, the
+    % checked, if these circles fit into the current polygon. If yes, the
     % corresponding cylinder is elongated.
     radii_stay_new = [];
     X_stay_new = [];
@@ -91,7 +92,7 @@ for i=1:length(polygone_list)
     indices_stay = indices_stay_new;
     %%
     % Use 2D-code
-    [radii,X,Z,radii_red,X_red,Z_red] = approximate_by_circles(polygon);
+    [radii,X,Z,radii_red,X_red,Z_red] = create_circles(polygon, number_circles_per_section);
     max_points = max(P);
     min_points = min(P);
     [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay);

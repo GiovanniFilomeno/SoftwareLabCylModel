@@ -1,4 +1,5 @@
-function [radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(polygon)
+% Approximate a 2D-polygon by adding (green) and subtracting (red) circles.
+function [radii,X,Y,radii_red,X_red,Y_red] = create_circles(polygon, max_number_circles)
 
 [P, P_end] = convert_polyshape(polygon);
 
@@ -10,12 +11,11 @@ min_points = min(P);
 radius_max = sum(max_points)-sum(min_points);
 large_radius = 10*radius_max;
 
-max_number_circles = 40;
 X = zeros(max_number_circles,1);
 Y = zeros(max_number_circles,1);
 radii = zeros(max_number_circles,1);
 
-% Define green circles to approximate polygone
+% Define green circles to approximate polygon
 number_circles = 1;
 segment_lengths = sqrt((P_end(:,1)-P(:,1)).^2+(P_end(:,2)-P(:,2)).^2);
 cumulative_lengths = cumsum(segment_lengths);
@@ -51,7 +51,7 @@ X_red = zeros(number_red_circles,1);
 Y_red = zeros(number_red_circles,1);
 radii_red = ones(number_red_circles,1)*large_radius;
 i_red = 1;
-%Define red circles to approximate convex polygone
+%Define red circles to approximate convex polygon
 for i = 1:number_points
     if lines_on_hull(i)
         x1 = P(i,1);

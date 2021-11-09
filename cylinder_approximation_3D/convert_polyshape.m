@@ -1,3 +1,4 @@
+% Converts polyshape objects into my own format for polygons
 function [P, P_end] = convert_polyshape(polygon)
 % For the following: I think, boundaries of interior are always
     % clockwise and boundaries of holes always counterclockwise

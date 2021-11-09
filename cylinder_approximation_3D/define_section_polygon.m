@@ -1,6 +1,6 @@
 function [polygon] = define_section_polygon(F,V,N,polygon_left,polygon_right,y_min_section,y_max_section,tol_on_plane)
-% Create maximum possible polygone inside the stl-file defined by F,V,N,
-% assuming that the polygone at the right and left is given.
+% Create maximum possible polygon inside the stl-file defined by F,V,N,
+% assuming that the polygon at the right and left is given.
 
 number_faces = size(F,1);
 valid_faces = []; % use to remove faces, which lie exactly on the plane

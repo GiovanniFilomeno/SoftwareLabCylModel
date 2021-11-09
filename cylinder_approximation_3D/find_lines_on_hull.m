@@ -1,10 +1,11 @@
+% Finds lines of a polygon, which are also part of the convex hull.
 function [lines_on_hull,inner_point] = find_lines_on_hull(P,P_end)
 
 number_points = length(P);
 
 k = convhull(P);
 k_end = convhull(P_end);
-inner_point = mean(P(k,:),1); % always inside the convex polygone
+inner_point = mean(P(k,:),1); % always inside the convex polygon
 point_numbers = 1:number_points;
 points_on_hull = ismember(point_numbers,k);
 points_on_hull_end = ismember(point_numbers,k_end);

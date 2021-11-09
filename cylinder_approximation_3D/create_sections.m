@@ -1,3 +1,4 @@
+% Cuts an stl-file into sections and returns also the y-values of the cuts
 function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections_or_vector)
 
 
@@ -15,7 +16,7 @@ else
 end
 % YcutGEO = [-365,-270,-211,-165,-125,-110,30,211,365];%%%%%%%%%%%
 y_values=YcutGEO;
-mesh_list = cell((length(YcutGEO)),3);
+mesh_list = cell(length(YcutGEO)-1,3);
 
 
 for i=1:(length(YcutGEO)-1)
@@ -30,17 +31,17 @@ for i=1:(length(YcutGEO)-1)
     V=VRD;
     N=NRD;
 
-    if i==(length(YcutGEO)-1)
-        mesh_list{i+1,1}=FRD;
-        mesh_list{i+1,2}=VRD;
-        mesh_list{i+1,3}=NRD;
-    end
+%     if i==(length(YcutGEO)-1)
+%         mesh_list{i+1,1}=FRD;
+%         mesh_list{i+1,2}=VRD;
+%         mesh_list{i+1,3}=NRD;
+%     end
 
 end
 
 % for i=1:(length(y_values)-1)
 %     figure();
-%     print_STL(mesh_list{i,2},mesh_list{i,1});
+%     plot_STL(mesh_list{i,2},mesh_list{i,1});
 %     axis equal;
 % end
 

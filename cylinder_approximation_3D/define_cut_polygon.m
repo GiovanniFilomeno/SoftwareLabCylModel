@@ -1,3 +1,5 @@
+% Defines a polygone at a certain cutting plane of an stl-file.
+% stl-file.
 function [polygon] = define_cut_polygon(F,V,N,y_value,tol_on_plane,tol_uniquetol,tol)
 
 number_faces = size(F,1);
@@ -33,7 +35,7 @@ start_nodes = start_nodes(:,1:number_lines)';
 end_nodes = end_nodes(:,1:number_lines)';
 
 %%
-% Create a polygone from the lines using a graph
+% Create a polygon from the lines using a graph
 nodes = [start_nodes; end_nodes];
 nodes = uniquetol(nodes,tol_uniquetol,'ByRows',true);
 nodes = sortrows(nodes,[1 2]);

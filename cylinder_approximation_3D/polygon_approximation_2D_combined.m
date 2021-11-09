@@ -1,3 +1,6 @@
+% Approximate 2D-polygon by circles (red and green)
+% Does not work anymore, because of changes to the code
+% It was a test for the 3D-code
 clc; clear; close all;
 
 %% These are outdated
@@ -10,12 +13,12 @@ clc; clear; close all;
 % star_length = 6;
 % P = [0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1; 0 0];
 
-%% New definition of polygones
-% P: array of all points of polygones
+%% New definition of polygons
+% P: array of all points of polygons
 % P_end: defines lines, has the same length as P
 % Note:
-% Polygones need to be defined clockwise
-% Holes inside Polygones need to be defined counterclockwise
+% polygons need to be defined clockwise
+% Holes inside polygons need to be defined counterclockwise
 %Simple square
 P = [0 0; 0 1; 1 1; 1 0];
 P_end = [0 1; 1 1; 1 0; 0 0];
@@ -31,14 +34,14 @@ P_end = [0 1; 1 1; 1 0; 0 0];
 
 %% Circle approximation
 
-[radii,X,Y,radii_red,X_red,Y_red] = approximate_by_circles(P,P_end);
+[radii,X,Y,radii_red,X_red,Y_red] = create_circles(P,P_end);
 
 max_points = max(P);
 min_points = min(P);
 %[radii,X,Y] = remove_circles_proximity(radii,X,Y);
 %[radii,X,Y] = remove_circles(radii,X,Y,radii_red,X_red,Y_red,min_points,max_points);
 
-% plot_circles takes as input the output of approximate_by_circles + P +
+% plot_circles takes as input the output of create_circles + P +
 % P_end
 % plot_circles(radii,X,Y,radii_red,X_red,Y_red,P,P_end,min_points,max_points)
 

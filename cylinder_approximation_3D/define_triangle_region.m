@@ -1,3 +1,4 @@
+% Creates a polyshape as the union of several triangles (2D)
 function [triangle_region] = define_triangle_region(F,V)
 number_triangles = size(F,1);
 polyvec_triangles = polyshape.empty(number_triangles,0);

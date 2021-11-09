@@ -1,6 +1,12 @@
-function [mesh_list, y_values, F_return, V_return, N_return] = create_sections_initial(F,V,N,number_of_sections)
+% This function generates y_values, and cuts the geometry into according
+% sections. It chooses the y_values, such that they make sense at the 2
+% ends of the geometry. Furthermore, it places cuts at y_values, where many
+% triangles are parallel to the y-plane. At the end, it defines the
+% y_values, such that the thickness of each section is at most delta =
+% (ymax-ymin)/number_of_sections
+function [mesh_list, y_values, F_return, V_return, N_return] = create_sections_initial(F,V,N,number_of_sections,area_percentage_parallel,ends_offset_fraction)
 
-% Define some tolerances (attention, also defined in define_2D_polygones!!)
+% Define some tolerances (attention, also defined in define_2D_polygons!!)
 tol_uniquetol = 1e-6;
 tol = 1e-6;
 tol_on_plane = 1e-6;
@@ -17,25 +23,25 @@ N_return = N;
 
 %%
 % Check, if left and right end of geometry should be included.
-% For that, check, wether a polygone with nonzero area can be defined at
+% For that, check, wether a polygon with nonzero area can be defined at
 % the left and right end.
 % If not, cut the left or right end of the geometry.
 % At the end, the ends will be included, as they will always have an area
 % after this procedure.
 [polygon_left] = define_cut_polygon(F_return,V_return,N_return,YminGEO,tol_on_plane,tol_uniquetol,tol);
 if ~area(polygon_left)
-    YminGEO = YminGEO + delta/5;
+    YminGEO = YminGEO + delta*ends_offset_fraction;
     [~,~,~,F_return,V_return,N_return]=cut_the_geometry(F_return,V_return,N_return,YminGEO);
 end
 [polygon_right] = define_cut_polygon(F_return,V_return,N_return,YmaxGEO,tol_on_plane,tol_uniquetol,tol);
 if ~area(polygon_right)
-    YmaxGEO = YmaxGEO - delta/5;
+    YmaxGEO = YmaxGEO - delta*ends_offset_fraction;
     [F_return,V_return,N_return,~,~,~]=cut_the_geometry(F_return,V_return,N_return,YmaxGEO);
 end
 delta=(YmaxGEO-YminGEO)/(number_of_sections);
 
 %%
-% Find suitable places for the sections
+% Find planes, which are perpendicular to the y-axis
 % First compute total area
 [triangle_region] = define_triangle_region(F,V);
 total_crossectional_area = area(triangle_region);
@@ -57,7 +63,7 @@ F_parallel = F_parallel(sorted_index,:);
 
 if ~isempty(y_values_parallel)
     % Add y_values, if at that y_value, the area of the parallel triangle
-    % exceeds 5% of the total area.
+    % exceeds a given percentage of the total area.
     y_value = y_values_parallel(1);
     triangles = F_parallel(1,:);
     for i = 2:length(y_values_parallel)
@@ -68,7 +74,7 @@ if ~isempty(y_values_parallel)
             % First handle triangles of previous plane
             [triangle_region] = define_triangle_region(triangles,V);
             area_y = area(triangle_region);
-            if area_y >= 0.05*total_crossectional_area
+            if area_y >= area_percentage_parallel*total_crossectional_area
                 y_values = [y_values,y_value];
             end
             % Start new plane
@@ -78,13 +84,13 @@ if ~isempty(y_values_parallel)
     end
     [triangle_region] = define_triangle_region(triangles,V);
     area_y = area(triangle_region);
-    if area_y >= 0.05*total_crossectional_area
+    if area_y >= area_percentage_parallel*total_crossectional_area
         y_values = [y_values,y_value];
     end
 end
 
-% % %%
-% Add ends to y_values, if not already included
+%%
+% Add the ends of the geometry to y_values, if they are not already included
 if ~sum(ismembertol(YminGEO,y_values,tol_uniquetol))
     y_values = [YminGEO,y_values];
 end
@@ -94,8 +100,8 @@ end
 y_values = sort(y_values);
 
 %%
-% Add sections, if there aren't enough. (Better criterion would be: 
-% triangle area in between is too large)
+% Add sections, such that the maximal thickness of a section is delta, 
+% which is defined by the parameter "number_of_sections"
 for i = 1:length(y_values)-1
     distance = y_values(i+1)-y_values(i);
     if distance > delta
@@ -107,7 +113,7 @@ for i = 1:length(y_values)-1
 end
 
 y_values = sort(y_values);
-mesh_list = cell(length(y_values),3);
+mesh_list = cell(length(y_values)-1,3);
 
 %%
 % Do the actual cuttings
@@ -126,17 +132,17 @@ for i=1:(length(y_values)-1)
     V=VRD;
     N=NRD;
 
-    if i==(length(y_values)-1)
-        mesh_list{i+1,1}=FRD;
-        mesh_list{i+1,2}=VRD;
-        mesh_list{i+1,3}=NRD;
-    end
+%     if i==(length(y_values)-1)
+%         mesh_list{i+1,1}=FRD;
+%         mesh_list{i+1,2}=VRD;
+%         mesh_list{i+1,3}=NRD;
+%     end
 
 end
 
 % for i=1:(length(y_values)-1)
 %     figure();
-%     print_STL(mesh_list{i,2},mesh_list{i,1});
+%     plot_STL(mesh_list{i,2},mesh_list{i,1});
 %     axis equal;
 % end
 

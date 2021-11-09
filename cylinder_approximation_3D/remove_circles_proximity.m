@@ -1,6 +1,9 @@
 % Remove circles, which have centers very close to each other.
 function [radii,X,Y] = remove_circles_proximity(radii,X,Y,radii_stay,X_stay,Y_stay)
 
+% Parameters, that can be used to tune the result:
+accuracy_factor = 0.01;
+
 % For every (remaining) circle, check, if there are close circles nearby
 % If yes, only keep the largest one
 % The circels with parameters ending with _stay will not be removed
@@ -8,7 +11,6 @@ function [radii,X,Y] = remove_circles_proximity(radii,X,Y,radii_stay,X_stay,Y_st
 %% Step1
 % Therefore, first use every circle, that stays, to check, wether any other
 % circle can be removed
-accuracy_factor = 0.01;
 number_circles = length(radii);
 
 if exist('radii_stay','var')
