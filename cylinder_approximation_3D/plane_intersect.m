@@ -45,7 +45,7 @@ end
  
 % Plane 1 and Plane 2 intersect in a line
 %first determine max abs coordinate of cross product
-maxc=find(abs(Nalg)==max(abs(Nalg)));
+maxc=find(abs(Nalg)==max(abs(Nalg)),1); % only find one max, very rare case
 %next, to get a point on the intersection line and
 %zero the max coord, and solve for the other two
       
