@@ -40,7 +40,7 @@ for y_index = 1:length(y_values)-1
     end
     [~,index_red] = find(radii_red);
     [~,index_green] = find(radii);
-    y_positions = linspace(y_values(y_index),y_values(y_index+1),number_per_section);
+    y_positions = [y_values(y_index),y_values(y_index+1)];%linspace(y_values(y_index),y_values(y_index+1),number_per_section);
     plot_circles(radii(index_green),X(index_green),Z(index_green),radii_red(index_red),X_red(index_red),Z_red(index_red),y_positions);
 end
 

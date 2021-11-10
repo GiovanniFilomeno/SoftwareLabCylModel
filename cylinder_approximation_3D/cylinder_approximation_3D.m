@@ -17,10 +17,10 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % profile on;
 
 
-% [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
-% stlWrite('neubauraum.stl',f,v);
-% stl_file = "neubauraum.stl";
-stl_file = "Combined Shape.stl";
+[v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
+stlWrite('neubauraum.stl',f,v);
+stl_file = "neubauraum.stl";
+% stl_file = "Combined Shape.stl";
 [F,V,N] = stlread(stl_file);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 6088%280
@@ -67,8 +67,8 @@ if size(F,1) <= 6088%280
 
     [cylinders,cylinders_red] = create_cylinders(polygon_list, new_y_values, number_circles_per_section);
     plot_cylinders(cylinders,cylinders_red,new_y_values);
-    axis off
-    plot_STL(V,F,"none");
+%     axis off
+%     plot_STL(V,F,"none");
     axis equal;
     view([1 1 1]);
 else

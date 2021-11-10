@@ -138,10 +138,12 @@ for i=1:(length(y_values)-1)
 %         mesh_list{i+1,3}=NRD;
 %     end
 
+end
+
+% for i=1:(length(y_values)-1)
 %     figure();
 %     plot_STL(mesh_list{i,2},mesh_list{i,1});
 %     axis equal;
-
-end
+% end
 
 end

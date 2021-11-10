@@ -1,12 +1,13 @@
 % Create polygon that approximates a circle
-function polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red)
+function polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, n_sides)
 
 polyvec_green = polyshape(length(X),0);
 polyvec_red = polyshape(length(X_red),0);
 
 polygon = polyshape();
-
-n_sides = 400;
+if nargin < 7
+    n_sides = 400;
+end
 % Compute sidelength of polygon by comparing the area of the circle and the
 % polygon
 % area = n * a^2 * cot(pi/n) / 4
