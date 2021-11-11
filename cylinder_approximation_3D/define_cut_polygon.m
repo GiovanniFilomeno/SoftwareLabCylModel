@@ -7,8 +7,8 @@ number_lines = 0;
 start_nodes = zeros(2,number_faces);
 end_nodes = zeros(2,number_faces);
 % Plot lines
-% % %     figure();
-% % %     hold on
+%     figure();
+%     hold on
 
 % Create line segments, if exactly 2 vertices of a triangle lie on the
 % min-plane
@@ -21,7 +21,7 @@ for i = 1:number_faces
         vertex_z_values = [V(F(i,1),3),V(F(i,2),3),V(F(i,3),3)];
         vertex_x_values = vertex_x_values(vertices_on_plane);
         vertex_z_values = vertex_z_values(vertices_on_plane);
-% % %         plot(vertex_x_values,vertex_z_values,'Color','k');
+%         plot(vertex_x_values,vertex_z_values,'Color','k');
         start_nodes(:,number_lines) = [vertex_x_values(1);vertex_z_values(1)];
         end_nodes(:,number_lines) = [vertex_x_values(2);vertex_z_values(2)];
     end
@@ -43,9 +43,14 @@ nodes = sortrows(nodes,[1 2]);
 [~, n2] = ismembertol(end_nodes, nodes, tol,  'ByRows',true);
 conn1 = [n1 n2];
 G = graph(conn1(:,1),conn1(:,2));
+G = simplify(G); % G contains no loops/multiple edges
+D = degree(G);
+D_one = find(D<=1);
+G = rmnode(G,D_one); % G doesn't contain nodes, which have only one edge
 % Plot graph
-% % % figure();
-% % % plot(G);
+% figure();
+% plot(G);
+
 bins = conncomp(G);
 x_values_polygon = cell(1,max(bins));
 z_values_polygon = cell(1,max(bins));
@@ -56,8 +61,8 @@ for i = 1: max(bins)
     z_values_polygon{i} = nodes(path,2);
 end
 polygon = polyshape(x_values_polygon,z_values_polygon,'Simplify',true);
-% % % figure();
-% % % plot(polygon);
+% figure();
+% plot(polygon);
 
 end
 

@@ -1,5 +1,5 @@
 % Approximate a 2D-polygon by adding (green) and subtracting (red) circles.
-function [radii,X,Y,radii_red,X_red,Y_red] = create_circles(polygon, max_number_circles)
+function [radii,X,Y,radii_red,X_red,Y_red] = create_circles(polygon, max_number_circles, red_radius_factor)
 
 [P, P_end] = convert_polyshape(polygon);
 
@@ -9,7 +9,7 @@ number_points = length(P);
 max_points = max(P);
 min_points = min(P);
 radius_max = sum(max_points)-sum(min_points);
-large_radius = 10*radius_max; % radius for red circles
+large_radius = red_radius_factor*radius_max; % radius for red circles
 
 X = zeros(max_number_circles,1);
 Y = zeros(max_number_circles,1);

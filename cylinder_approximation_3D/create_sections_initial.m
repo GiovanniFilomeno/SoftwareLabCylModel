@@ -132,13 +132,11 @@ for i=1:(length(y_values)-2)
     V=VRD;
     N=NRD;
 
-    if i==(length(y_values)-2)
-        mesh_list{i+1,1}=FRD;
-        mesh_list{i+1,2}=VRD;
-        mesh_list{i+1,3}=NRD;
-    end
-
 end
+% The rightmost mesh_list is the remaining mesh, after all cuttings
+mesh_list{end,1}=F;
+mesh_list{end,2}=V;
+mesh_list{end,3}=N;
 
 % for i=1:(length(y_values)-1)
 %     figure();

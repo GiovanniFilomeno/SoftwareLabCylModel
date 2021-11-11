@@ -3,7 +3,7 @@
 % circles) in order to approximate each section of the geometry with
 % cylinders. If possible, it reuses cylinders from previous sections (from
 % left to right)
-function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section)
+function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section, red_radius_factor)
 
 % Test input %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % Cylinders has to be formatted, as needed by other group
@@ -92,7 +92,7 @@ for i=1:length(polygon_list)
     indices_stay = indices_stay_new;
     %%
     % Use 2D-code
-    [radii,X,Z,radii_red,X_red,Z_red] = create_circles(polygon, number_circles_per_section);
+    [radii,X,Z,radii_red,X_red,Z_red] = create_circles(polygon, number_circles_per_section, red_radius_factor);
     max_points = max(P);
     min_points = min(P);
     [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay);
