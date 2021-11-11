@@ -6,12 +6,29 @@ hold on
 
 polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 100);
 if length(y_values) == 2
-    [P,P_end] = convert_polyshape(polygon);
-    for i = 1:size(P,1)
-        y_vec = [y_values(1),y_values(1),y_values(2),y_values(2)];
-        x_vec = [P(i,1),P_end(i,1),P_end(i,1),P(i,1)];
-        z_vec = [P(i,2),P_end(i,2),P_end(i,2),P(i,2)];
-        fill3(x_vec,y_vec,z_vec,'green','EdgeColor','k');
+    hole_boundaries = ishole(polygon); % gives logical array with length = number of boundaries
+    number_boundaries = length(hole_boundaries);
+    for i = 1:number_boundaries
+        % Compute angles to determine colors.
+        [points_x,points_y] = boundary(polygon,i); % First point is already equal to last point
+        points_x_appended = [points_x(end-1);points_x]; % also append true last point before the first point
+        points_y_appended = [points_y(end-1);points_y];
+        vectors_x = points_x_appended(2:end)-points_x_appended(1:end-1);
+        vectors_y = points_y_appended(2:end)-points_y_appended(1:end-1);
+        scalar_products = vectors_x(1:end-1).*vectors_x(2:end)+vectors_y(1:end-1).*vectors_y(2:end);
+        norms = sqrt(vectors_x.^2+vectors_y.^2);
+        angles = acos(scalar_products./norms(1:end-1)./norms(2:end));
+        for i = 1:length(angles)
+            y_vec = [y_values(1),y_values(1),y_values(2),y_values(2)];
+            x_vec = [points_x(i),points_x(i+1),points_x(i+1),points_x(i)];
+            z_vec = [points_y(i),points_y(i+1),points_y(i+1),points_y(i)];
+            if angles(i) < 2*pi/40
+                color_edge = 'green';
+            else
+                color_edge = 'k';
+            end
+            fill3(x_vec,y_vec,z_vec,'green','EdgeColor',color_edge);
+        end
     end
 end
 
