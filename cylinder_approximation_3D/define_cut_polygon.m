@@ -58,7 +58,6 @@ end
 polygon = polyshape(x_values_polygon,z_values_polygon,'Simplify',true);
 % % % figure();
 % % % plot(polygon);
-% % % hold on
 
 end
 

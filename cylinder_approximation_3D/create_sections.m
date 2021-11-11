@@ -19,7 +19,7 @@ y_values=YcutGEO;
 mesh_list = cell(length(YcutGEO)-1,3);
 
 
-for i=1:(length(YcutGEO)-1)
+for i=1:(length(YcutGEO)-2)
     
     [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(F,V,N,YcutGEO(i+1));
 
@@ -31,11 +31,11 @@ for i=1:(length(YcutGEO)-1)
     V=VRD;
     N=NRD;
 
-%     if i==(length(YcutGEO)-1)
-%         mesh_list{i+1,1}=FRD;
-%         mesh_list{i+1,2}=VRD;
-%         mesh_list{i+1,3}=NRD;
-%     end
+    if i==(length(YcutGEO)-2)
+        mesh_list{i+1,1}=FRD;
+        mesh_list{i+1,2}=VRD;
+        mesh_list{i+1,3}=NRD;
+    end
 
 end
 

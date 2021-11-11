@@ -8,8 +8,8 @@ function [polygon_list, y_values] = define_2D_polygons(mesh_list, y_values)
 
 % Define some tolerances (attention, also defined in create_sections!!)
 % Tolerances for polygon determination in section
-tol_uniquetol = 1e-6;
-tol = 1e-6;
+tol_uniquetol = 1e-4;
+tol = 1e-4;
 tol_on_plane = 1e-6;
 
 polygon_list = cell(1,length(y_values)-1);
@@ -34,7 +34,6 @@ for section_index = 1:length(y_values)-1
     % Plot polygon at the end
 %     figure();
 %     plot(polygon,'FaceColor','green');
-%     hold on
 end
     
 end
