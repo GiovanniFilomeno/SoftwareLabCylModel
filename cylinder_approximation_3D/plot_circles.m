@@ -1,6 +1,6 @@
 % plots 2D-circles in a 3D-space by approximating them as polygons
 % It includes circles, which are added (green) and subtracted (red)
-function plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
+function [area_section] = plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
 
 hold on
 
@@ -41,6 +41,8 @@ for y_value = y_values
     t=hgtransform('Matrix',M);     
     plot(polygon,'Parent',t,'FaceColor','g','FaceAlpha',1,'LineWidth',1);
 end
+
+area_section = area(polygon);
 
 end
 
