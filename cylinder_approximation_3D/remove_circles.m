@@ -3,9 +3,9 @@ function [radii,X,Y] = remove_circles(radii,X,Y,radii_red,X_red,Y_red,min_points
 
 % Parameters, that can be used to tune the result:
 % Minimum remaining area:
-min_area_remain = 0.9995;
+min_area_remain = 0.9995; % Higher=More accurate
 % Maximum area removed for one circle:
-max_area_removed = 0.00005;
+max_area_removed = 0.00005; % Lower=More accurate
 
 % The circels with parameters ending with _stay will not be removed
 if ~exist('radii_stay','var')

@@ -20,35 +20,50 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
 % stlWrite('neubauraum.stl',f,v);
 % stl_file = "neubauraum.stl";
-stl_file = "Hexagon Shape.stl";
+stl_file = "Cube Shape.stl";
 [F,V,N] = stlread(stl_file);
 stl_volume = stlVolume(V,F,N);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 6088%280
     %%
     % Parameters which influence the approximation:
+    
     % Parameters for create_sections_initial:
     number_of_sections = 10; % defines maximum thickness of every section
     % by setting thickness > (max(y)-min(y))/number_of_sections
+    % Higher=More accurate
+    
     area_percentage_parallel = 0.05; % If a part of the goemetry with an
     % area of more than this value is parallel to the y-plane, then the
     % corresponding y-value will be included as a position for a cut.
+    % Lower=More accurate
+    
     ends_offset_fraction = 0.2; % If there is no 2D-polygon at the ends of
     % the geometry, which is parallel to the y-plane, than the geometry is
     % cut at a certain offset. This offset is the maximum thickness delta
     % times this fraction.
+    % Lower=More accurate
+    % Relevant only if number_of_sections is small
+    
     
     % Parameters for rewriteY_values:
     maximal_area_difference_ratio = 0.97; % If the ratio of intersection/union
     % of 2 polygons is smaller or equal to that value, than they are
     % regarded as very different and the corresponding cut remains.
+    % Higher=More accurate
     
     % Parameters for create_cylinders/create_circles:
     number_circles_per_section = 40; % maximum number of circles, that are
     % defined at every 2D-polygon
+    % Higher=More accurate
+    
     red_radius_factor = 20; % Relative radius of red cylinders, which are
     % subtracted from the geometry. The higher, the more accurate in
     % theory, but there may be some numerical difficulties
+    % Better to fix this value
+    % If it's changed a lot, also the number of sides of the polygons which
+    % approximate the circles for computing the area should be changed
+    % (Parameter n_sides in create_polyshape)
     
     % Further parameters, that can be set in the functions:
     % -Some tolerances in create_sections_initial and define_2D_polygons
