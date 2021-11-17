@@ -4,7 +4,7 @@ function [area_section] = plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
 
 hold on
 
-polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 100);
+polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 400);
 if length(y_values) == 2
     hole_boundaries = ishole(polygon); % gives logical array with length = number of boundaries
     number_boundaries = length(hole_boundaries);
@@ -32,7 +32,7 @@ if length(y_values) == 2
     end
 end
 
-polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red);
+polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 600);
 for y_value = y_values
     M=[ 1         0         0         0
         0         0	       -1         y_value

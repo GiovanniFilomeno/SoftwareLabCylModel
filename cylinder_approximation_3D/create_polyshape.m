@@ -6,7 +6,7 @@ polyvec_red = polyshape(length(X_red),0);
 
 polygon = polyshape();
 if nargin < 7
-    n_sides = 400;
+    n_sides = 600;
 end
 % Compute sidelength of polygon by comparing the area of the circle and the
 % polygon

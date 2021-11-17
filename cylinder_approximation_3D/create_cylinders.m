@@ -99,6 +99,12 @@ for i=1:length(polygon_list)
         max_area_removed = remove_circle_parameters(3);
         [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay,accuracy_factor);
         [radii,X,Z] = remove_circles(radii,X,Z,radii_red,X_red,Z_red,radii_stay,X_stay,Z_stay,min_area_remain,max_area_removed);
+    else
+        radii_stay = []; % reuse at most one time, if circles are not removed
+        % Else, runtime would be very long.
+        X_stay = [];
+        Z_stay = [];
+        indices_stay = [];
     end
     %plot_circles([radii;radii_stay],[X;X_stay],[Z;Z_stay],radii_red,X_red,Z_red,y_values(i))
 %     plot_circles(radii_stay,X_stay,Z_stay,radii_red,X_red,Z_red,y_values(i))

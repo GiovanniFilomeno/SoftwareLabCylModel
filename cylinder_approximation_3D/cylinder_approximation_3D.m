@@ -17,10 +17,10 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % profile on;
 
 
-% [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
-% stlWrite('neubauraum.stl',f,v);
-% stl_file = "neubauraum.stl";
-stl_file = "Combined Shape.stl";
+[v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
+stlWrite('neubauraum.stl',f,v);
+stl_file = "neubauraum.stl";
+% stl_file = "Combined Shape.stl";
 [F,V,N] = stlread(stl_file);
 stl_volume = stlVolume(V,F,N);
 disp("Number of faces in stl-file: "+string(size(F,1)));
@@ -29,16 +29,16 @@ if size(F,1) <= 6088%280
     % Parameters which influence the approximation:
     
     % Parameters for create_sections_initial:
-    number_of_sections = 10; % defines maximum thickness of every section
+    number_of_sections = 100; % defines maximum thickness of every section
     % by setting thickness > (max(y)-min(y))/number_of_sections
     % Higher=More accurate
     
-    area_percentage_parallel = 0.05; % If a part of the goemetry with an
+    area_percentage_parallel = 0.005; % If a part of the goemetry with an
     % area of more than this value is parallel to the y-plane, then the
     % corresponding y-value will be included as a position for a cut.
     % Lower=More accurate
     
-    ends_offset_fraction = 0.2; % If there is no 2D-polygon at the ends of
+    ends_offset_fraction = 0.05; % If there is no 2D-polygon at the ends of
     % the geometry, which is parallel to the y-plane, than the geometry is
     % cut at a certain offset. This offset is the maximum thickness delta
     % times this fraction.
@@ -47,18 +47,18 @@ if size(F,1) <= 6088%280
     
     
     % Parameters for rewriteY_values:
-    maximal_area_difference_ratio = 0.97; % If the ratio of intersection/union
+    maximal_area_difference_ratio = 0.995; % If the ratio of intersection/union
     % of 2 polygons is smaller or equal to that value, than they are
     % regarded as very different and the corresponding cut remains.
     % Higher=More accurate
     
     
     % Parameters for create_cylinders/create_circles:
-    number_circles_per_section = 40; % maximum number of circles, that are
+    number_circles_per_section = 80; % maximum number of circles, that are
     % defined at every 2D-polygon
     % Higher=More accurate
     
-    red_radius_factor = 20; % Relative radius of red cylinders, which are
+    red_radius_factor = 50; % Relative radius of red cylinders, which are
     % subtracted from the geometry. The higher, the more accurate in
     % theory, but there may be some numerical difficulties
     % Better to fix this value
@@ -69,12 +69,12 @@ if size(F,1) <= 6088%280
     
     % Parameters for remove_circles_proximity and remove_circles:
     % Consists of 3 parameters, that are entered in an array
-    accuracy_factor = 0.01;
-    min_area_remain = 0.9995;
-    max_area_removed = 0.00005;
+    accuracy_factor = 0.001;
+    min_area_remain = 0.999995;
+    max_area_removed = 0.000005;
     remove_circle_parameters = [accuracy_factor,min_area_remain,max_area_removed];
     % If the removal of circles should be skipped, use:
-    % remove_circle_parameters = [];
+%     remove_circle_parameters = [];
     
     
     % Further parameters, that can be set in the functions:

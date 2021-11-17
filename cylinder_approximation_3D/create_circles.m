@@ -8,7 +8,7 @@ number_points = length(P);
 
 max_points = max(P);
 min_points = min(P);
-radius_max = sum(max_points)-sum(min_points);
+radius_max = sum(max_points)-sum(min_points); % Make sure, red circles cut away everything
 large_radius = red_radius_factor*radius_max; % radius for red circles
 
 X = zeros(max_number_circles,1);
