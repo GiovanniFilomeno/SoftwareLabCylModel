@@ -20,7 +20,7 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
 % stlWrite('neubauraum.stl',f,v);
 % stl_file = "neubauraum.stl";
-stl_file = "Cube Shape.stl";
+stl_file = "Combined Shape.stl";
 [F,V,N] = stlread(stl_file);
 stl_volume = stlVolume(V,F,N);
 disp("Number of faces in stl-file: "+string(size(F,1)));
@@ -52,6 +52,7 @@ if size(F,1) <= 6088%280
     % regarded as very different and the corresponding cut remains.
     % Higher=More accurate
     
+    
     % Parameters for create_cylinders/create_circles:
     number_circles_per_section = 40; % maximum number of circles, that are
     % defined at every 2D-polygon
@@ -65,10 +66,19 @@ if size(F,1) <= 6088%280
     % approximate the circles for computing the area should be changed
     % (Parameter n_sides in create_polyshape)
     
+    
+    % Parameters for remove_circles_proximity and remove_circles:
+    % Consists of 3 parameters, that are entered in an array
+    accuracy_factor = 0.01;
+    min_area_remain = 0.9995;
+    max_area_removed = 0.00005;
+    remove_circle_parameters = [accuracy_factor,min_area_remain,max_area_removed];
+    % If the removal of circles should be skipped, use:
+    % remove_circle_parameters = [];
+    
+    
     % Further parameters, that can be set in the functions:
     % -Some tolerances in create_sections_initial and define_2D_polygons
-    % -accuracy_factor in remove_circles_proximity
-    % -area criteria in remove_circles
     
     %%
     % Start of the actual approximation steps:
@@ -84,7 +94,7 @@ if size(F,1) <= 6088%280
     
     [polygon_list, new_y_values] = define_2D_polygons(mesh_list, new_y_values);
 
-    [cylinders,cylinders_red] = create_cylinders(polygon_list, new_y_values, number_circles_per_section, red_radius_factor);
+    [cylinders,cylinders_red] = create_cylinders(polygon_list, new_y_values, number_circles_per_section, red_radius_factor, remove_circle_parameters);
     volume_approximated = plot_cylinders(cylinders,cylinders_red,new_y_values);
 %     axis off
 %     plot_STL(V,F,"none");

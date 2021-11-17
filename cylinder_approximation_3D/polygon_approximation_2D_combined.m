@@ -1,6 +1,6 @@
 % Approximate 2D-polygon by circles (red and green)
 % Does not work anymore, because of changes to the code
-% It was a test for the 3D-code
+% It was a test for the 2D-code, that is also used in the 3D-code
 clc; clear; close all;
 
 %% These are outdated

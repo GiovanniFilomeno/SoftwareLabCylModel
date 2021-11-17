@@ -3,7 +3,7 @@
 % circles) in order to approximate each section of the geometry with
 % cylinders. If possible, it reuses cylinders from previous sections (from
 % left to right)
-function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section, red_radius_factor)
+function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section, red_radius_factor, remove_circle_parameters)
 
 % Test input %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % Cylinders has to be formatted, as needed by other group
@@ -93,10 +93,13 @@ for i=1:length(polygon_list)
     %%
     % Use 2D-code
     [radii,X,Z,radii_red,X_red,Z_red] = create_circles(polygon, number_circles_per_section, red_radius_factor);
-    max_points = max(P);
-    min_points = min(P);
-    [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay);
-    [radii,X,Z] = remove_circles(radii,X,Z,radii_red,X_red,Z_red,min_points,max_points,radii_stay,X_stay,Z_stay);
+    if ~isempty(remove_circle_parameters)
+        accuracy_factor = remove_circle_parameters(1);
+        min_area_remain = remove_circle_parameters(2);
+        max_area_removed = remove_circle_parameters(3);
+        [radii,X,Z] = remove_circles_proximity(radii,X,Z,radii_stay,X_stay,Z_stay,accuracy_factor);
+        [radii,X,Z] = remove_circles(radii,X,Z,radii_red,X_red,Z_red,radii_stay,X_stay,Z_stay,min_area_remain,max_area_removed);
+    end
     %plot_circles([radii;radii_stay],[X;X_stay],[Z;Z_stay],radii_red,X_red,Z_red,y_values(i))
 %     plot_circles(radii_stay,X_stay,Z_stay,radii_red,X_red,Z_red,y_values(i))
     

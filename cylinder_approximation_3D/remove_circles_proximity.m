@@ -1,8 +1,10 @@
 % Remove circles, which have centers very close to each other.
-function [radii,X,Y] = remove_circles_proximity(radii,X,Y,radii_stay,X_stay,Y_stay)
+function [radii,X,Y] = remove_circles_proximity(radii,X,Y,radii_stay,X_stay,Y_stay,accuracy_factor)
 
-% Parameters, that can be used to tune the result:
-accuracy_factor = 0.01; % Lower=More accurate
+if nargin < 7
+    % Parameters, that can be used to tune the result:
+    accuracy_factor = 0.01; % Lower=More accurate
+end
 
 % For every (remaining) circle, check, if there are close circles nearby
 % If yes, only keep the largest one

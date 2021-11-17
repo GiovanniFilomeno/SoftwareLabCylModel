@@ -1,11 +1,13 @@
 % Function removes circles, which do not contribute much to the final area.
-function [radii,X,Y] = remove_circles(radii,X,Y,radii_red,X_red,Y_red,min_points,max_points,radii_stay,X_stay,Y_stay)
+function [radii,X,Y] = remove_circles(radii,X,Y,radii_red,X_red,Y_red,radii_stay,X_stay,Y_stay,min_area_remain,max_area_removed)
 
-% Parameters, that can be used to tune the result:
-% Minimum remaining area:
-min_area_remain = 0.9995; % Higher=More accurate
-% Maximum area removed for one circle:
-max_area_removed = 0.00005; % Lower=More accurate
+if nargin < 11
+    % Parameters, that can be used to tune the result:
+    % Minimum remaining area:
+    min_area_remain = 0.9995; % Higher=More accurate
+    % Maximum area removed for one circle:
+    max_area_removed = 0.00005; % Lower=More accurate
+end
 
 % The circels with parameters ending with _stay will not be removed
 if ~exist('radii_stay','var')
