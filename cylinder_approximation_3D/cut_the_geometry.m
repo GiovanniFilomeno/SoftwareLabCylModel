@@ -1,12 +1,10 @@
 %{
-Date: 23.09.2021
-Project: Cylinder based approximation of geometry (BMW-TUM) 
-Contact: cristian.saenz@tum.de
-
 WHAT DOES THIS FUNCTION DO?
-It takes one STL file [Finput],[Vinput],[Ninput] and divides it into two parts. 
+Divides a STL FILE into two parts at a value in the Y axis
 
-It returns 2 STL files:
+INPUT: STL file [Finput],[Vinput],[Ninput] and divides it into two parts at a value in the Y axis. 
+
+OUTPUT: 2 STL files:
 The green part "GR" is the geometry before the cutvalue [FGR],[VGR],[NGR]
 Red part "RD" is the geometry after the cutvalue [FRD],[VRD],[NRD]
 
@@ -22,7 +20,7 @@ function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(Finput,Vinput,Ninput,cutvalu
 
 % Classification of triangles
 TrGreen=0;      % # triangles under the cut
-TrBlue=0;       % # cutted triangles
+TrBlue=0;       % # cutted triangles 
 TrYellow=0;     % # triangles parallel to the cut plane 
 TrRed=0;        % # triangles above the cut 
 
@@ -47,9 +45,7 @@ AofT=length(Finput(:,1));
 Ymin=min(Vinput(:,2));
 Ycut=[Ymin cutvalue];
 
-% These vectors help to identify which ith tringle of the original STL are
-% green, blue or red.
-
+% These vectors help to identify the color (green, blue or red) of the ith tringle from the original STL 
 Fgreen(1,1)=0;
 Fblue(1,1)=0;
 Fred(1,1)=0;
@@ -112,11 +108,7 @@ for i=1:AofT
               TrBlue=TrBlue+1;
               Fblue(TrBlue,1)=i;
 
-
-              % At this point the intersection line betweeen the cutting
-              % plane and the ith triangle is found
-
-
+              % Find the intersection line betweeen the cutting plane and the ith triangle 
 
               Trconfiguration=0;
               % Tupwards=1 means the triangles points upwards "^"
@@ -125,7 +117,7 @@ for i=1:AofT
               % Tdownwards=1 means the triangles points downwards "V"
               Tdownwards=0; %initialize
 
-              % if conditional to find the triangle configuration
+              % IF conditional to find the triangle configuration
               if ( (yt(1)>=Ycut(icut) && yt(2)>=Ycut(icut) && yt(3)<Ycut(icut))||(yt(1)<=Ycut(icut) && yt(2)<=Ycut(icut)&& yt(3)>Ycut(icut)))
 
                   %Line 1
@@ -166,8 +158,6 @@ for i=1:AofT
 
 
               end %End if conditional for the triangle configuration
-
-
 
               % 3D_line_1= M11 +alf*u11
               % 3D_line_2= M12 +bet*u12
@@ -291,7 +281,7 @@ for i=1:AofT
 end   % Loop triangles
     
 
-% The original GREEN and RED trianlges have to be saved in the NEW STL's
+% The original GREEN and RED trianlges have to be saved in the NEW STLs
 
 % IF there are GREEN triangles THEN save them into the new GREEN STL file 
 if (Fgreen~=0)
@@ -344,7 +334,7 @@ if(Fred~=0)
 end
 clear Vt1 Vt2 Vt3
 
-% The [F] matrices are missing in the NEW STL files
+% Generate [F] matrices of the NEW STL files 
 % Initialize the NEW [F] matrices "FNewGreen and FNewRed"
 FNewGreen=zeros(length(NNewGreen(:,1)),3);
 FNewRed=zeros(length(NNewRed(:,1)),3);
