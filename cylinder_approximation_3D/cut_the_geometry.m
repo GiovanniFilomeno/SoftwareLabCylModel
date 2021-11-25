@@ -21,7 +21,6 @@ function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(Finput,Vinput,Ninput,cutvalu
 % Classification of triangles
 TrGreen=0;      % # triangles under the cut
 TrBlue=0;       % # cutted triangles 
-TrYellow=0;     % # triangles parallel to the cut plane 
 TrRed=0;        % # triangles above the cut 
 
 % The blue (cutted) triangles are modifed. 
