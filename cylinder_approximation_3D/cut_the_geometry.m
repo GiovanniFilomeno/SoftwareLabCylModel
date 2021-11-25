@@ -353,7 +353,6 @@ NRD=NNewRed;
 
 TrGreen=0;  
 TrBlue=0;   
-TrYellow=0; 
 TrRed=0;   
 TrNewGreen=0;
 TrNewRed=0;
