@@ -1,5 +1,5 @@
 % Create polygon that approximates a circle
-function polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, n_sides)
+function [polygon,polygon_red] = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, n_sides)
 
 polyvec_green = polyshape(length(X),0);
 polyvec_red = polyshape(length(X_red),0);
