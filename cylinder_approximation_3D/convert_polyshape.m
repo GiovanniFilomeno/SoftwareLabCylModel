@@ -3,6 +3,14 @@ function [P, P_end] = convert_polyshape(polygon)
 % For the following: I think, boundaries of interior are always
     % clockwise and boundaries of holes always counterclockwise
     % If not, this will not work!!!!!!!!!!!!!!!!!!!!!!!
+    
+    % P: array of all points of polygons
+    % P_end: defines lines, has the same length as P
+    % Note:
+    % polygons need to be defined clockwise
+    % Holes inside polygons need to be defined counterclockwise
+    
+    
     P = [];
     P_end = [];
     hole_boundaries = ishole(polygon); % gives logical array with length = number of boundaries

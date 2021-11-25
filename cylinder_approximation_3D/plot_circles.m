@@ -33,13 +33,17 @@ if length(y_values) == 2
 end
 
 polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 600);
-for y_value = y_values
-    M=[ 1         0         0         0
-        0         0	       -1         y_value
-        0         1         0         0
-        0         0         0         1];
-    t=hgtransform('Matrix',M);     
-    plot(polygon,'Parent',t,'FaceColor','g','FaceAlpha',1,'LineWidth',1);
+if ~isempty(y_values)
+    for y_value = y_values
+        M=[ 1         0         0         0
+            0         0	       -1         y_value
+            0         1         0         0
+            0         0         0         1];
+        t=hgtransform('Matrix',M);     
+        plot(polygon,'Parent',t,'FaceColor','g','FaceAlpha',1,'LineWidth',1);
+    end
+else
+    plot(polygon,'FaceColor','g','FaceAlpha',1);
 end
 
 area_section = area(polygon);
