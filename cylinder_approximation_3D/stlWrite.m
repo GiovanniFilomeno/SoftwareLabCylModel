@@ -1,5 +1,5 @@
 function stlWrite(filename, varargin)
-%STLWRITE   Write STL file from patch or surface data.
+%STLWRITE writes STL file from patch or surface data.
 %
 %   STLWRITE(FILE, FV) writes a stereolithography (STL) file to FILE for a
 %   triangulated patch defined by FV (a structure with fields 'vertices'

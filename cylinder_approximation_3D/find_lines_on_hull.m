@@ -1,5 +1,15 @@
-% Finds lines of a polygon, which are also part of the convex hull.
 function [lines_on_hull,inner_point] = find_lines_on_hull(P,P_end)
+% find_lines_on_hull returns lines of a polygon, which are also part of the
+% convex hull of that polygon.
+%| Inputs:
+%|        P: array of all points of the polygon
+%|        P_end: array of points, that has the same length as P. Together
+%         with P, this defines all edges of the polygon.
+%| Outputs:
+%|        lines_on_hull: logical array, which is one, if the corresponding
+%|        line lies on the convex hull
+%|        inner_point: average point of the convex hull, which is
+%         guaranteed to lie inside the convex hull
 
 number_points = length(P);
 

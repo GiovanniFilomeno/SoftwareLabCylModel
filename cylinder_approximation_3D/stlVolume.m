@@ -1,15 +1,18 @@
 function [totalVolume,totalArea] = stlVolume(V,F,N)
-V = V';
-F = F';
-N = N';
+% stlVolume computes the volume of a geometry.
 % Given a surface triangulation, compute the volume enclosed using
 % divergence theorem.
-% Assumption:Triangle nodes are ordered correctly, i.e.,computed normal is outwards
+% Assumption: Triangle nodes are ordered correctly, i.e.,computed normal is outwards
 % Input: p: (3xnPoints), t: (3xnTriangles)
 % Output: total volume enclosed, and total area of surface  
 % Author: K. Suresh; suresh@engr.wisc.edu
+% Adjusted by: Benjamin Sundqvist
+
+V = V';
+F = F';
+N = N';
+
 % Compute the vectors d13 and d12
-% Adjusted by Benjamin Sundqvist
 d13= [(V(1,F(2,:))-V(1,F(3,:))); (V(2,F(2,:))-V(2,F(3,:)));  (V(3,F(2,:))-V(3,F(3,:)))];
 d12= [(V(1,F(1,:))-V(1,F(2,:))); (V(2,F(1,:))-V(2,F(2,:))); (V(3,F(1,:))-V(3,F(2,:)))];
 cr = cross(d13,d12,1);%cross-product (vectorized)
