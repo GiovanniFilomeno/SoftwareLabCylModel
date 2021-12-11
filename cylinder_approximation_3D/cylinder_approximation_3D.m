@@ -1,11 +1,13 @@
 % An stl_file is approximated by parallel cylinders (parallel to the y-axis)
 % the cylinders must not lie outside of the initial geometry
 %
-% first, y_values are chosen, where geometry is cut.
-% second, new stl-files are defined for every section in between the cuts.
-% third, maximum allowable 2D-polygon is defined for each section
-% fourth, cylinders are created, using a 2D-algorithm with circles and
-% reusing cylinders, whenever possible
+% step 0: import an stl-geometry
+% step 1: y_values are chosen, where geometry is cut.
+% step 2: new stl-files are defined for every section in between the cuts.
+% step 3: maximum allowable 2D-polygon is defined for each section
+% step 4: some cuts are removed again, if they are not necessary
+% step 5: cylinders are created, using a 2D-algorithm with circles and
+% cylinders are reused, whenever possible
 
 clc; clear; close all;
 profile off;
@@ -17,10 +19,10 @@ warning('off','MATLAB:polyshape:boundary3Points');
 % profile on;
 
 
-[v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
-stlWrite('neubauraum.stl',f,v);
-stl_file = "neubauraum.stl";
-% stl_file = "Combined Shape.stl";
+% [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
+% stlWrite('neubauraum.stl',f,v);
+% stl_file = "neubauraum.stl";
+stl_file = "Combined Shape.stl";
 [F,V,N] = stlread(stl_file);
 stl_volume = stlVolume(V,F,N);
 disp("Number of faces in stl-file: "+string(size(F,1)));
@@ -29,7 +31,7 @@ if size(F,1) <= 6088%280
     % Parameters which influence the approximation:
     
     % Parameters for create_sections_initial:
-    number_of_sections = 100; % defines maximum thickness of every section
+    number_of_sections = 10; % defines maximum thickness of every section
     % by setting thickness > (max(y)-min(y))/number_of_sections
     % Higher=More accurate
     
@@ -54,7 +56,7 @@ if size(F,1) <= 6088%280
     
     
     % Parameters for create_cylinders/create_circles:
-    number_circles_per_section = 80; % maximum number of circles, that are
+    number_circles_per_section = 20; % maximum number of circles, that are
     % defined at every 2D-polygon
     % Higher=More accurate
     
@@ -99,6 +101,7 @@ if size(F,1) <= 6088%280
 %     axis off
 %     plot_STL(V,F,"none");
     axis equal;
+    set(gcf,'color','w');
     view([1 1 1]);
     disp(" ");
     disp("Convergence results:");

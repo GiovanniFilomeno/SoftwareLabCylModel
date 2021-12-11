@@ -1,9 +1,32 @@
-% Approximate given sections of 2D-polygons with cylinders
-% This function uses the 2D-algorithm (approximation of 2D-polygons with
+function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section, red_radius_factor, remove_circle_parameters)
+% create_cylinders approximates a geometry by cylinders. The original
+% geometry is not given, instead, it is divided into several sections
+% between certain y-values. Between any 2 of these y-values, the geometry
+% is defined by 2D-polygons. If all 2D-polygons are extruded between the 2
+% corresponding y-values, that gives the geometry. So at the end, that
+% geometry is approximated by cylinders.
+% This function uses the 2D-algorithm (approximation of all 2D-polygons with
 % circles) in order to approximate each section of the geometry with
 % cylinders. If possible, it reuses cylinders from previous sections (from
 % left to right)
-function [cylinders,cylinders_red] = create_cylinders(polygon_list, y_values, number_circles_per_section, red_radius_factor, remove_circle_parameters)
+% In the resulting approximation, one set of cylinders is added and another
+% set is subtracted, in order to form the geometry.
+%| Inputs:
+%         polygon_list: list of 2D-polygons, which fit into a certain
+%         geometry that should be approximated
+%         y_values: array of length polygon_list + 1, stores all y_values
+%         between which the 2D-polygons span the original geometry
+%         number_circles_per_section,red_radius_factor: Used in the
+%         2D-code, which approximates polygons by circles. (See
+%         create_circles)
+%         remove_circle_parameters: Used for the functions
+%         remove_circles_proximity and remove_circles
+%| Outputs:
+%         cylinders: list of all cylinders, which are added to the geometry.
+%         It consists of the coordinates for both endpoints of the cylinders 
+%         and the radius
+%         cylinders_red: list of all cylinders, which are subtracted from
+%         the geometry. Same structure, as cylinders
 
 % Test input %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % Cylinders has to be formatted, as needed by other group

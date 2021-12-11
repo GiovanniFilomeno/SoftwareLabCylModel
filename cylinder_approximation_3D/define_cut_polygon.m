@@ -1,6 +1,15 @@
-% Defines a polygone at a certain cutting plane of an stl-file.
-% stl-file.
 function [polygon] = define_cut_polygon(F,V,N,y_value,tol_on_plane,tol_uniquetol,tol)
+% define_cut_polygon defines a 2D-polygon from a geometry and a given
+% cutting-plane. It is assumed, that the given geometry was already cut at
+% that given plane, so it has edges that lie on that plane. These edges are
+% detected as a first step. Then, the edges are ordered into a polygon using
+% graph-functionality.
+%| Inputs:
+%         F,V,N: faces, vertices and normal-vectors of the given geometry
+%         y_value: the x-z-plane at this y-value is the cutting-plane
+%         tol_on_plane,tol_uniquetol,tol: some tolerances
+%| Outputs:
+%          polygon: the polygon as a polyshape-object
 
 number_faces = size(F,1);
 number_lines = 0;
@@ -43,14 +52,16 @@ nodes = sortrows(nodes,[1 2]);
 [~, n2] = ismembertol(end_nodes, nodes, tol,  'ByRows',true);
 conn1 = [n1 n2];
 G = graph(conn1(:,1),conn1(:,2));
-G = simplify(G); % G contains no loops/multiple edges
+G = simplify(G); % such that G contains no loops/multiple edges
 D = degree(G);
 D_one = find(D<=1);
-G = rmnode(G,D_one); % G doesn't contain nodes, which have only one edge
+G = rmnode(G,D_one); % such that G doesn't contain nodes, which have only one edge
 % Plot graph
 % figure();
 % plot(G);
 
+% For each subgraph (each seperate polygon), store all points in order and
+% create a polyshape object
 bins = conncomp(G);
 x_values_polygon = cell(1,max(bins));
 z_values_polygon = cell(1,max(bins));

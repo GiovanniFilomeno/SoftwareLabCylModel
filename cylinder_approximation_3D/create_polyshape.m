@@ -1,5 +1,20 @@
-% Create polygon that approximates a circle
 function [polygon,polygon_red] = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, n_sides)
+% create_polyshape defines a polygon, that approximates a 2D combination of
+% circles. All circles are approximated by regular n-sided polygons. Then,
+% some of the circles are added and the others are subtracted. That forms
+% the final 2D-polygon.
+%| Inputs:
+%         X,Y,radii: vectors of center-coordinates and radii of circles,
+%         which are combined to a single shape
+%         X_red,Y_red, radii_red: vectors of center-coordinates and radii
+%         of circles, which are subtracted from the shape
+%         n_sides: All circles are approximated by polygons with this
+%         number of sides.
+%| Outputs:
+%         polygon: the final shape approximated as a polygon given as a 
+%         polyshape-object
+%         polygon_red: The combination of all circles, which are
+%         subtracted. This is used to plot the subtracted region.
 
 polyvec_green = polyshape(length(X),0);
 polyvec_red = polyshape(length(X_red),0);

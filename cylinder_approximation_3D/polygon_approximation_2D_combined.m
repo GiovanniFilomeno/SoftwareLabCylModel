@@ -10,8 +10,8 @@ clc; clear; close all;
 %P = 
 
 % % star shape:
-star_length = 2;
-polygon = polyshape([0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1]);
+% star_length = 2;
+% polygon = polyshape([0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_length-2; 0 -2; -star_length -1]);
 
 % %2 squares, one with square hole
 % polygon = polyshape([0 0; 0 1; 1 1; 1 0]);
@@ -19,14 +19,15 @@ polygon = polyshape([0 0; 1 star_length; 2 0; star_length+2 -1; 2 -2; 1 -star_le
 % polygon = addboundary(polygon,[1.5 0; 1.5 1; 2.5 1; 2.5 0]);
 
 % % 2 seperate shapes
-% polygon = polyshape([0 0; -0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0]);
-% polygon = addboundary(polygon,[ 2 0; 1.5 1; 2.5 1; 2.5 0]);
+polygon = polyshape([0 0; -0.5 0.3; 0.2 0.6; 0 1; 1 1; 1 0]);
+polygon = addboundary(polygon,[ 2 0; 1.5 1; 2.5 1; 2.5 0]);
 
 % % square with complicated hole
 % polygon = polyshape([-1 -1; -1 2; 2 2; 2 -1]);
 % polygon = addboundary(polygon,[0 0; 0 1; 1 1.5; 1.5 1.8]);
 
 % % single region polygons
+% polygon = polyshape([0 0; 0 1; 0.2 0.6; 0.35 0.5; 0.2 0.4]);
 % polygon = polyshape([0 0; 0 1; 1 1; 1 0]);
 % polygon = polyshape([0 0; 0 1; 0.5 2; 3 0.5; 2 -3; 0 0]);
 % polygon = polyshape([0 0; 0.5 0.75; 1 1; 1.5 0.5; 1.5 -0.5; 1.25 0.3; 1 0; 1.25 -0.3; 1 -1; 0 0]);
@@ -48,7 +49,11 @@ figure();
 hold on
 [circle_polygon,polygon_red] = create_polyshape(X, Z, radii, X_red, Z_red, radii_red, 600);
 plot(circle_polygon,'FaceColor','g','FaceAlpha',1);
+for i = 1:length(P)
+    plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',2,'color','blue')
+end
 area(polygon)
+area(circle_polygon)
 axis equal;
 
 %% Some more plots
@@ -137,18 +142,18 @@ hold off
 %%
 % Plots during the run of create_circles, to observe the growth of the
 % circles.
-figure();
-hold on;
-for i = 1:length(P)
-    plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',4,'color','blue')
-end
-for i = 1:length(P)
-    if lines_on_hull(i)
-        plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'--','linewidth',4,'color','red')
-    end
-end
-rectangle('Position',[x_return-radius_return,y_return-radius_return,2*radius_return,2*radius_return],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
-axis equal
+% % % figure();
+% % % hold on;
+% % % for i = 1:length(P)
+% % %     plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'linewidth',4,'color','blue')
+% % % end
+% % % for i = 1:length(P)
+% % %     if lines_on_hull(i)
+% % %         plot([P(i,1),P_end(i,1)],[P(i,2),P_end(i,2)],'--','linewidth',4,'color','red')
+% % %     end
+% % % end
+% % % rectangle('Position',[x_return-radius_return,y_return-radius_return,2*radius_return,2*radius_return],'Curvature',[1,1], 'FaceColor','g'); % 'EdgeColor','g'
+% % % axis equal
 
 %% Test, which compute_area function is faster
 % compute_area3 is faster when computed sequentially, but compute_areaMC is
