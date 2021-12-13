@@ -36,7 +36,7 @@ if exist('radii_stay','var')
         radius_check = radii_stay(i);
         accuracy = accuracy_factor*radius_check;
         for j = 1:number_circles
-            if (X(j)-X_check)^2+(Y(j)-Y_check)^2 < accuracy
+            if ((X(j)-X_check)^2+(Y(j)-Y_check)^2 < accuracy) && (radius_check > radii(j))
                 radii(j) = 0;
             end
         end

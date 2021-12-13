@@ -26,7 +26,7 @@ number_points = length(P);
 
 max_points = max(P);
 min_points = min(P);
-radius_max = sum(max_points)-sum(min_points); % Make sure, red circles cut away everything
+radius_max = (sum(max_points)-sum(min_points))*2; % Make sure, red circles cut away everything
 large_radius = red_radius_factor*radius_max; % radius for red circles
 
 X = zeros(max_number_circles,1);
@@ -140,7 +140,7 @@ nx = ty_normal; % Normal vector
 ny = -tx_normal;
 x_touch = x1+position*tx;
 y_touch = y1+position*ty;
-radius = abs_t*8;
+radius = min(abs_t*8,radius_max);
 size_step = radius/2;
 for size_loop = 1:20
     if radius > abs_t/32

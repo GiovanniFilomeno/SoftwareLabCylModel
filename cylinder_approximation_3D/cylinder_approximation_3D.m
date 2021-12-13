@@ -56,7 +56,7 @@ if size(F,1) <= 6088%280
     
     
     % Parameters for create_cylinders/create_circles:
-    number_circles_per_section = 20; % maximum number of circles, that are
+    number_circles_per_section = 40; % maximum number of circles, that are
     % defined at every 2D-polygon
     % Higher=More accurate
     
