@@ -3,7 +3,7 @@
 %
 % step 0: import an stl-geometry
 % step 1: y_values are chosen, where geometry is cut.
-% step 2: new stl-files are defined for every section in between the cuts.
+% step 2: the geometry is cut into sections with stl-like datastructure.
 % step 3: maximum allowable 2D-polygon is defined for each section
 % step 4: some cuts are removed again, if they are not necessary
 % step 5: cylinders are created, using a 2D-algorithm with circles and
@@ -11,14 +11,21 @@
 
 clc; clear; close all;
 profile off;
-% delete(gcp('nocreate'));
-% parpool('local');
+% Certain warnings are supressed, which come from polygon computations.
+% That does not cause any known errors inside the code.
 warning('off','MATLAB:polyshape:boolOperationFailed');
 warning('off','MATLAB:polyshape:repairedBySimplify');
 warning('off','MATLAB:polyshape:boundary3Points');
 % profile on;
 
-
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Choose the stl-file, that you want to approximate by cylinders.
+% If the file can't be read by stlread, it needs to be converted to another
+% format by stlReadFirst and stlWrite. This intermediate step is necessary
+% because of different data-formats, so stlReadFirst can't be used instead
+% of stlread.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [v, f, n, name] = stlReadFirst("Baumraum example complex.stl");
 % stlWrite('neubauraum.stl',f,v);
 % stl_file = "neubauraum.stl";
@@ -28,19 +35,24 @@ stl_volume = stlVolume(V,F,N);
 disp("Number of faces in stl-file: "+string(size(F,1)));
 if size(F,1) <= 6088%280
     %%
-    % Parameters which influence the approximation:
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Parameters which influence the accuracy and computation time:
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     % Parameters for create_sections_initial:
-    number_of_sections = 10; % defines maximum thickness of every section
+    number_of_sections = 10; 
+    % defines maximum thickness of every section
     % by setting thickness > (max(y)-min(y))/number_of_sections
     % Higher=More accurate
     
-    area_percentage_parallel = 0.005; % If a part of the goemetry with an
+    area_percentage_parallel = 0.005; 
+    % If a part of the goemetry with an
     % area of more than this value is parallel to the y-plane, then the
     % corresponding y-value will be included as a position for a cut.
     % Lower=More accurate
     
-    ends_offset_fraction = 0.05; % If there is no 2D-polygon at the ends of
+    ends_offset_fraction = 0.05; 
+    % If there is no 2D-polygon at the ends of
     % the geometry, which is parallel to the y-plane, than the geometry is
     % cut at a certain offset. This offset is the maximum thickness delta
     % times this fraction.
@@ -49,18 +61,21 @@ if size(F,1) <= 6088%280
     
     
     % Parameters for rewriteY_values:
-    maximal_area_difference_ratio = 0.995; % If the ratio of intersection/union
+    maximal_area_difference_ratio = 0.995; 
+    % If the ratio of intersection/union
     % of 2 polygons is smaller or equal to that value, than they are
     % regarded as very different and the corresponding cut remains.
     % Higher=More accurate
     
     
     % Parameters for create_cylinders/create_circles:
-    number_circles_per_section = 40; % maximum number of circles, that are
+    number_circles_per_section = 40; 
+    % maximum number of circles, that are
     % defined at every 2D-polygon
     % Higher=More accurate
     
-    red_radius_factor = 50; % Relative radius of red cylinders, which are
+    red_radius_factor = 50; 
+    % Relative radius of red cylinders, which are
     % subtracted from the geometry. The higher, the more accurate in
     % theory, but there may be some numerical difficulties
     % Better to fix this value
@@ -75,7 +90,7 @@ if size(F,1) <= 6088%280
     min_area_remain = 0.999995;
     max_area_removed = 0.000005;
     remove_circle_parameters = [accuracy_factor,min_area_remain,max_area_removed];
-    % If the removal of circles should be skipped, use:
+    % If the removal of circles should be skipped, use the following line:
 %     remove_circle_parameters = [];
     
     
@@ -83,7 +98,10 @@ if size(F,1) <= 6088%280
     % -Some tolerances in create_sections_initial and define_2D_polygons
     
     %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Start of the actual approximation steps:
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     % Initial slicing
     [mesh_list, y_values, F, V, N] = create_sections_initial(F,V,N,number_of_sections,area_percentage_parallel,ends_offset_fraction);
 
@@ -91,7 +109,7 @@ if size(F,1) <= 6088%280
     
     [new_y_values] = rewriteY_values(polygon_list, y_values, maximal_area_difference_ratio);
     
-    % Adapted slicing 
+    % Adapted slicing, some y-values have been removed
     [mesh_list, new_y_values] = create_sections(F,V,N,new_y_values);
     
     [polygon_list, new_y_values] = define_2D_polygons(mesh_list, new_y_values);
