@@ -1,5 +1,5 @@
 % Approximate 2D-polygon by circles (red and green)
-% Test befor 3D-code worked
+% Test before 3D-code worked
 % Used to produce illustrations for the presentations
 clc; clear; close all;
 
