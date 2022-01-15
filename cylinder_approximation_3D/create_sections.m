@@ -1,19 +1,22 @@
 function [mesh_list, y_values] = create_sections(F,V,N,number_of_sections_or_vector)
+%
 % create_sections cuts the given geometry into several sections. If a 
 % number is given, it splits the geometry into that number of sections
 % with uniform thickness. If a vector of y-values is given, it cuts the 
 % geometry at these y-values. The cuts are performed at x-z-planes at the 
 % corresponding y-values.
-%| Inputs:
-%         F,V,N: faces, vertices and normal-vectors of the given geometry
-%         number_of_sections_or_vector: if it's a number, the geometry is
-%         cut into this number of uniformly thick sections. If it's a
-%         vector, these are the y-values, at which the geometry is cut.
-%| Outputs:
-%         mesh_list: The geometry of each section, stl-like-datastructure. It
-%         consists of faces, vertices and normal vectors
-%         y_values: array of length mesh_list + 1, stores all y_values
-%         between the sections and at the ends of the complete geometry
+%
+%Inputs:
+%         :F,V,N: faces, vertices and normal-vectors of the given geometry
+%         :number_of_sections_or_vector: if it's a number, the geometry is
+%                                        cut into this number of uniformly thick sections. If it's a
+%                                        vector, these are the y-values, at which the geometry is cut.
+% 
+%Outputs:
+%         :mesh_list: The geometry of each section, stl-like-datastructure. It
+%                     consists of faces, vertices and normal vectors
+%         :y_values: array of length mesh_list + 1, stores all y_values
+%                    between the sections and at the ends of the complete geometry
 
 if(length(number_of_sections_or_vector)==1)
     YminGEO=min(V(:,2));

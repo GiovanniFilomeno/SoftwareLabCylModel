@@ -1,13 +1,13 @@
 % An stl_file is approximated by parallel cylinders (parallel to the y-axis)
 % the cylinders must not lie outside of the initial geometry
 %
-% step 0: import an stl-geometry
-% step 1: y_values are chosen, where geometry is cut.
-% step 2: the geometry is cut into sections with stl-like datastructure.
-% step 3: maximum allowable 2D-polygon is defined for each section
-% step 4: some cuts are removed again, if they are not necessary
-% step 5: cylinders are created, using a 2D-algorithm with circles and
-% cylinders are reused, whenever possible
+% :step 0: import an stl-geometry
+% :step 1: y_values are chosen, where geometry is cut.
+% :step 2: the geometry is cut into sections with stl-like datastructure.
+% :step 3: maximum allowable 2D-polygon is defined for each section
+% :step 4: some cuts are removed again, if they are not necessary
+% :step 5: cylinders are created, using a 2D-algorithm with circles and
+%          cylinders are reused, whenever possible
 
 clc; clear; close all;
 profile off;

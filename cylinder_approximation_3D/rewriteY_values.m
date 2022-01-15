@@ -1,4 +1,5 @@
 function [new_y_values] = rewriteY_values(polygon_list, y_values, maximal_area_difference_ratio)
+% 
 % rewriteY_values checks, which y_values are needed and only returns these
 % y_values. The given polygon_list and y_values approximate a geometry,
 % which has been cut into several sections. If 2 polygons only differ
@@ -6,17 +7,18 @@ function [new_y_values] = rewriteY_values(polygon_list, y_values, maximal_area_d
 % position is removed. The measurement, how different 2 polygons are, is
 % based on the ratio of the area of the intersection divided by the area of
 % the union of these 2 polygons.
-%| Inputs:
-%         polygon_list: list of all polygons, that should be compared
-%         y_values: list of y-values (length polygon_list + 1). Between 2
-%         y-values, the geometry is defined by the according polygon.
-%|        maximal_area_difference_ratio: if the ratio of the area of the
-%         intersection and the union of 2 polygons is smaller than this
-%         value, then they are concidered to be very different and both are
-%         needed, to approximate the geometry.
-%| Outputs:
-%         new_y_values: the y-values, that remain, after some unnecessary
-%         ones have been removed.
+%
+%Inputs:
+%         :polygon_list: list of all polygons, that should be compared
+%         :y_values: list of y-values (length polygon_list + 1). Between 2
+%                    y-values, the geometry is defined by the according polygon.
+%         :maximal_area_difference_ratio: if the ratio of the area of the
+%                                         intersection and the union of 2 polygons is smaller than this
+%                                         value, then they are concidered to be very different and both are
+%                                         needed, to approximate the geometry.
+%Outputs:
+%         :new_y_values: the y-values, that remain, after some unnecessary
+%                        ones have been removed.
 
 areas_polygon=zeros(length(polygon_list),1);
 for i=1:length(polygon_list)

@@ -1,19 +1,21 @@
 function [radii,X,Y] = remove_circles_proximity(radii,X,Y,radii_stay,X_stay,Y_stay,accuracy_factor)
+% 
 % remove_circles_proximity deletes circles, which have centers very close to 
 % each other. Some given circles may be removed. Some other given circles
 % always remain. The circles are removed, if the center is very close to
 % another circle. Than, only the larger one remains.
-%| Inputs:
-%         X,Y,radii: vectors of center-coordinates and radii of circles.
-%         Some of these circles will be removed.
-%|        X_stay,Y_stay,radii_stay: vectors of center-coordinates and radii
-%         of green circles. None of these circles will be removed.
-%|        accuracy_factor: Circles are concidered to be very close to each
-%         other, if the distance is less than this factor multiplied with
-%         the radius.
-%| Outputs:
-%         X,Y,radii: vectors of center-coordinates and radii of circles.
-%         These are all circles, that remain after some others have been removed.
+%
+%Inputs:
+%         :X,Y,radii: vectors of center-coordinates and radii of circles.
+%                     Some of these circles will be removed.
+%         :X_stay,Y_stay,radii_stay: vectors of center-coordinates and radii
+%                                    of green circles. None of these circles will be removed.
+%         :accuracy_factor: Circles are concidered to be very close to each
+%                           other, if the distance is less than this factor multiplied with
+%                           the radius.
+%Outputs:
+%         :X,Y,radii: vectors of center-coordinates and radii of circles.
+%                     These are all circles, that remain after some others have been removed.
 
 if nargin < 7
     % Parameters, that can be used to tune the result:

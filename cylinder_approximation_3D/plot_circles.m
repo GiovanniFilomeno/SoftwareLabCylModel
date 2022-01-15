@@ -1,4 +1,5 @@
 function [area_section] = plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
+%
 % plot_circles plots 2D-circles in a 3D-space by approximating them as polygons
 % It includes circles, which are added (green) and subtracted (red). The
 % circles are plotted at every y-plane of the given y-values. If exactly 2
@@ -6,15 +7,16 @@ function [area_section] = plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
 % resulting plot gives a closed 3D-geometry.
 % As the area can be computed quickly from these polygon-approximations,
 % also the area of the shape is computed and returned.
-%| Inputs:
-%|         X,Y,radii: vectors of center-coordinates and radii of circles,
-%          which are combined to a single shape
-%|         X_red,Y_red, radii_red: vectors of center-coordinates and radii
-%          of circles, which are subtracted from the shape
-%|         y_values: at these y_values, the 2D-geometries are plotted in
-%          the according x-z-planes
-%| Outputs:
-%|        area_section: area of the given shape
+%
+%Inputs:
+%          :X,Y,radii: vectors of center-coordinates and radii of circles,
+%                      which are combined to a single shape
+%          :X_red,Y_red, radii_red: vectors of center-coordinates and radii
+%                                   of circles, which are subtracted from the shape
+%          :y_values: at these y_values, the 2D-geometries are plotted in
+%                     the according x-z-planes
+%Outputs:
+%           :area_section: area of the given shape
 
 hold on
 

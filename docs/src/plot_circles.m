@@ -1,10 +1,26 @@
-% plots 2D-circles in a 3D-space by approximating them as polygons
-% It includes circles, which are added (green) and subtracted (red)
-function plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
+function [area_section] = plot_circles(radii,X,Y,radii_red,X_red,Y_red,y_values)
+%
+% plot_circles plots 2D-circles in a 3D-space by approximating them as polygons
+% It includes circles, which are added (green) and subtracted (red). The
+% circles are plotted at every y-plane of the given y-values. If exactly 2
+% y-values are given, also the also side-faces are plotted, such that the
+% resulting plot gives a closed 3D-geometry.
+% As the area can be computed quickly from these polygon-approximations,
+% also the area of the shape is computed and returned.
+%
+%Inputs:
+%          :X,Y,radii: vectors of center-coordinates and radii of circles,
+%                      which are combined to a single shape
+%          :X_red,Y_red, radii_red: vectors of center-coordinates and radii
+%                                   of circles, which are subtracted from the shape
+%          :y_values: at these y_values, the 2D-geometries are plotted in
+%                     the according x-z-planes
+%Outputs:
+%           :area_section: area of the given shape
 
 hold on
 
-polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 100);
+polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 400);
 if length(y_values) == 2
     hole_boundaries = ishole(polygon); % gives logical array with length = number of boundaries
     number_boundaries = length(hole_boundaries);
@@ -32,15 +48,21 @@ if length(y_values) == 2
     end
 end
 
-polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red);
-for y_value = y_values
-    M=[ 1         0         0         0
-        0         0	       -1         y_value
-        0         1         0         0
-        0         0         0         1];
-    t=hgtransform('Matrix',M);     
-    plot(polygon,'Parent',t,'FaceColor','g','FaceAlpha',1,'LineWidth',1);
+polygon = create_polyshape(X, Y, radii, X_red, Y_red, radii_red, 600);
+if ~isempty(y_values)
+    for y_value = y_values
+        M=[ 1         0         0         0
+            0         0	       -1         y_value
+            0         1         0         0
+            0         0         0         1];
+        t=hgtransform('Matrix',M);     
+        plot(polygon,'Parent',t,'FaceColor','g','FaceAlpha',1,'LineWidth',1);
+    end
+else
+    plot(polygon,'FaceColor','g','FaceAlpha',1);
 end
+
+area_section = area(polygon);
 
 end
 

@@ -1,5 +1,5 @@
 function [v, f, n, name] = stlReadFirst(fileName)
-%STLREAD reads any STL file not depending on its format
+%STLREADFIRST reads any STL file not depending on its format
 %V are the vertices
 %F are the faces
 %N are the normals

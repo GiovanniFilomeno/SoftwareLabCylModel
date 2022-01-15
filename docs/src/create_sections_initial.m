@@ -1,10 +1,32 @@
-% This function generates y_values, and cuts the geometry into according
-% sections. It chooses the y_values, such that they make sense at the 2
-% ends of the geometry. Furthermore, it places cuts at y_values, where many
-% triangles are parallel to the y-plane. At the end, it defines the
-% y_values, such that the thickness of each section is at most delta =
-% (ymax-ymin)/number_of_sections
 function [mesh_list, y_values, F_return, V_return, N_return] = create_sections_initial(F,V,N,number_of_sections,area_percentage_parallel,ends_offset_fraction)
+% 
+% create_sections_initial generates y-values, and cuts the geometry into 
+% according sections. The cuts are performed at x-z-planes at the corresponding
+% y-values. It chooses the y-values at both ends of the geometry. 
+% Furthermore, it places cuts at y-values, where many
+% triangles are parallel to the y-plane. At the end, it defines the
+% y-values, such that the thickness of each section is at most delta =
+% (ymax-ymin)/number_of_sections
+%
+%Inputs:
+%         :F,V,N: faces, vertices and normal-vectors of the given geometry
+%         :number_of_sections: minimum number of sections
+%         :area_percentage_parallel: if some triangles at a certain y-value
+%                                    are parallel to the x-z-plane and their area is at least this
+%                                    fraction of the total crossectional area, then this y-value is
+%                                    chosen as a cutting-plane
+%         :ends_offset_fraction: if it is not possible to define a polygon
+%                                at one end of the geometry, the end of the geometry is cut from
+%                                the rest. This parameter influences, how much of the geometry is
+%                                cut away
+%Outputs:
+%         :mesh_list: The geometry of each section, stl-like-datastructure. It
+%                     consists of faces, vertices and normal vectors
+%         :y_values: array of length mesh_list + 1, stores all y_values
+%                    between the sections and at the ends of the complete geometry
+%         :F_return,V_return,N_return: The faces, vertices and normal
+%                                      vectors of the complete geometry. It only changes from the input,
+%                                      if one of the ends has been cut away.
 
 % Define some tolerances (attention, also defined in define_2D_polygons!!)
 tol_uniquetol = 1e-6;

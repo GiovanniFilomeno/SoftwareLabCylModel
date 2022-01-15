@@ -1,29 +1,27 @@
-%{
-Date: 23.09.2021
-Project: Cylinder based approximation of geometry (BMW-TUM) 
-Contact: cristian.saenz@tum.de
-
-WHAT DOES THIS FUNCTION DO?
-It takes one STL file [Finput],[Vinput],[Ninput] and divides it into two parts. 
-
-It returns 2 STL files:
-The green part "GR" is the geometry before the cutvalue [FGR],[VGR],[NGR]
-Red part "RD" is the geometry after the cutvalue [FRD],[VRD],[NRD]
-
-STL FILE STRUCTURE
-[F...]= Faces matrix
-[V...]= Vertices matrix
-[N...]= Normal vector matrix 
-%}
-
 function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(Finput,Vinput,Ninput,cutvalue)
+%
+% cut_the_geometry divides a geometry from STL format into two parts at a 
+% value in the Y axis
+% 
+%Inputs:
+% :[Finput],[Vinput],[Ninput]: 3 matrices from a STL file  
+% 
+%Outputs: 
+% 2 geometries in STL-like matrix format:
+%
+% :[FGR],[VGR],[NGR]: The green part "GR" is the geometry before the cutvalue 
+% :[FRD],[VRD],[NRD]: Red part "RD" is the geometry after the cutvalue 
+% 
+% STL MATRICES
+% [F...]= Faces matrix
+% [V...]= Vertices matrix
+% [N...]= Normal vectors matrix 
 
 % INITIALIZING VARIABLES
 
 % Classification of triangles
 TrGreen=0;      % # triangles under the cut
-TrBlue=0;       % # cutted triangles
-TrYellow=0;     % # triangles parallel to the cut plane 
+TrBlue=0;       % # cutted triangles 
 TrRed=0;        % # triangles above the cut 
 
 % The blue (cutted) triangles are modifed. 
@@ -47,9 +45,7 @@ AofT=length(Finput(:,1));
 Ymin=min(Vinput(:,2));
 Ycut=[Ymin cutvalue];
 
-% These vectors help to identify which ith tringle of the original STL are
-% green, blue or red.
-
+% These vectors help to identify the color (green, blue or red) of the ith tringle from the original STL 
 Fgreen(1,1)=0;
 Fblue(1,1)=0;
 Fred(1,1)=0;
@@ -84,201 +80,172 @@ for i=1:AofT
        Fgreen(TrGreen,1)=i;
 
     elseif condition2
-
-      % Normal vector of the ith triangle
-      N1=[Ninput(i,1) Ninput(i,2) Ninput(i,3)];
-      % Normal vector of the cutting plane, direction of y-axis
-      N2=[0 1 0];
+    
+      TrBlue=TrBlue+1;
+      Fblue(TrBlue,1)=i;
       
-      % Calculate the intertection points
+      % Vertices of the triangle
       Pnt1=[xt(1) yt(1) zt(1)];
       Pnt2=[xt(2) yt(2) zt(2)];
       Pnt3=[xt(3) yt(3) zt(3)];
 
-      % A point in the ith triangle
-      A1=[xt(3) yt(3) zt(3)];
-      % A point in the cutting plane 
-      A2=[1 Ycut(icut) 1];
-      
-      %Parametric equation of a line in 3D = Nalg +alphA*Palg
-      [Palg,Nalg,check]=plane_intersect(N1,A1,N2,A2);
+      Trconfiguration=0; %initialize
+      % Tupwards=1 means the triangles points upwards "^"
+      Tupwards=0; %initialize
 
-      if (check==1||check==0)
-          
-              TrYellow=TrYellow+1;
-              
-      elseif(check==2)
-             
-              TrBlue=TrBlue+1;
-              Fblue(TrBlue,1)=i;
+      % Tdownwards=1 means the triangles points downwards "V"
+      Tdownwards=0; %initialize
 
+      % IF conditional to find the triangle configuration
+      if ( (yt(1)>=Ycut(icut) && yt(2)>=Ycut(icut) && yt(3)<Ycut(icut))||(yt(1)<=Ycut(icut) && yt(2)<=Ycut(icut)&& yt(3)>Ycut(icut)))
 
-              % At this point the intersection line betweeen the cutting
-              % plane and the ith triangle is found
+          %Line 1
+          M11=Pnt1;
+          u11=(Pnt3-Pnt1);
+          %Line 2
+          M12=Pnt2;
+          u12=(Pnt3-Pnt2);
+          Trconfiguration=1;
 
+          Tdownwards=(yt(1)>=Ycut(icut) && yt(2)>=Ycut(icut) && yt(3)<Ycut(icut));
+          Tupwards=(yt(1)<=Ycut(icut) && yt(2)<=Ycut(icut)&& yt(3)>Ycut(icut));
 
+      elseif ( (yt(1)>=Ycut(icut) && yt(3)>=Ycut(icut)&& yt(2)<Ycut(icut))||(yt(1)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(2)>Ycut(icut)))
 
-              Trconfiguration=0;
-              % Tupwards=1 means the triangles points upwards "^"
-              Tupwards=0; %initialize
+          %Line 1
+          M11=Pnt1;
+          u11=(Pnt2-Pnt1);
+          %Line 2
+          M12=Pnt3;
+          u12=(Pnt2-Pnt3);
+          Trconfiguration=2;
 
-              % Tdownwards=1 means the triangles points downwards "V"
-              Tdownwards=0; %initialize
+          Tdownwards=(yt(1)>=Ycut(icut) && yt(3)>=Ycut(icut)&& yt(2)<Ycut(icut));
+          Tupwards=(yt(1)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(2)>Ycut(icut));
 
-              % if conditional to find the triangle configuration
-              if ( (yt(1)>=Ycut(icut) && yt(2)>=Ycut(icut) && yt(3)<Ycut(icut))||(yt(1)<=Ycut(icut) && yt(2)<=Ycut(icut)&& yt(3)>Ycut(icut)))
+      elseif ( (yt(2)>=Ycut(icut) && yt(3)>=Ycut(icut) && yt(1)<Ycut(icut))||(yt(2)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(1)>Ycut(icut)))
+         %Line 1
+          M11=Pnt2;
+          u11=(Pnt1-Pnt2);
+          %Line 2
+          M12=Pnt3;
+          u12=(Pnt1-Pnt3);
+          Trconfiguration=3;
 
-                  %Line 1
-                  M11=Pnt1;
-                  u11=(Pnt3-Pnt1);
-                  %Line 2
-                  M12=Pnt2;
-                  u12=(Pnt3-Pnt2);
-                  Trconfiguration=1;
-
-                  Tdownwards=(yt(1)>=Ycut(icut) && yt(2)>=Ycut(icut) && yt(3)<Ycut(icut));
-                  Tupwards=(yt(1)<=Ycut(icut) && yt(2)<=Ycut(icut)&& yt(3)>Ycut(icut));
-
-              elseif ( (yt(1)>=Ycut(icut) && yt(3)>=Ycut(icut)&& yt(2)<Ycut(icut))||(yt(1)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(2)>Ycut(icut)))
-
-                  %Line 1
-                  M11=Pnt1;
-                  u11=(Pnt2-Pnt1);
-                  %Line 2
-                  M12=Pnt3;
-                  u12=(Pnt2-Pnt3);
-                  Trconfiguration=2;
-
-                  Tdownwards=(yt(1)>=Ycut(icut) && yt(3)>=Ycut(icut)&& yt(2)<Ycut(icut));
-                  Tupwards=(yt(1)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(2)>Ycut(icut));
-
-              elseif ( (yt(2)>=Ycut(icut) && yt(3)>=Ycut(icut) && yt(1)<Ycut(icut))||(yt(2)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(1)>Ycut(icut)))
-                 %Line 1
-                  M11=Pnt2;
-                  u11=(Pnt1-Pnt2);
-                  %Line 2
-                  M12=Pnt3;
-                  u12=(Pnt1-Pnt3);
-                  Trconfiguration=3;
-
-                  Tdownwards=(yt(2)>=Ycut(icut) && yt(3)>=Ycut(icut) && yt(1)<Ycut(icut));
-                  Tupwards=(yt(2)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(1)>Ycut(icut));
+          Tdownwards=(yt(2)>=Ycut(icut) && yt(3)>=Ycut(icut) && yt(1)<Ycut(icut));
+          Tupwards=(yt(2)<=Ycut(icut) && yt(3)<=Ycut(icut)&& yt(1)>Ycut(icut));
 
 
-              end %End if conditional for the triangle configuration
+      end %End if conditional for the triangle configuration
+
+      % 3D_line_1= M11 +alf*u11
+      % 3D_line_2= M12 +bet*u12
+
+      % Solve for alf and bet in the y-component == cut value  
+      alf=(Ycut(icut)-M11(2))/u11(2);
+      bet=(Ycut(icut)-M12(2))/u12(2);
+
+      % Intersection points
+      I1=M11+alf*u11;
+      I2=M12+bet*u12;
 
 
+      % REMESHING: from a cut triangle appear 3 new triagles
+     if (Trconfiguration==1)
 
-              % 3D_line_1= M11 +alf*u11
-              % 3D_line_2= M12 +bet*u12
-              
-              % Solve for alf and bet in the y-component == cut value  
-              alf=(Ycut(icut)-M11(2))/u11(2);
-              bet=(Ycut(icut)-M12(2))/u12(2);
+          % Triangle after cut
+          Tr1Pnt1=[xt(3) yt(3) zt(3)];
+          Tr1Pnt2=I1;
+          Tr1Pnt3=I2;
 
-              % Intersection points
-              I1=M11+alf*u11;
-              I2=M12+bet*u12;
+          % Quadrilateral has to be divided into 2 triangles 
+          Tr2Pnt1=[xt(1) yt(1) zt(1)];
+          Tr2Pnt2=I1;
+          Tr2Pnt3=I2;
 
+          Tr3Pnt1=[xt(1) yt(1) zt(1)];
+          Tr3Pnt2=[xt(2) yt(2) zt(2)];
+          Tr3Pnt3=I2;
 
-              % REMESHING: from a cut triangle appear 3 new triagles
-             if (Trconfiguration==1)
+      elseif(Trconfiguration==2)
 
-                  % Triangle after cut
-                  Tr1Pnt1=[xt(3) yt(3) zt(3)];
-                  Tr1Pnt2=I1;
-                  Tr1Pnt3=I2;
+          % Triangle after cut
+          Tr1Pnt1=[xt(2) yt(2) zt(2)];
+          Tr1Pnt2=I1;
+          Tr1Pnt3=I2;
 
-                  % Quadrilateral has to be divided into 2 triangles 
-                  Tr2Pnt1=[xt(1) yt(1) zt(1)];
-                  Tr2Pnt2=I1;
-                  Tr2Pnt3=I2;
+          % Quadrilateral has to be divided into 2 triangles 
+          Tr2Pnt1=[xt(1) yt(1) zt(1)];
+          Tr2Pnt2=I1;
+          Tr2Pnt3=I2;
 
-                  Tr3Pnt1=[xt(1) yt(1) zt(1)];
-                  Tr3Pnt2=[xt(2) yt(2) zt(2)];
-                  Tr3Pnt3=I2;
+          Tr3Pnt1=[xt(1) yt(1) zt(1)];
+          Tr3Pnt2=[xt(3) yt(3) zt(3)];
+          Tr3Pnt3=I2;
 
-              elseif(Trconfiguration==2)
+      elseif(Trconfiguration==3)
 
-                  % Triangle after cut
-                  Tr1Pnt1=[xt(2) yt(2) zt(2)];
-                  Tr1Pnt2=I1;
-                  Tr1Pnt3=I2;
+          % Triangle after the cut
+          Tr1Pnt1=[xt(1) yt(1) zt(1)];
+          Tr1Pnt2=I1;
+          Tr1Pnt3=I2;
 
-                  % Quadrilateral has to be divided into 2 triangles 
-                  Tr2Pnt1=[xt(1) yt(1) zt(1)];
-                  Tr2Pnt2=I1;
-                  Tr2Pnt3=I2;
+          % Quadrilateral has to be divided into 2 triangles
+          Tr2Pnt1=[xt(2) yt(2) zt(2)];
+          Tr2Pnt2=I1;
+          Tr2Pnt3=I2;
 
-                  Tr3Pnt1=[xt(1) yt(1) zt(1)];
-                  Tr3Pnt2=[xt(3) yt(3) zt(3)];
-                  Tr3Pnt3=I2;
+          Tr3Pnt1=[xt(2) yt(2) zt(2)];
+          Tr3Pnt2=[xt(3) yt(3) zt(3)];
+          Tr3Pnt3=I2;
 
-              elseif(Trconfiguration==3)
+      end % END of REMESHING 
 
-                  % Triangle after the cut
-                  Tr1Pnt1=[xt(1) yt(1) zt(1)];
-                  Tr1Pnt2=I1;
-                  Tr1Pnt3=I2;
+      %IF: to save the new triangles in the new STL files 
+      if(Tdownwards)
 
-                  % Quadrilateral has to be divided into 2 triangles
-                  Tr2Pnt1=[xt(2) yt(2) zt(2)];
-                  Tr2Pnt2=I1;
-                  Tr2Pnt3=I2;
+          %If the triangle is pointing DOWNWARDS
 
-                  Tr3Pnt1=[xt(2) yt(2) zt(2)];
-                  Tr3Pnt2=[xt(3) yt(3) zt(3)];
-                  Tr3Pnt3=I2;
+          TrNewGreen=TrNewGreen+1;
 
-              end % END of REMESHING 
-              
-              %IF: to save the new triangles in the new STL files 
-              if(Tdownwards)
+          % Save the NEW GREEN triangle in the NEW GREEN STL file
+          VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr1Pnt1;Tr1Pnt2;Tr1Pnt3];
+          NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
 
-                  %If the triangle is pointing DOWNWARDS
+          TrNewRed=TrNewRed+1;
 
-                  TrNewGreen=TrNewGreen+1;
-                  
-                  % Save the NEW GREEN triangle in the NEW GREEN STL file
-                  VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr1Pnt1;Tr1Pnt2;Tr1Pnt3];
-                  NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
+          % Save the NEW 2 GREEN triangles in the NEW GREEN STL file
+          VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr2Pnt1;Tr2Pnt2;Tr2Pnt3];
+          NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
 
-                  TrNewRed=TrNewRed+1;
-                  
-                  % Save the NEW 2 GREEN triangles in the NEW GREEN STL file
-                  VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr2Pnt1;Tr2Pnt2;Tr2Pnt3];
-                  NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
+          TrNewRed=TrNewRed+1;
 
-                  TrNewRed=TrNewRed+1;
+          VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr3Pnt1;Tr3Pnt2;Tr3Pnt3];
+          NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
 
-                  VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr3Pnt1;Tr3Pnt2;Tr3Pnt3];
-                  NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
+      elseif(Tupwards)
 
-              elseif(Tupwards)
+          % If the triangle is pointing UPWARDS
 
-                  % If the triangle is pointing UPWARDS
-                 
-                  TrNewRed=TrNewRed+1;
-                  
-                  % Save the NEW RED triangle in the NEW RED STL file
-                  VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr1Pnt1;Tr1Pnt2;Tr1Pnt3];
-                  NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
+          TrNewRed=TrNewRed+1;
 
-                  TrNewGreen=TrNewGreen+1;
-                  
-                  % Save the NEW 2 GREEN triangles in the NEW GREEN STL file
-                  VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr2Pnt1;Tr2Pnt2;Tr2Pnt3];
-                  NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
+          % Save the NEW RED triangle in the NEW RED STL file
+          VNewRed(TrNewRed*3-2:TrNewRed*3,1:3)=[Tr1Pnt1;Tr1Pnt2;Tr1Pnt3];
+          NNewRed(TrNewRed,1:3)=Ninput(i,1:3);
 
-                  TrNewGreen=TrNewGreen+1;
-                  
-                  VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr3Pnt1;Tr3Pnt2;Tr3Pnt3];
-                  NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
+          TrNewGreen=TrNewGreen+1;
 
-              end % end triangle DOWNWARDS OR UPWARDS
+          % Save the NEW 2 GREEN triangles in the NEW GREEN STL file
+          VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr2Pnt1;Tr2Pnt2;Tr2Pnt3];
+          NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
 
+          TrNewGreen=TrNewGreen+1;
 
-      end % if conditional blue triangles 
+          VNewGreen(TrNewGreen*3-2:TrNewGreen*3,1:3)=[Tr3Pnt1;Tr3Pnt2;Tr3Pnt3];
+          NNewGreen(TrNewGreen,1:3)=Ninput(i,1:3);
+
+      end % end triangle DOWNWARDS OR UPWARDS
+     
 
     % Condition 3 = RED triangle
     elseif condition3
@@ -291,7 +258,7 @@ for i=1:AofT
 end   % Loop triangles
     
 
-% The original GREEN and RED trianlges have to be saved in the NEW STL's
+% The original GREEN and RED trianlges have to be saved in the NEW STLs
 
 % IF there are GREEN triangles THEN save them into the new GREEN STL file 
 if (Fgreen~=0)
@@ -344,7 +311,7 @@ if(Fred~=0)
 end
 clear Vt1 Vt2 Vt3
 
-% The [F] matrices are missing in the NEW STL files
+% Generate [F] matrices of the NEW STL files 
 % Initialize the NEW [F] matrices "FNewGreen and FNewRed"
 FNewGreen=zeros(length(NNewGreen(:,1)),3);
 FNewRed=zeros(length(NNewRed(:,1)),3);
@@ -387,7 +354,6 @@ NRD=NNewRed;
 
 TrGreen=0;  
 TrBlue=0;   
-TrYellow=0; 
 TrRed=0;   
 TrNewGreen=0;
 TrNewRed=0;

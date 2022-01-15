@@ -1,4 +1,5 @@
 function area = compute_area_MC(X, Y, radii, X_red, Y_red, radii_red, bounds_x, bounds_y)
+% 
 % compute_area computes the area of a shape, which is defined by the
 % addition of a set of (green) circles and subtraction of a set of (red)
 % circles. It computes the area using a Monte Carlo algorithm. It creates
@@ -7,15 +8,16 @@ function area = compute_area_MC(X, Y, radii, X_red, Y_red, radii_red, bounds_x, 
 % Then, it computes the area by computing the fracition of points, 
 % which lie inside the geometry and multiplying it with the area of the
 % bounding box.
-%| Inputs:
-%         X,Y,radii: vectors of center-coordinates and radii of circles,
-%         which are combined to a shape
-%         X_red,Y_red, radii_red: vectors of center-coordinates and radii
-%         of circles, which are subtracted from the shape
-%         bounds_x,bounds_y: bounding box, which lies around the given
-%         shape.
-%| Outputs:
-%         area: approximated area of the given shape
+%
+%Inputs:
+%         :X,Y,radii: vectors of center-coordinates and radii of circles,
+%                     which are combined to a shape
+%         :X_red,Y_red, radii_red: vectors of center-coordinates and radii
+%                                  of circles, which are subtracted from the shape
+%         :bounds_x,bounds_y: bounding box, which lies around the given
+%                             shape.
+%Outputs:
+%         :area: approximated area of the given shape
 
 number = 100000;
 length_x = bounds_x(2)-bounds_x(1);

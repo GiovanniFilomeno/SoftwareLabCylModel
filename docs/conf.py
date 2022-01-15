@@ -13,6 +13,11 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+from datetime import datetime
+import time
+sourceyear = datetime.utcfromtimestamp(
+    int(os.environ.get('SOURCE_DATE_EPOCH', time.time()))).year
+
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -20,8 +25,12 @@ import os
 # -- Project information -----------------------------------------------------
 
 project = 'Cylinder-based approximation of 3D objects'
-copyright = '2021, TUM'
-author = 'Ahmad M. Belbeisi, Benjamin Sundqvist, Cristian Betancourt, Chaudhry Taimoor Niaz and the BMW development team'
+copyright = (
+    '2021–2022 Ahmad M. Belbeisi, Benjamin Sundqvist, Cristian Betancour, Chaudhry Taimoor Niaz '
+    'and the BMW development team; '
+    f'2021–{sourceyear} The TUM Software lab development team'
+)
+#author = 'Ahmad M. Belbeisi, Benjamin Sundqvist, Cristian Betancourt, Chaudhry Taimoor Niaz and the BMW development team'
 
 
 # The short X.Y version
@@ -114,7 +123,7 @@ html_use_modindex = True
 # Output file base name for HTML help builder.
 htmlhelp_basename = "librosadoc"
 html_title = 'Cylinder-based approximation of 3D objects'
-html_logo = 'img/BMW.svg'
+html_logo = 'img/image.png'
 
 html_theme_options = {
     'logo_only': True,
@@ -125,6 +134,30 @@ html_static_path = ['_static']
 html_css_files = [
     'css/custom.css',
 ]
+# If true, add an index to the HTML documents.
+html_use_index = False
+
+# If true, generate domain-specific indices in addition to the general index.
+# For e.g. the Python domain, this is the global module index.
+html_domain_index = False
+
+# If true, the reST sources are included in the HTML build as _sources/<name>.
+# html_copy_source = True
+
+# If true, an OpenSearch description file will be output, and all pages will
+# contain a <link> tag referring to it.
+html_use_opensearch = 'False'
+
+# Output file base name for HTML help builder.
+htmlhelp_basename = 'SF2021'
+
+# Use typographic quote characters.
+smartquotes = False
+
+# Path to favicon
+html_favicon = 'img/favicon.ico'
+
+# Options for LaTeX output
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -157,7 +190,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'sphinxcontrib-matlabdomain.tex', 'Cylinder-based approximation of 3D objects Documentation',
-     'Ahmad M. Belbeisi \and Benjamin Sundqvist \and Cristian Betancourt \and Chaudhry Taimoor Niaz \and and the BMW development team', 'manual'),
+     'Ahmad M. Belbeisi,' '\\and Benjamin Sundqvist,' '\\and Cristian Betancourt,' '\\and Chaudhry Taimoor Niaz,' '\\and and the BMW development team', 'manual'),
 ]
 
 
@@ -167,7 +200,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'sphinxcontrib-matlabdomain', 'CylCylinder-based approximation of 3D objectsnd Documentation',
-     [author], 1)
+     ['Ahmad M. Belbeisi,Benjamin Sundqvist,Cristian Betancourt,Chaudhry Taimoor Niaz,BMW development team'], 1)
 ]
 
 
@@ -178,7 +211,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'sphinxcontrib-matlabdomain', 'sphinxcontrib-matlabdomain Documentation',
-     author, 'sphinxcontrib-matlabdomain', 'One line description of project.',
+     'Ahmad M. Belbeisi@*Benjamin Sundqvist@*Cristian Betancourt@*Chaudhry Taimoor Niaz@*'
+     'The BMW development team', 'sphinxcontrib-matlabdomain', 'One line description of project.',
      'Miscellaneous'),
 ]
 

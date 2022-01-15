@@ -1,5 +1,25 @@
-% Approximate a 2D-polygon by adding (green) and subtracting (red) circles.
 function [radii,X,Y,radii_red,X_red,Y_red] = create_circles(polygon, max_number_circles, red_radius_factor)
+%
+% create_circles approximates a 2D-polygon by adding (green) and
+% subtracting (red) circles. The resulting shape needs to lie completely
+% inside the given polygon. The green circles, which are added, are
+% distributed uniformly around the perimeter of the polygon. Red circles
+% are subtracted from edges, that lie on the convex-hull of the polygon. By
+% that, straight edges are approximated with high accuracy.
+%
+%Inputs:
+%         :polygon: The polygon, that should be approximated
+%         :max_number_circles: The number of green circles, that is
+%                              distributed uniformly around the perimeter of the polygon. It is
+%                              the maximum number, as the creation of some circles might fail.
+%         :red_radius_factor: The largest possible radius of red circles is
+%                             determined by the larges possible radius of green circles
+%                             multiplied by this factor.
+%Outputs:
+%         :X,Y,radii: vectors of center-coordinates and radii of circles,
+%                     which are combined to form a shape
+%         :X_red,Y_red, radii_red: vectors of center-coordinates and radii
+%                                  of circles, which are subtracted from the resulting shape
 
 [P, P_end] = convert_polyshape(polygon);
 
@@ -8,7 +28,7 @@ number_points = length(P);
 
 max_points = max(P);
 min_points = min(P);
-radius_max = sum(max_points)-sum(min_points);
+radius_max = (sum(max_points)-sum(min_points))*2; % Make sure, red circles cut away everything
 large_radius = red_radius_factor*radius_max; % radius for red circles
 
 X = zeros(max_number_circles,1);
@@ -122,7 +142,7 @@ nx = ty_normal; % Normal vector
 ny = -tx_normal;
 x_touch = x1+position*tx;
 y_touch = y1+position*ty;
-radius = abs_t*8;
+radius = min(abs_t*8,radius_max);
 size_step = radius/2;
 for size_loop = 1:20
     if radius > abs_t/32

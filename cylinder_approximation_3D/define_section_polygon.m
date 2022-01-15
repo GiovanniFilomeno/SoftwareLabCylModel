@@ -1,18 +1,19 @@
 function [polygon] = define_section_polygon(F,V,N,polygon_left,polygon_right,y_min_section,y_max_section,tol_on_plane)
+% 
 % define_section_polygon creates the maximum possible polygon inside a
 % given geometry. The constraint is, that an extrusion of the polygon along
 % the y-axis through the geometry needs to lie completely inside the
 % geometry. The polygons at the right and left cutting-planes of the
 % geometry are given.
-%| Inputs:
-%         F,V,N: faces, vertices and normal-vectors of the given geometry
-%         y_min_section, y_max_section: the x-z-plane at these y-values are
-%         the cutting-planes at both ends of the given section
-%         polygon_left,polygon_right: the polygons at the ends of the
-%         section
-%         tol_on_plane: a tolerance
-%| Outputs:
-%         polygon: the polygon as a polyshape-object
+%
+%Inputs:
+%         :F,V,N: faces, vertices and normal-vectors of the given geometry
+%         :y_min_section, y_max_section: the x-z-plane at these y-values are
+%                                        the cutting-planes at both ends of the given section
+%         :polygon_left,polygon_right: the polygons at the ends of the section
+%         :tol_on_plane: a tolerance
+%Outputs:
+%         :polygon: the polygon as a polyshape-object
 
 number_faces = size(F,1);
 valid_faces = []; % use to remove faces, which lie exactly on the plane

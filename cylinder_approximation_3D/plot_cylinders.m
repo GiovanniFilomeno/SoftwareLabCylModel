@@ -1,19 +1,21 @@
 function [volume_approximated] = plot_cylinders(cylinders,cylinders_red,y_values)
+%
 % plot_cylinders plots some parallel cylinders in a 3D-space by approximating
 % the corresponding circles as polygons.
 % It includes cylinders, which are added (green) and subtracted (red).
 % Between 2 y-values (in one section), there are always the same cylinders.
 % As the area of each crossection is given in the process also the volume
 % of the cylinder-geometry is computed and returned.
-%| Inputs:
-%|         cylinders: list of all cylinders, which are added to the geometry.
-%          It consists of the coordinates for both endpoints of the cylinders 
-%          and the radius
-%|         cylinders_red: list of all cylinders, which are subtracted from
-%          the geometry. Same structure, as cylinders
-%|         y_values: between these y-values, the crossections are constant
-%| Outputs:
-%|         volume_approximated: volume of the given cylinder-geometry
+%
+%Inputs:
+%         :cylinders: list of all cylinders, which are added to the geometry.
+%                     It consists of the coordinates for both endpoints of the cylinders 
+%                     and the radius
+%         :cylinders_red: list of all cylinders, which are subtracted from
+%                         the geometry. Same structure, as cylinders
+%         :y_values: between these y-values, the crossections are constant
+%Outputs:
+%         :volume_approximated: volume of the given cylinder-geometry
 
 volume_approximated = 0;
 

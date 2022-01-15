@@ -1,13 +1,15 @@
 function []=plot_STL(V,F,color)
+% 
 % plot_STL plots a geometry, which is given in an stl-like datastructure.
 % It either plots a mesh, if the color is "none", or it plots filled faces,
 % if the color is "yes".
-%| Inputs:
-%|        V,F: vertices and faces of the given geometry
-%|        color: if "none", only the edges are plotted, if "yes", the faces
-%         are filled with color
-%| Outputs:
-%         no outputs
+%
+%Inputs:
+%           :V,F: vertices and faces of the given geometry
+%           :color: if "none", only the edges are plotted, if "yes", the faces
+%                   are filled with color
+%Outputs:
+%           :no outputs
 
 AofT=length(F(:,1));
 if nargin < 3

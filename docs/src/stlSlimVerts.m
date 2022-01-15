@@ -1,5 +1,5 @@
 function [vnew, fnew]= stlSlimVerts(v, f)
-% PATCHSLIM removes duplicate vertices in surface meshes.
+% STLSLIMVERTS removes duplicate vertices in surface meshes.
 % 
 % This function finds and removes duplicate vertices.
 %

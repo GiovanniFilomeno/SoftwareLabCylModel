@@ -1,14 +1,16 @@
 function [FGR,VGR,NGR,FRD,VRD,NRD]=cut_the_geometry(Finput,Vinput,Ninput,cutvalue)
+%
 % cut_the_geometry divides a geometry from STL format into two parts at a 
 % value in the Y axis
 % 
-% Inputs:
-% 3 matrices from a STL file [Finput],[Vinput],[Ninput]  
+%Inputs:
+% :[Finput],[Vinput],[Ninput]: 3 matrices from a STL file  
 % 
-% Outputs: 
+%Outputs: 
 % 2 geometries in STL-like matrix format:
-% The green part "GR" is the geometry before the cutvalue [FGR],[VGR],[NGR]
-% Red part "RD" is the geometry after the cutvalue [FRD],[VRD],[NRD]
+%
+% :[FGR],[VGR],[NGR]: The green part "GR" is the geometry before the cutvalue 
+% :[FRD],[VRD],[NRD]: Red part "RD" is the geometry after the cutvalue 
 % 
 % STL MATRICES
 % [F...]= Faces matrix
