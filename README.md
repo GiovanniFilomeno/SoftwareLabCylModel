@@ -1,8 +1,3 @@
-
-Cylinder-based approximation of 3D objects
---------------------
-
-
 Documentation
 --------------------
 https://software-lab-2021-documentation.readthedocs.io/en/latest/#
