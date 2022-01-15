@@ -1,8 +1,6 @@
 
 
 
-
-
 plot_circles
 ----------
 .. autofunction:: src.plot_circles
